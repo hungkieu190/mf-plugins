@@ -41,7 +41,7 @@ class MFQI_Admin_Page {
                     $notice .= '</ul>';
                 }
                 if ($dryRun) {
-                    $notice .= '<br><em>(Dry run: không tạo dữ liệu thật)</em>';
+                    $notice .= '<br><em>(Dry run: no actual data created)</em>';
                 }
                 $notice .= '</p></div>';
             } catch (Exception $e) {

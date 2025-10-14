@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: MF Quiz Importer for LearnPress (CSV/XLSX)
- * Description: Import Quiz & Questions vào LearnPress từ CSV/XLSX. Hỗ trợ gán quiz vào Course + Section.
- * Author: Ultra Violet & ChatGPT
+ * Description: Import Quiz & Questions to LearnPress from CSV/XLSX. Supports assigning quiz to Course + Section.
+ * Author: mamflow
  * Version: 1.0.0
  * Text Domain: mf-quiz-importer-for-learnpress
  */
@@ -17,7 +17,7 @@ register_activation_hook(__FILE__, function () {
     // Ensure LearnPress is active
     if (!class_exists('LearnPress')) {
         deactivate_plugins(plugin_basename(__FILE__));
-        wp_die('LearnPress chưa được kích hoạt. Hãy bật LearnPress trước khi bật plugin này.');
+        wp_die('LearnPress is not activated. Please activate LearnPress before activating this plugin.');
     }
 });
 
