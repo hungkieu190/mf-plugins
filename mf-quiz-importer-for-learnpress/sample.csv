@@ -1,0 +1,5 @@
+course_id,section_name,quiz_title,question_type,question_text,answers,correct,mark
+123,Imported Section,JS Basics Quiz,single,JS stands for?,Java Script; Just Script; JScript,Java Script,1
+123,Imported Section,JS Basics Quiz,multiple,Which are JS frameworks?,React; Vue; Laravel; Angular,React; Vue; Angular,2
+123,Imported Section,True/False #1,true_false,JS runs in browser?,True; False,True,1
+0,,Standalone Quiz,fill,2+2 = ___,4,4,1
