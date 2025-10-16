@@ -1,15 +1,26 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
+// Ensure LearnPress Section CURD class is available
+if (!class_exists('LP_Section_CURD')) {
+    // Try to include the file if not already loaded
+    $section_curd_file = WP_PLUGIN_DIR . '/learnpress/inc/curds/class-lp-section-curd.php';
+    if (file_exists($section_curd_file)) {
+        require_once $section_curd_file;
+    }
+}
+
 class MFQI_Importer {
     protected $delimiter = ';';
     protected $supportXlsx = false;
     protected $dryRun = false;
+    protected $debugDelay = true; // Add 3 second delay between rows for debugging
 
     public function __construct($args = []) {
         if (!empty($args['delimiter']))   $this->delimiter   = $args['delimiter'];
         if (!empty($args['supportXlsx'])) $this->supportXlsx = (bool)$args['supportXlsx'];
         if (isset($args['dryRun']))       $this->dryRun      = (bool)$args['dryRun'];
+        if (isset($args['debugDelay']))   $this->debugDelay  = (bool)$args['debugDelay'];
     }
 
     /**
@@ -51,9 +62,18 @@ class MFQI_Importer {
             'created_questions'     => 0,
             'attached_to_courses'   => 0,
             'warnings'              => [],
+            'total_rows'            => count($rows),
+            'processed_rows'        => 0,
+            'current_row'           => 0,
+            'estimated_time'        => $this->debugDelay ? count($rows) * 3 : 0, // seconds
+            'actual_time'           => 0, // Will be set at the end
+            'start_time'            => time(), // Track start time
         ];
 
         foreach ($rows as $i => $line) {
+            // Update current row being processed
+            $result['current_row'] = $i + 2; // +2 because +1 for 0-index and +1 for header row
+
             if (empty(array_filter($line, fn($v)=>trim((string)$v) !== ''))) continue; // skip empty
 
             // --- Extract values ---
@@ -66,8 +86,16 @@ class MFQI_Importer {
             $correct_str  = (string)($line[$colIndex['correct']] ?? '');
             $mark         = floatval($line[$colIndex['mark']] ?? 1);
 
+            // --- Validate course_id before processing ---
+            if ($course_id > 0 && !$this->course_exists($course_id)) {
+                $result['warnings'][] = "Row ".($i+2).": Course ID {$course_id} does not exist";
+                $result['processed_rows']++;
+                continue;
+            }
+
             if (!$quiz_title || !$q_text) {
                 $result['warnings'][] = "Row ".($i+2).": Missing quiz_title or question_text";
+                $result['processed_rows']++;
                 continue;
             }
 
@@ -93,10 +121,22 @@ class MFQI_Importer {
 
             // --- Attach quiz to course/section if course_id provided ---
             if ($course_id > 0) {
-                $attached = $this->attach_quiz_to_course($course_id, $quiz_id, $section_name ?: 'Imported Section');
+                // Use section_name as-is, let attach_quiz_to_course handle empty values
+                $attached = $this->attach_quiz_to_course($course_id, $quiz_id, $section_name);
                 if ($attached) $result['attached_to_courses']++;
             }
+
+            // Mark this row as processed
+            $result['processed_rows']++;
+
+            // Add 3 second delay for debugging purposes (if enabled)
+            if ($this->debugDelay) {
+                sleep(3);
+            }
         }
+
+        // Calculate actual time taken
+        $result['actual_time'] = time() - $result['start_time'];
 
         return $result;
     }
@@ -226,40 +266,161 @@ class MFQI_Importer {
         return true;
     }
 
-    /** Attach quiz to a course, create/find section */
+    /** Attach quiz to a course, create/find section using LearnPress API */
     protected function attach_quiz_to_course($course_id, $quiz_id, $section_name) {
         if ($this->dryRun) return true;
 
+        // Clean section name - trim whitespace
+        $clean_section_name = trim((string)$section_name);
+
+        // If section name is empty, use default
+        if (empty($clean_section_name)) {
+            $clean_section_name = 'Imported Section';
+        }
+
+        try {
+            // Use LearnPress Section CURD API to handle section creation/finding
+            $section_curd = new LP_Section_CURD($course_id);
+            $section_data = [
+                'section_name'        => $clean_section_name,
+                'section_description' => '',
+                'section_course_id'   => $course_id,
+            ];
+
+            // Try to find existing section first
+            $existing_sections = $this->find_existing_section($course_id, $clean_section_name);
+
+            if ($existing_sections && isset($existing_sections['section_id'])) {
+                // Use existing section
+                $section_id = $existing_sections['section_id'];
+            } else {
+                // Create new section using LearnPress API
+                $new_section = $section_curd->create($section_data);
+                if (!$new_section || !isset($new_section['section_id'])) {
+                    throw new Exception('Failed to create section using LearnPress API');
+                }
+                $section_id = $new_section['section_id'];
+            }
+
+            // Add quiz to section using LearnPress API
+            $quiz_item = [
+                'item_id'    => $quiz_id,
+                'item_type'  => 'lp_quiz',
+                'item_order' => $this->get_next_item_order($section_id)
+            ];
+
+            $section_curd->assign_item_section($section_id, $quiz_item);
+
+            // Ensure curriculum items are updated for compatibility
+            $this->update_curriculum_items($course_id, $quiz_id);
+
+            // Link quiz to course
+            wp_set_object_terms($quiz_id, (int)$course_id, 'course-item', true);
+
+            return true;
+
+        } catch (Exception $e) {
+            // Fallback to old method if LearnPress API fails
+            error_log('LearnPress Section API failed, falling back to legacy method: ' . $e->getMessage());
+            return $this->attach_quiz_to_course_legacy($course_id, $quiz_id, $clean_section_name);
+        }
+    }
+
+    /**
+     * Find existing section by name using LearnPress API
+     */
+    private function find_existing_section($course_id, $section_name) {
+        try {
+            $course = learn_press_get_course($course_id);
+            if (!$course) return false;
+
+            $curriculum = $course->get_curriculum();
+            if (!$curriculum || !is_array($curriculum)) return false;
+
+            foreach ($curriculum as $section) {
+                if (isset($section['section_name']) && trim($section['section_name']) === $section_name) {
+                    return [
+                        'section_id' => $section['section_id'],
+                        'section_name' => $section['section_name']
+                    ];
+                }
+            }
+
+            return false;
+        } catch (Exception $e) {
+            error_log('Error finding existing section: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Get next item order for section
+     */
+    private function get_next_item_order($section_id) {
+        global $wpdb;
+
+        $max_order = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT MAX(item_order) FROM {$wpdb->learnpress_section_items} WHERE section_id = %d",
+                $section_id
+            )
+        );
+
+        return ($max_order !== null) ? intval($max_order) + 1 : 1;
+    }
+
+    /**
+     * Update curriculum items for compatibility
+     */
+    private function update_curriculum_items($course_id, $quiz_id) {
+        $curriculum = get_post_meta($course_id, '_lp_curriculum_items', true);
+        if (!is_array($curriculum)) $curriculum = [];
+
+        if (!in_array($quiz_id, $curriculum, true)) {
+            $curriculum[] = $quiz_id;
+            update_post_meta($course_id, '_lp_curriculum_items', $curriculum);
+        }
+    }
+
+    /**
+     * Legacy fallback method for section creation
+     */
+    private function attach_quiz_to_course_legacy($course_id, $quiz_id, $section_name) {
         // Sections stored in meta: _lp_course_sections (structure differs by LP version)
         $sections = get_post_meta($course_id, '_lp_course_sections', true);
         if (!is_array($sections)) $sections = [];
 
-        // Find or create section
+        // Find existing section (case-sensitive match with trimmed comparison)
         $section_id = null;
         foreach ($sections as $sid => $sec) {
-            if (!empty($sec['title']) && $sec['title'] === $section_name) {
+            $existing_title = isset($sec['title']) ? trim((string)$sec['title']) : '';
+            if ($existing_title === $section_name) {
                 $section_id = $sid;
                 break;
             }
         }
+
+        // Create new section if not found
         if (!$section_id) {
-            // Create new section structure
             $section_id = wp_generate_uuid4();
             $sections[$section_id] = [
-                'title'   => $section_name,
-                'items'   => [],
-                'order'   => count($sections),
+                'title'      => $section_name,
+                'items'      => [],
+                'order'      => count($sections),
                 'section_id' => $section_id,
             ];
         }
 
         // Add quiz as an item in section
         $item_key = 'quiz_' . $quiz_id;
+        if (!isset($sections[$section_id]['items']) || !is_array($sections[$section_id]['items'])) {
+            $sections[$section_id]['items'] = [];
+        }
         if (!in_array($item_key, $sections[$section_id]['items'], true)) {
             $sections[$section_id]['items'][] = $item_key;
         }
 
-        // Save
+        // Save sections
         update_post_meta($course_id, '_lp_course_sections', $sections);
 
         // Also ensure LP sense of curriculum items (compat):
@@ -302,5 +463,24 @@ class MFQI_Importer {
             default:
                 return 'single_choice';
         }
+    }
+
+    /**
+     * Check if course exists by ID
+     * @param int $course_id
+     * @return bool
+     */
+    protected function course_exists($course_id) {
+        if (!$course_id || $course_id <= 0) {
+            return false;
+        }
+
+        $course = get_post($course_id);
+        if (!$course) {
+            return false;
+        }
+
+        // Check if it's actually a LearnPress course
+        return $course->post_type === 'lp_course' && $course->post_status === 'publish';
     }
 }

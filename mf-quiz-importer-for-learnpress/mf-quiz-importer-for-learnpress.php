@@ -26,9 +26,8 @@ add_action('plugins_loaded', function () {
     load_plugin_textdomain('mf-quiz-importer-for-learnpress', false, dirname(plugin_basename(__FILE__)) . '/languages');
 });
 
-require_once MFQI_PLUGIN_DIR . 'inc/class-mfqi-importer.php';
+// Include admin page class
 require_once MFQI_PLUGIN_DIR . 'inc/class-mfqi-admin-page.php';
 
-add_action('admin_menu', function () {
-    MFQI_Admin_Page::register();
-});
+// Register admin menu
+add_action('admin_menu', [MFQI_Admin_Page::class, 'register_quiz_importer_menu']);
