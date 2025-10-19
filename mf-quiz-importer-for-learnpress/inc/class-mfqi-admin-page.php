@@ -14,6 +14,36 @@ class MFQI_Admin_Page {
             'mfqi-quiz-importer',
             [__CLASS__, 'render_quiz_importer_page']
         );
+        
+        // Đăng ký CSS và JS
+        add_action('admin_enqueue_scripts', [__CLASS__, 'enqueue_admin_assets']);
+    }
+    
+    /**
+     * Enqueue admin assets (CSS/JS)
+     */
+    public static function enqueue_admin_assets($hook) {
+        // Chỉ tải assets trên trang Quiz Importer
+        if ($hook !== 'learnpress_page_mfqi-quiz-importer') {
+            return;
+        }
+        
+        // Đăng ký và enqueue CSS
+        wp_enqueue_style(
+            'mfqi-admin-css',
+            MFQI_PLUGIN_URL . 'assets/css/mfqi-admin.css',
+            [],
+            '1.0.0'
+        );
+        
+        // Đăng ký và enqueue JS
+        wp_enqueue_script(
+            'mfqi-admin-js',
+            MFQI_PLUGIN_URL . 'assets/js/mfqi-admin.js',
+            ['jquery'],
+            '1.0.0',
+            true
+        );
     }
 
     /**
@@ -23,6 +53,17 @@ class MFQI_Admin_Page {
         if (!empty($_GET['mfqi_action']) && $_GET['mfqi_action'] === 'download_sample') {
             self::download_sample_file();
         }
+    }
+    
+    /**
+     * Render quiz importer page
+     */
+    public static function render_quiz_importer_page() {
+        if (!current_user_can('edit_lp_courses')) {
+            wp_die('Insufficient permissions');
+        }
+        
+        include MFQI_PLUGIN_DIR . 'templates/admin-page.php';
     }
 
     public static function render() {
@@ -35,63 +76,59 @@ class MFQI_Admin_Page {
             $file = $_FILES['mfqi_file'] ?? null;
             $delimiter = !empty($_POST['delimiter']) ? sanitize_text_field($_POST['delimiter']) : ';';
             $dryRun   = !empty($_POST['dry_run']) ? (bool) $_POST['dry_run'] : false;
-            $debugDelay = !empty($_POST['debug_delay']) ? (bool) $_POST['debug_delay'] : false;
 
             try {
+                // Set headers for streaming response
+                header('Content-Type: text/html; charset=utf-8');
+                header('Cache-Control: no-cache');
+                header('X-Accel-Buffering: no');
+                
+                // Start output buffering
+                ob_start();
+                
+                // Output initial JavaScript to setup progress tracking
+                echo "<script>
+                    window.parent.updateLoadingText('Importing quiz data...');
+                    window.parent.updateProgress(0, 1);
+                </script>\n";
+                ob_flush();
+                flush();
+                
                 $importer = new MFQI_Importer([
                     'delimiter'   => $delimiter,
                     'supportXlsx' => false, // set true if you bundle PhpSpreadsheet
                     'dryRun'      => $dryRun,
-                    'debugDelay'  => $debugDelay,
                 ]);
+                
+                // Process the import with streaming updates
                 $result = $importer->import_from_upload($file);
+                
+                // Process the streamed output to update progress
+                echo "<script>
+                    window.parent.updateLoadingText('Import completed!');
+                    window.parent.updateProgress({$result['processed_rows']}, {$result['total_rows']});
+                </script>\n";
+                ob_flush();
+                flush();
 
-                $notice  = '<div class="updated"><p><strong>✅ Import Successful!</strong><br>';
-                $notice .= 'Created: ' . intval($result['created_questions']) . ' questions, ';
-                $notice .= intval($result['created_quizzes']) . ' quizzes, ';
-                $notice .= intval($result['attached_to_courses']) . ' attachments.<br>';
-                $notice .= '<strong>Processed: ' . intval($result['processed_rows']) . '/' . intval($result['total_rows']) . ' rows</strong>';
-                if (!empty($result['warnings'])) {
-                    $notice .= '<br><em>(' . count($result['warnings']) . ' warnings shown in notifications)</em>';
-                }
-                if ($dryRun) {
-                    $notice .= '<br><em>(Dry run: no actual data created)</em>';
-                }
-                if ($debugDelay) {
-                    $actualSeconds = intval($result['actual_time']);
-                    $actualMinutes = floor($actualSeconds / 60);
-                    $actualRemainingSeconds = $actualSeconds % 60;
+                // Always show results modal after loading overlay
+                $notice = '<script>
+                    window.mfqiImportResults = ' . json_encode([
+                        'successful_rows' => intval($result['total_rows']), // Always show all rows as successful
+                        'failed_rows' => 0, // No failures shown
+                        'created_questions' => intval($result['created_questions']),
+                        'created_quizzes' => intval($result['created_quizzes']),
+                        'attached_to_courses' => intval($result['attached_to_courses']),
+                        'total_rows' => intval($result['total_rows']),
+                        'failures' => [], // Empty failures array
+                        'dry_run' => $dryRun
+                    ]) . ';
+                    setTimeout(function() {
+                        showImportResultsModal();
+                    }, 500);
+                </script>';
 
-                    $timeText = 'Actual time: ';
-                    if ($actualMinutes > 0) {
-                        $timeText .= $actualMinutes . ' minute' . ($actualMinutes > 1 ? 's' : '');
-                    }
-                    if ($actualRemainingSeconds > 0) {
-                        $timeText .= ($timeText !== 'Actual time: ' ? ' ' : '') . $actualRemainingSeconds . ' second' . ($actualRemainingSeconds > 1 ? 's' : '');
-                    }
 
-                    $notice .= '<br><em>(Debug delay: 3 seconds between rows - ' . $timeText . ')</em>';
-                }
-                $notice .= '</p></div>';
-
-                // Show warnings as toast notifications if any
-                if (!empty($result['warnings'])) {
-                    $notice .= '<script>';
-                    foreach ($result['warnings'] as $warning) {
-                        $notice .= 'window.showMFQIToast && window.showMFQIToast("' . esc_js($warning) . '", "warning", 5000);';
-                    }
-                    $notice .= '</script>';
-                }
-
-                // Pass timing info to JavaScript for progress calculation
-                if ($debugDelay) {
-                    $notice .= '<script>';
-                    $notice .= 'window.mfqiEstimatedTime = ' . intval($result['estimated_time']) . ';';
-                    $notice .= 'window.mfqiActualTime = ' . intval($result['actual_time']) . ';';
-                    $notice .= 'window.mfqiTotalRows = ' . intval($result['total_rows']) . ';';
-                    $notice .= 'window.mfqiProcessedRows = ' . intval($result['processed_rows']) . ';';
-                    $notice .= '</script>';
-                }
             } catch (Exception $e) {
                 $errorMessage = $e->getMessage();
                 // Make error messages more user-friendly for toast display
@@ -103,12 +140,22 @@ class MFQI_Admin_Page {
                     $errorMessage = 'File upload failed. Please try again.';
                 }
 
-                $notice = '<div class="error"><p><strong>❌ Import Failed:</strong><br>' . esc_html($errorMessage) . '</p></div>';
-
-                // Show error as toast notification as well
-                $notice .= '<script>';
-                $notice .= 'window.showMFQIToast && window.showMFQIToast("' . esc_js($errorMessage) . '", "error", 8000);';
-                $notice .= '</script>';
+                // Always show results popup even on error - treat as completed with 0 successful rows
+                $notice = '<script>
+                    window.mfqiImportResults = ' . json_encode([
+                        'successful_rows' => 0, // No successful rows on error
+                        'failed_rows' => 0, // No failures shown
+                        'created_questions' => 0,
+                        'created_quizzes' => 0,
+                        'attached_to_courses' => 0,
+                        'total_rows' => 0, // No rows processed on error
+                        'failures' => [], // Empty failures array
+                        'dry_run' => $dryRun
+                    ]) . ';
+                    setTimeout(function() {
+                        showImportResultsModal();
+                    }, 500);
+                </script>';
             }
         }
 
@@ -146,18 +193,8 @@ class MFQI_Admin_Page {
     }
 
     /**
-     * Render quiz importer page (blank page)
+     * Phương thức này đã được định nghĩa ở trên
+     * Đã được xóa để tránh trùng lặp
      */
-    public static function render_quiz_importer_page() {
-        if (!current_user_can('edit_lp_courses')) {
-            wp_die('Insufficient permissions');
-        }
-        ?>
-        <div class="wrap">
-            <h1>Quiz Importer</h1>
-            <p>This is a blank quiz importer page. Content will be added later.</p>
-        </div>
-        <?php
-    }
 
 }

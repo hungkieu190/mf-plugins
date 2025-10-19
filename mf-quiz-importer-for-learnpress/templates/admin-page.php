@@ -6,7 +6,7 @@
   <div class="mfqi-download-section">
     <p><strong>Download Sample Files:</strong></p>
     <p>
-      <a href="<?php echo esc_url(add_query_arg(['mfqi_action' => 'download_sample', 'type' => 'csv'], admin_url('admin.php?page=mfqi-import'))); ?>"
+      <a href="<?php echo esc_url(add_query_arg(['mfqi_action' => 'download_sample', 'type' => 'csv'], admin_url('admin.php?page=mfqi-quiz-importer'))); ?>"
          class="button button-primary mfqi-download-btn">
         📥 Download CSV Sample
       </a>
@@ -31,28 +31,54 @@
       </div>
     </div>
 
-    <!-- Toast notifications -->
-    <div id="mfqi-toast-container"></div>
+    <!-- Import Results Modal -->
+    <div id="mfqi-results-modal" style="display: none;">
+      <div class="mfqi-modal-overlay">
+        <div class="mfqi-modal-content">
+          <div class="mfqi-modal-header">
+            <h2>Import Results</h2>
+          </div>
+          <div class="mfqi-modal-body">
+            <div class="mfqi-results-summary">
+              <div class="mfqi-result-item success">
+                <span class="mfqi-result-icon">✅</span>
+                <span class="mfqi-result-text">Successful: <span id="successful-count">0</span> rows</span>
+              </div>
+            </div>
+
+            <div class="mfqi-results-details">
+              <ul id="mfqi-results-details-list">
+                <li id="created-questions">Questions created: 0</li>
+                <li id="created-quizzes">Quizzes created: 0</li>
+                <li id="attached-courses">Attached to courses: 0</li>
+                <li id="total-processed">Total processed: 0/0 rows</li>
+              </ul>
+            </div>
+
+            <div id="mfqi-failures-section" style="display: none;">
+              <h4 style="color: #d63638; margin: 15px 0 10px 0;">Failures:</h4>
+              <div class="mfqi-failures-list" id="mfqi-failures-list"></div>
+            </div>
+
+            <div id="mfqi-dry-run-notice" style="display: none;">
+              <p style="color: #666; font-style: italic; margin-top: 15px;">Note: This was a dry run - no actual data was created.</p>
+            </div>
+          </div>
+          <div class="mfqi-modal-footer">
+            <button class="button button-primary" onclick="closeImportResultsModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
 
     <table class="form-table" role="presentation">
       <tr>
         <th scope="row"><label for="mfqi_file">File (CSV/XLSX)</label></th>
         <td>
-          <div class="mfqi-drag-drop-area" id="dragDropArea">
-            <div class="mfqi-upload-zone">
-              <div class="mfqi-upload-icon">📁</div>
-              <div class="mfqi-upload-text">
-                <strong>Drag and drop your CSV or XLSX file here</strong><br>
-                <span>or</span>
-              </div>
-              <input type="file" id="mfqi_file" name="mfqi_file" class="mfqi-file-input" required />
-              <button type="button" class="mfqi-browse-btn" id="browseBtn">Browse Files</button>
-              <div class="mfqi-file-info" id="fileInfo" style="display: none;">
-                <span class="mfqi-file-name" id="fileName"></span>
-                <button type="button" class="mfqi-remove-file" id="removeFile">✕</button>
-              </div>
-            </div>
-          </div>
+          <input type="file" id="mfqi_file" name="mfqi_file" class="regular-text" required accept=".csv,.xlsx" />
+          <p class="description">Upload a CSV or XLSX file containing quiz data.</p>
         </td>
       </tr>
       <tr>
@@ -66,10 +92,7 @@
         <th scope="row"><label for="dry_run">Dry run</label></th>
         <td><label><input type="checkbox" id="dry_run" name="dry_run" value="1" /> Test run (no database writes)</label></td>
       </tr>
-      <tr>
-        <th scope="row"><label for="debug_delay">Debug delay</label></th>
-        <td><label><input type="checkbox" id="debug_delay" name="debug_delay" value="1" checked /> Add 3 second delay between rows (for debugging)</label></td>
-      </tr>
+
     </table>
 
     <?php submit_button('Import Now', 'primary', 'mfqi-submit-btn'); ?>
@@ -134,110 +157,6 @@
 </div>
 
 <style>
-/* Drag and Drop Styles */
-.mfqi-drag-drop-area {
-  margin: 20px 0;
-}
-
-.mfqi-upload-zone {
-  border: 2px dashed #ddd;
-  border-radius: 8px;
-  padding: 40px 20px;
-  text-align: center;
-  background: #fafafa;
-  transition: all 0.3s ease;
-  position: relative;
-  cursor: pointer;
-}
-
-.mfqi-upload-zone:hover {
-  border-color: #007cba;
-  background: #f0f8ff;
-}
-
-.mfqi-upload-zone.drag-over {
-  border-color: #007cba;
-  background: #e7f3ff;
-  transform: scale(1.02);
-}
-
-.mfqi-upload-icon {
-  font-size: 48px;
-  margin-bottom: 15px;
-  opacity: 0.7;
-}
-
-.mfqi-upload-text {
-  color: #666;
-  margin-bottom: 20px;
-}
-
-.mfqi-upload-text strong {
-  display: block;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-.mfqi-upload-text span {
-  color: #999;
-  font-style: italic;
-}
-
-.mfqi-file-input {
-  position: absolute;
-  left: -9999px;
-  visibility: hidden;
-}
-
-.mfqi-browse-btn {
-  background: #007cba;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
-}
-
-.mfqi-browse-btn:hover {
-  background: #005a87;
-}
-
-.mfqi-file-info {
-  margin-top: 15px;
-  padding: 10px;
-  background: white;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.mfqi-file-name {
-  color: #333;
-  font-weight: 500;
-}
-
-.mfqi-remove-file {
-  background: #dc3545;
-  color: white;
-  border: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mfqi-remove-file:hover {
-   background: #c82333;
- }
 
 /* Download Section Styles */
 .mfqi-download-section {
@@ -382,110 +301,138 @@
    cursor: not-allowed !important;
  }
 
-/* Toast Notification Styles */
-#mfqi-toast-container {
-   position: fixed;
-   top: 20px;
-   right: 20px;
-   z-index: 10000;
-   max-width: 400px;
+/* Modal Styles */
+#mfqi-results-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.mfqi-toast {
-   background: white;
-   border-radius: 8px;
-   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-   margin-bottom: 10px;
-   padding: 16px 20px;
-   display: flex;
-   align-items: flex-start;
-   gap: 12px;
-   animation: mfqi-toast-slide-in 0.3s ease-out;
-   border-left: 4px solid;
-   font-size: 14px;
-   line-height: 1.4;
+.mfqi-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.mfqi-toast.success {
-   border-left-color: #00a32a;
-   background: #f8fff9;
+.mfqi-modal-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: mfqi-modal-slide-in 0.3s ease-out;
 }
 
-.mfqi-toast.error {
-   border-left-color: #d63638;
-   background: #fff5f5;
+@keyframes mfqi-modal-slide-in {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
-.mfqi-toast.warning {
-   border-left-color: #dba617;
-   background: #fffbf0;
+.mfqi-modal-header {
+    padding: 20px 30px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.mfqi-toast.info {
-   border-left-color: #007cba;
-   background: #f0f8ff;
+.mfqi-modal-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
 }
 
-.mfqi-toast-icon {
-   flex-shrink: 0;
-   margin-top: 2px;
+.mfqi-modal-body {
+    padding: 20px 30px;
 }
 
-.mfqi-toast-content {
-   flex: 1;
+.mfqi-results-summary {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
 }
 
-.mfqi-toast-title {
-   font-weight: 600;
-   margin: 0 0 4px 0;
-   color: #333;
+.mfqi-result-item {
+    flex: 1;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.mfqi-toast-message {
-   margin: 0;
-   color: #666;
+.mfqi-result-item.success {
+    background: #f8fff9;
+    border: 1px solid #00a32a;
 }
 
-.mfqi-toast-close {
-   background: none;
-   border: none;
-   cursor: pointer;
-   padding: 0;
-   width: 20px;
-   height: 20px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   border-radius: 50%;
-   transition: background-color 0.2s;
-   flex-shrink: 0;
+.mfqi-result-icon {
+    font-size: 20px;
 }
 
-.mfqi-toast-close:hover {
-   background: rgba(0, 0, 0, 0.1);
+.mfqi-result-text {
+    font-weight: 600;
+    color: #333;
 }
 
-@keyframes mfqi-toast-slide-in {
-   from {
-     transform: translateX(100%);
-     opacity: 0;
-   }
-   to {
-     transform: translateX(0);
-     opacity: 1;
-   }
+.mfqi-results-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-@keyframes mfqi-toast-slide-out {
-   from {
-     transform: translateX(0);
-     opacity: 1;
-   }
-   to {
-     transform: translateX(100%);
-     opacity: 0;
-   }
+.mfqi-results-details li {
+    padding: 5px 0;
+    color: #666;
 }
+
+.mfqi-failures-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 10px;
+    background: #f8f9fa;
+}
+
+.mfqi-failures-list div {
+    padding: 5px 0;
+    color: #d63638;
+    font-size: 14px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.mfqi-failures-list div:last-child {
+    border-bottom: none;
+}
+
+.mfqi-modal-footer {
+    padding: 20px 30px;
+    border-top: 1px solid #e9ecef;
+    text-align: right;
+}
+
 </style>
 
 <script>
@@ -622,173 +569,75 @@ document.addEventListener('DOMContentLoaded', function() {
      }
    }
 
-   // Toast notification system
-   const toastContainer = document.getElementById('mfqi-toast-container');
 
-   // Show toast messages for PHP errors/notices
-   showToastFromPHP();
+   // Drag and drop functionality - REMOVED
+   // const dragDropArea = document.getElementById('dragDropArea');
+   // const fileInput = document.getElementById('mfqi_file');
+   // const browseBtn = document.getElementById('browseBtn');
+   // const fileInfo = document.getElementById('fileInfo');
+   // const fileName = document.getElementById('fileName');
+   // const removeFile = document.getElementById('removeFile');
 
-   // Drag and drop functionality
-   const dragDropArea = document.getElementById('dragDropArea');
-  const fileInput = document.getElementById('mfqi_file');
-  const browseBtn = document.getElementById('browseBtn');
-  const fileInfo = document.getElementById('fileInfo');
-  const fileName = document.getElementById('fileName');
-  const removeFile = document.getElementById('removeFile');
 
-  // Allowed file types
-  const allowedTypes = ['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
-  const allowedExtensions = ['.csv', '.xlsx'];
 
-  // Browse button click
-  browseBtn.addEventListener('click', function() {
-    fileInput.click();
-  });
+  // Import results modal functions
+  function showImportResultsModal() {
+    const modal = document.getElementById('mfqi-results-modal');
+    if (!modal || !window.mfqiImportResults) return;
 
-  // File input change
-  fileInput.addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-      handleFile(file);
-    }
-  });
+    const results = window.mfqiImportResults;
 
-  // Drag and drop events
-  dragDropArea.addEventListener('dragover', function(e) {
-    e.preventDefault();
-    dragDropArea.classList.add('drag-over');
-  });
+    // Update summary counts
+    document.getElementById('successful-count').textContent = results.successful_rows;
 
-  dragDropArea.addEventListener('dragleave', function(e) {
-    e.preventDefault();
-    dragDropArea.classList.remove('drag-over');
-  });
+    // Update details
+    document.getElementById('created-questions').textContent = 'Questions created: ' + results.created_questions;
+    document.getElementById('created-quizzes').textContent = 'Quizzes created: ' + results.created_quizzes;
+    document.getElementById('attached-courses').textContent = 'Attached to courses: ' + results.attached_to_courses;
+    document.getElementById('total-processed').textContent = 'Total processed: ' + results.successful_rows + '/' + results.total_rows + ' rows';
 
-  dragDropArea.addEventListener('drop', function(e) {
-    e.preventDefault();
-    dragDropArea.classList.remove('drag-over');
-
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      const file = files[0];
-      if (validateFile(file)) {
-        handleFile(file);
-      } else {
-        alert('Please select a valid CSV or XLSX file.');
-      }
-    }
-  });
-
-  // Remove file
-  removeFile.addEventListener('click', function() {
-    fileInput.value = '';
-    fileInfo.style.display = 'none';
-    dragDropArea.classList.remove('has-file');
-  });
-
-  // Validate file
-  function validateFile(file) {
-    // Check file type
-    if (!allowedTypes.includes(file.type)) {
-      // Check file extension as fallback
-      const fileName = file.name.toLowerCase();
-      return allowedExtensions.some(ext => fileName.endsWith(ext));
-    }
-    return true;
-  }
-
-  // Handle selected file
-  function handleFile(file) {
-    if (!validateFile(file)) {
-      alert('Please select a valid CSV or XLSX file.');
-      return;
+    // Show failures if any
+    const failuresSection = document.getElementById('mfqi-failures-section');
+    const failuresList = document.getElementById('mfqi-failures-list');
+    if (results.failures && results.failures.length > 0) {
+      failuresList.innerHTML = results.failures.map(failure => '<div>' + escapeHtml(failure) + '</div>').join('');
+      failuresSection.style.display = 'block';
+    } else {
+      failuresSection.style.display = 'none';
     }
 
-    // Create new DataTransfer for file input
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(file);
-    fileInput.files = dataTransfer.files;
-
-    // Show file info
-    fileName.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
-    fileInfo.style.display = 'flex';
-    dragDropArea.classList.add('has-file');
-  }
-
-  // Format file size
-  function formatFileSize(bytes) {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  }
-
-  // Click on upload zone to browse files
-  dragDropArea.addEventListener('click', function(e) {
-    if (e.target === dragDropArea || e.target.classList.contains('mfqi-upload-zone')) {
-      browseBtn.click();
+    // Show dry run notice if applicable
+    const dryRunNotice = document.getElementById('mfqi-dry-run-notice');
+    if (results.dry_run) {
+      dryRunNotice.style.display = 'block';
+    } else {
+      dryRunNotice.style.display = 'none';
     }
-  });
 
-  // Toast notification functions
-  function showToastFromPHP() {
-    // Check for PHP error/success messages and convert to toasts
-    const notices = document.querySelectorAll('.updated, .error, .notice');
-    notices.forEach(notice => {
-      const message = notice.textContent.trim();
-      if (message) {
-        const type = notice.classList.contains('error') ? 'error' : 'success';
-        showToast(message, type, 8000); // Show for 8 seconds
-        // Hide the original notice after a short delay
-        setTimeout(() => {
-          notice.style.display = 'none';
-        }, 1000);
-      }
-    });
+    // Hide loading overlay and show results modal
+    const loadingOverlay = document.getElementById('mfqi-loading-overlay');
+    if (loadingOverlay) {
+      loadingOverlay.style.display = 'none';
+    }
+
+    // Show modal
+    modal.style.display = 'flex';
   }
 
-  function showToast(message, type = 'info', duration = 5000) {
-    if (!toastContainer) return;
+  function closeImportResultsModal() {
+    const modal = document.getElementById('mfqi-results-modal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
 
-    const toast = document.createElement('div');
-    toast.className = `mfqi-toast ${type}`;
-
-    const iconMap = {
-      success: '✓',
-      error: '⚠',
-      warning: '!',
-      info: 'ℹ'
-    };
-
-    toast.innerHTML = `
-      <div class="mfqi-toast-icon">${iconMap[type] || 'ℹ'}</div>
-      <div class="mfqi-toast-content">
-        <div class="mfqi-toast-message">${escapeHtml(message)}</div>
-      </div>
-      <button class="mfqi-toast-close" onclick="this.parentElement.remove()">&times;</button>
-    `;
-
-    toastContainer.appendChild(toast);
-
-    // Auto remove after duration
-    setTimeout(() => {
-      if (toast.parentElement) {
-        toast.style.animation = 'mfqi-toast-slide-out 0.3s ease-in';
-        setTimeout(() => toast.remove(), 300);
-      }
-    }, duration);
-
-    return toast;
+    // Reset form
+    const importForm = document.getElementById('mfqi-import-form');
+    const submitBtn = document.getElementById('mfqi-submit-btn');
+    if (importForm) importForm.classList.remove('mfqi-form-disabled');
+    if (submitBtn) {
+      submitBtn.value = 'Import Now';
+      submitBtn.disabled = false;
+    }
   }
-
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-
-  // Global function for showing toasts (can be called from anywhere)
-  window.showMFQIToast = showToast;
 });
 </script>

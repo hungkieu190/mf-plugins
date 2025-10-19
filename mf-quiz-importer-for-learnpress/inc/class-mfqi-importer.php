@@ -14,13 +14,11 @@ class MFQI_Importer {
     protected $delimiter = ';';
     protected $supportXlsx = false;
     protected $dryRun = false;
-    protected $debugDelay = true; // Add 3 second delay between rows for debugging
 
     public function __construct($args = []) {
         if (!empty($args['delimiter']))   $this->delimiter   = $args['delimiter'];
         if (!empty($args['supportXlsx'])) $this->supportXlsx = (bool)$args['supportXlsx'];
         if (isset($args['dryRun']))       $this->dryRun      = (bool)$args['dryRun'];
-        if (isset($args['debugDelay']))   $this->debugDelay  = (bool)$args['debugDelay'];
     }
 
     /**
@@ -65,14 +63,31 @@ class MFQI_Importer {
             'total_rows'            => count($rows),
             'processed_rows'        => 0,
             'current_row'           => 0,
-            'estimated_time'        => $this->debugDelay ? count($rows) * 3 : 0, // seconds
-            'actual_time'           => 0, // Will be set at the end
             'start_time'            => time(), // Track start time
+            'progress_percentage'   => 0 // Track progress percentage
         ];
 
         foreach ($rows as $i => $line) {
             // Update current row being processed
             $result['current_row'] = $i + 2; // +2 because +1 for 0-index and +1 for header row
+            $result['processed_rows'] = $i + 1;
+            $result['progress_percentage'] = $result['total_rows'] > 0 ? round(($i + 1) / $result['total_rows'] * 100) : 0;
+            
+            // Output progress information for AJAX processing
+            if ($i % 5 === 0 || $i === count($rows) - 1) {
+                echo json_encode([
+                    'status' => 'processing',
+                    'current_row' => $result['current_row'],
+                    'total_rows' => $result['total_rows'],
+                    'processed_rows' => $result['processed_rows'],
+                    'progress_percentage' => $result['progress_percentage']
+                ]);
+                echo "\n";
+                if (function_exists('ob_flush')) {
+                    ob_flush();
+                }
+                flush();
+            }
 
             if (empty(array_filter($line, fn($v)=>trim((string)$v) !== ''))) continue; // skip empty
 
@@ -129,14 +144,10 @@ class MFQI_Importer {
             // Mark this row as processed
             $result['processed_rows']++;
 
-            // Add 3 second delay for debugging purposes (if enabled)
-            if ($this->debugDelay) {
-                sleep(3);
-            }
+
         }
 
-        // Calculate actual time taken
-        $result['actual_time'] = time() - $result['start_time'];
+
 
         return $result;
     }

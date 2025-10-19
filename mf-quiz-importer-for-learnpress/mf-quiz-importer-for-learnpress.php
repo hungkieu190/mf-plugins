@@ -31,3 +31,6 @@ require_once MFQI_PLUGIN_DIR . 'inc/class-mfqi-admin-page.php';
 
 // Register admin menu
 add_action('admin_menu', [MFQI_Admin_Page::class, 'register_quiz_importer_menu']);
+
+// Register early request handler for file downloads
+add_action('admin_init', [MFQI_Admin_Page::class, 'handle_early_requests']);
