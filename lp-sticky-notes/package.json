@@ -1,0 +1,22 @@
+{
+    "name": "lp-sticky-notes",
+    "version": "1.0.0",
+    "description": "Sticky Notes Add-on for LearnPress",
+    "main": "index.js",
+    "scripts": {
+        "release": "node scripts/release.js"
+    },
+    "keywords": [
+        "wordpress",
+        "plugin",
+        "learnpress",
+        "sticky-notes",
+        "lms"
+    ],
+    "author": "Mamflow",
+    "license": "GPL-2.0-or-later",
+    "devDependencies": {
+        "archiver": "^6.0.1"
+    },
+    "homepage": "https://mamflow.com"
+}

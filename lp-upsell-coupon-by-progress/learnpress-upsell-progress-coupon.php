@@ -38,18 +38,18 @@ if (!defined('LP_UPPC_BASENAME')) {
 require_once LP_UPPC_PATH . 'inc/class-lp-uppc-plugin.php';
 
 register_activation_hook(LP_UPPC_FILE, function () {
-	if (!class_exists('LearnPress')) {
+	if (!class_exists('LearnPress') || !class_exists('WooCommerce')) {
 		deactivate_plugins(plugin_basename(LP_UPPC_FILE));
-		wp_die(esc_html__('LearnPress Upsell Coupon by Progress requires LearnPress to be installed and active.', 'lp-upsell-progress-coupon'));
+		wp_die(esc_html__('LearnPress Upsell Coupon by Progress requires LearnPress and WooCommerce to be installed and active.', 'lp-upsell-progress-coupon'));
 	}
 });
 
 add_action('plugins_loaded', static function () {
-	if (!class_exists('LearnPress')) {
+	if (!class_exists('LearnPress') || !class_exists('WooCommerce')) {
 		add_action('admin_notices', function () {
 			?>
 			<div class="error">
-				<p><?php esc_html_e('LearnPress Upsell Coupon by Progress has been deactivated because it requires LearnPress.', 'lp-upsell-progress-coupon'); ?>
+				<p><?php esc_html_e('LearnPress Upsell Coupon by Progress has been deactivated because it requires LearnPress and WooCommerce.', 'lp-upsell-progress-coupon'); ?>
 				</p>
 			</div>
 			<?php
