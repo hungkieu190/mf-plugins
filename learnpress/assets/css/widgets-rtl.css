@@ -60,7 +60,7 @@
 
 @font-face {
   font-family: "lp-icon";
-  src: url("../src/css/vendor/fonts/lp-icon/lp-icon.woff2?v=100") format("woff2");
+  src: url("../src/css/vendor/fonts/lp-icon/lp-icon.woff2?v=91") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -850,6 +850,15 @@
 
 .lp-icon-box:before {
   content: "\e906";
+}
+
+.lp-ico-ai {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  background-image: url("../../images/icons/ico-ai.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .lp-skeleton-animation {

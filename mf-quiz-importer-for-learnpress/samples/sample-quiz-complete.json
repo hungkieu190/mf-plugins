@@ -1,0 +1,212 @@
+[
+  {
+    "title": "Introduction to WordPress",
+    "description": "Learn the basics of WordPress CMS",
+    "duration": 30,
+    "passing_grade": 70,
+    "retake_count": 0,
+    "questions": [
+      {
+        "title": "What is WordPress?",
+        "content": "Choose the correct answer",
+        "type": "single_choice",
+        "answers": [
+          {"text": "A content management system", "correct": true},
+          {"text": "A programming language", "correct": false},
+          {"text": "A database", "correct": false},
+          {"text": "An operating system", "correct": false}
+        ],
+        "explanation": "WordPress is a free and open-source content management system (CMS) written in PHP"
+      },
+      {
+        "title": "WordPress is open source",
+        "content": "True or False?",
+        "type": "true_or_false",
+        "answers": [
+          {"text": "True", "correct": true},
+          {"text": "False", "correct": false}
+        ],
+        "explanation": "WordPress is released under the GPL license, making it open source software"
+      },
+      {
+        "title": "Which language is WordPress written in?",
+        "content": "Select the correct answer",
+        "type": "single_choice",
+        "answers": [
+          {"text": "Python", "correct": false},
+          {"text": "PHP", "correct": true},
+          {"text": "Ruby", "correct": false},
+          {"text": "Java", "correct": false}
+        ],
+        "explanation": "WordPress is primarily written in PHP, along with HTML, CSS, and JavaScript"
+      },
+      {
+        "title": "Select all features of WordPress",
+        "content": "Choose all that apply",
+        "type": "multi_choice",
+        "answers": [
+          {"text": "Plugin system", "correct": true},
+          {"text": "Theme support", "correct": true},
+          {"text": "Built-in compiler", "correct": false},
+          {"text": "User management", "correct": true}
+        ],
+        "explanation": "WordPress has a robust plugin system, theme support, and user management. It does not have a built-in compiler"
+      }
+    ]
+  },
+  {
+    "title": "Advanced PHP Programming",
+    "description": "Master advanced PHP concepts and techniques",
+    "duration": 60,
+    "passing_grade": 80,
+    "retake_count": 2,
+    "questions": [
+      {
+        "title": "What is a namespace in PHP?",
+        "content": "Choose the best answer",
+        "type": "single_choice",
+        "answers": [
+          {"text": "A way to organize code and avoid naming conflicts", "correct": true},
+          {"text": "A type of variable", "correct": false},
+          {"text": "A database table", "correct": false},
+          {"text": "A function parameter", "correct": false}
+        ],
+        "explanation": "Namespaces in PHP provide a way to group related classes, interfaces, functions and constants"
+      },
+      {
+        "title": "PHP supports multiple inheritance",
+        "content": "True or False?",
+        "type": "true_or_false",
+        "answers": [
+          {"text": "True", "correct": false},
+          {"text": "False", "correct": true}
+        ],
+        "explanation": "PHP does not support multiple inheritance. However, it supports traits which provide similar functionality"
+      },
+      {
+        "title": "Which of these are valid PHP data types?",
+        "content": "Select all correct answers",
+        "type": "multi_choice",
+        "answers": [
+          {"text": "String", "correct": true},
+          {"text": "Integer", "correct": true},
+          {"text": "Character", "correct": false},
+          {"text": "Array", "correct": true},
+          {"text": "Boolean", "correct": true}
+        ],
+        "explanation": "PHP supports String, Integer, Array, and Boolean. There is no separate Character type in PHP"
+      },
+      {
+        "title": "What does PDO stand for?",
+        "content": "Database question",
+        "type": "single_choice",
+        "answers": [
+          {"text": "PHP Data Objects", "correct": true},
+          {"text": "Personal Data Output", "correct": false},
+          {"text": "Public Database Operation", "correct": false},
+          {"text": "Protected Data Object", "correct": false}
+        ],
+        "explanation": "PDO stands for PHP Data Objects, which is a database access layer providing a uniform method of access to multiple databases"
+      }
+    ]
+  },
+  {
+    "title": "JavaScript Fundamentals",
+    "description": "Learn the core concepts of JavaScript",
+    "duration": 45,
+    "passing_grade": 75,
+    "retake_count": 1,
+    "questions": [
+      {
+        "title": "JavaScript is a compiled language",
+        "content": "True or False?",
+        "type": "true_or_false",
+        "answers": [
+          {"text": "True", "correct": false},
+          {"text": "False", "correct": true}
+        ],
+        "explanation": "JavaScript is an interpreted language, not a compiled language. It is executed by the browser's JavaScript engine"
+      },
+      {
+        "title": "Which keyword is used to declare a constant in JavaScript?",
+        "content": "Select the correct answer",
+        "type": "single_choice",
+        "answers": [
+          {"text": "var", "correct": false},
+          {"text": "let", "correct": false},
+          {"text": "const", "correct": true},
+          {"text": "constant", "correct": false}
+        ],
+        "explanation": "The 'const' keyword is used to declare constants in JavaScript (ES6+)"
+      },
+      {
+        "title": "What does DOM stand for?",
+        "content": "Choose the correct answer",
+        "type": "single_choice",
+        "answers": [
+          {"text": "Document Object Model", "correct": true},
+          {"text": "Data Object Model", "correct": false},
+          {"text": "Digital Object Management", "correct": false},
+          {"text": "Document Oriented Markup", "correct": false}
+        ],
+        "explanation": "DOM stands for Document Object Model, which is a programming interface for HTML and XML documents"
+      },
+      {
+        "title": "Which of these are JavaScript frameworks?",
+        "content": "Select all that apply",
+        "type": "multi_choice",
+        "answers": [
+          {"text": "React", "correct": true},
+          {"text": "Angular", "correct": true},
+          {"text": "Django", "correct": false},
+          {"text": "Vue.js", "correct": true},
+          {"text": "Laravel", "correct": false}
+        ],
+        "explanation": "React, Angular, and Vue.js are JavaScript frameworks. Django and Laravel are Python and PHP frameworks respectively"
+      }
+    ]
+  },
+  {
+    "title": "Database Fundamentals",
+    "description": "Understanding database concepts and SQL",
+    "duration": 50,
+    "passing_grade": 70,
+    "retake_count": 1,
+    "questions": [
+      {
+        "title": "What does SQL stand for?",
+        "content": "Database terminology",
+        "type": "single_choice",
+        "answers": [
+          {"text": "Structured Query Language", "correct": true},
+          {"text": "Simple Question Language", "correct": false},
+          {"text": "Standard Query Logic", "correct": false},
+          {"text": "System Query Language", "correct": false}
+        ],
+        "explanation": "SQL stands for Structured Query Language, used for managing relational databases"
+      },
+      {
+        "title": "A primary key must be unique",
+        "content": "True or False?",
+        "type": "true_or_false",
+        "answers": [
+          {"text": "True", "correct": true},
+          {"text": "False", "correct": false}
+        ],
+        "explanation": "A primary key must contain unique values and cannot contain NULL values"
+      },
+      {
+        "title": "Which of these are types of database relationships?",
+        "content": "Select all correct answers",
+        "type": "multi_choice",
+        "answers": [
+          {"text": "One-to-One", "correct": true},
+          {"text": "One-to-Many", "correct": true},
+          {"text": "Many-to-Many", "correct": true},
+          {"text": "All-to-All", "correct": false}
+        ],
+        "explanation": "The three main types of database relationships are One-to-One, One-to-Many, and Many-to-Many"
+      }
+    ]
+  }
+]

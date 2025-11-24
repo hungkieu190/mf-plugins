@@ -1,0 +1,11 @@
+quiz_title,quiz_description,duration,passing_grade,retake_count,question_title,question_content,question_type,answer_1,answer_2,answer_3,answer_4,correct_answers,explanation
+"Math Basics","Basic mathematics quiz",30,70,0,"What is 5 + 3?","Simple addition",single_choice,6,7,8,9,3,"5 + 3 equals 8"
+"Math Basics","Basic mathematics quiz",30,70,0,"Is 10 > 5?","Comparison",true_or_false,True,False,,,1,"10 is greater than 5"
+"Math Basics","Basic mathematics quiz",30,70,0,"Select even numbers","Choose all even",multi_choice,2,3,4,5,1;3,"2 and 4 are even numbers"
+"Math Basics","Basic mathematics quiz",30,70,0,"What is 10 x 2?","Multiplication",single_choice,15,20,25,30,2,"10 x 2 equals 20"
+"Science Quiz","General science knowledge",45,75,1,"What is H2O?","Chemistry",single_choice,Water,Oxygen,Hydrogen,Carbon,1,"H2O is the chemical formula for water"
+"Science Quiz","General science knowledge",45,75,1,"Is the Sun a star?","Astronomy",true_or_false,True,False,,,1,"The Sun is indeed a star"
+"Science Quiz","General science knowledge",45,75,1,"Select planets","Choose planets",multi_choice,Mars,Moon,Venus,Sun,1;3,"Mars and Venus are planets"
+"Programming 101","Introduction to programming",60,80,2,"What is a variable?","Programming concept",single_choice,"A storage location","A function","A loop","A class",1,"A variable is a storage location for data"
+"Programming 101","Introduction to programming",60,80,2,"Is Python compiled?","Language type",true_or_false,True,False,,,2,"Python is an interpreted language"
+"Programming 101","Introduction to programming",60,80,2,"Select programming languages","Choose languages",multi_choice,Python,HTML,JavaScript,CSS,1;3,"Python and JavaScript are programming languages"

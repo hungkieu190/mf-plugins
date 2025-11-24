@@ -1,0 +1,122 @@
+[
+  {
+    "title": "What is 2+2?",
+    "content": "Simple arithmetic question",
+    "type": "single_choice",
+    "answers": [
+      {
+        "text": "3",
+        "correct": false
+      },
+      {
+        "text": "4",
+        "correct": true
+      },
+      {
+        "text": "5",
+        "correct": false
+      },
+      {
+        "text": "6",
+        "correct": false
+      }
+    ],
+    "explanation": "2+2 equals 4"
+  },
+  {
+    "title": "Is the Earth round?",
+    "content": "Geography question",
+    "type": "true_or_false",
+    "answers": [
+      {
+        "text": "True",
+        "correct": true
+      },
+      {
+        "text": "False",
+        "correct": false
+      }
+    ],
+    "explanation": "The Earth is approximately spherical in shape"
+  },
+  {
+    "title": "Select all prime numbers",
+    "content": "Choose all numbers that are prime",
+    "type": "multiple_choice",
+    "answers": [
+      {
+        "text": "2",
+        "correct": true
+      },
+      {
+        "text": "3",
+        "correct": true
+      },
+      {
+        "text": "4",
+        "correct": false
+      },
+      {
+        "text": "5",
+        "correct": true
+      },
+      {
+        "text": "6",
+        "correct": false
+      }
+    ],
+    "explanation": "Prime numbers are 2, 3, and 5. Number 4 and 6 are composite numbers."
+  },
+  {
+    "title": "What is the capital of France?",
+    "content": "Geography question about European capitals",
+    "type": "single_choice",
+    "answers": [
+      {
+        "text": "London",
+        "correct": false
+      },
+      {
+        "text": "Berlin",
+        "correct": false
+      },
+      {
+        "text": "Paris",
+        "correct": true
+      },
+      {
+        "text": "Madrid",
+        "correct": false
+      }
+    ],
+    "explanation": "Paris is the capital and largest city of France"
+  },
+  {
+    "title": "Which of these are programming languages?",
+    "content": "Select all that apply",
+    "type": "multiple_choice",
+    "answers": [
+      {
+        "text": "Python",
+        "correct": true
+      },
+      {
+        "text": "HTML",
+        "correct": false
+      },
+      {
+        "text": "JavaScript",
+        "correct": true
+      },
+      {
+        "text": "CSS",
+        "correct": false
+      },
+      {
+        "text": "Java",
+        "correct": true
+      }
+    ],
+    "explanation": "Python, JavaScript, and Java are programming languages. HTML and CSS are markup/styling languages."
+  }
+]

@@ -1,6 +1,60 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./assets/src/js/lpToastify.js":
+/*!*************************************!*\
+  !*** ./assets/src/js/lpToastify.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   show: () => (/* binding */ show)
+/* harmony export */ });
+/* harmony import */ var toastify_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! toastify-js */ "./node_modules/toastify-js/src/toastify.js");
+/* harmony import */ var toastify_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(toastify_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var toastify_js_src_toastify_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! toastify-js/src/toastify.css */ "./node_modules/toastify-js/src/toastify.css");
+/**
+ * Utils functions
+ *
+ * @param url
+ * @param data
+ * @param functions
+ * @since 4.3.0
+ * @version 1.0.0
+ */
+
+
+const argsToastify = {
+  text: '',
+  gravity: lpData.toast.gravity,
+  // `top` or `bottom`
+  position: lpData.toast.position,
+  // `left`, `center` or `right`
+  className: `${lpData.toast.classPrefix}`,
+  close: lpData.toast.close == 1,
+  stopOnFocus: lpData.toast.stopOnFocus == 1,
+  duration: lpData.toast.duration
+};
+const show = (message, status = 'success', argsCustom) => {
+  let args = argsToastify;
+  if (argsCustom) {
+    args = {
+      ...args,
+      ...argsCustom
+    };
+  }
+  const toastify = new (toastify_js__WEBPACK_IMPORTED_MODULE_0___default())({
+    ...args,
+    text: message,
+    className: `${lpData.toast.classPrefix} ${status}`
+  });
+  toastify.showToast();
+};
+
+/***/ }),
+
 /***/ "./assets/src/js/utils.js":
 /*!********************************!*\
   !*** ./assets/src/js/utils.js ***!
@@ -10,6 +64,7 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   eventHandlers: () => (/* binding */ eventHandlers),
 /* harmony export */   getDataOfForm: () => (/* binding */ getDataOfForm),
 /* harmony export */   getFieldKeysOfForm: () => (/* binding */ getFieldKeysOfForm),
 /* harmony export */   listenElementCreated: () => (/* binding */ listenElementCreated),
@@ -32,7 +87,7 @@ __webpack_require__.r(__webpack_exports__);
  * @param data
  * @param functions
  * @since 4.2.5.1
- * @version 1.0.4
+ * @version 1.0.5
  */
 const lpClassName = {
   hidden: 'lp-hidden',
@@ -236,7 +291,8 @@ const getDataOfForm = form => {
     const key = pair[0];
     const value = formData.getAll(key);
     if (!dataSend.hasOwnProperty(key)) {
-      dataSend[key] = value;
+      // Convert value array to string.
+      dataSend[key] = value.join(',');
     }
   }
   return dataSend;
@@ -272,6 +328,57 @@ const mergeDataWithDatForm = (elForm, dataHandle) => {
     ...dataForm
   };
   return dataHandle;
+};
+
+/**
+ * Event trigger
+ * For each list of event handlers, listen event on document.
+ *
+ * eventName: 'click', 'change', ...
+ * eventHandlers = [ { selector: '.lp-button', callBack: function(){}, class: object } ]
+ *
+ * @param eventName
+ * @param eventHandlers
+ */
+const eventHandlers = (eventName, eventHandlers) => {
+  document.addEventListener(eventName, e => {
+    const target = e.target;
+    let args = {
+      e,
+      target
+    };
+    eventHandlers.forEach(eventHandler => {
+      args = {
+        ...args,
+        ...eventHandler
+      };
+
+      //console.log( args );
+
+      // Check condition before call back
+      if (eventHandler.conditionBeforeCallBack) {
+        if (eventHandler.conditionBeforeCallBack(args) !== true) {
+          return;
+        }
+      }
+
+      // Special check for keydown event with checkIsEventEnter = true
+      if (eventName === 'keydown' && eventHandler.checkIsEventEnter) {
+        if (e.key !== 'Enter') {
+          return;
+        }
+      }
+      if (target.closest(eventHandler.selector)) {
+        if (eventHandler.class) {
+          // Call method of class, function callBack will understand exactly {this} is class object.
+          eventHandler.class[eventHandler.callBack](args);
+        } else {
+          // For send args is objected, {this} is eventHandler object, not class object.
+          eventHandler.callBack(args);
+        }
+      }
+    });
+  });
 };
 
 /***/ }),
@@ -4240,7 +4347,7 @@ module.exports = styleTagTransform;
 /***/ (function(module) {
 
 /*!
-* sweetalert2 v11.23.0
+* sweetalert2 v11.26.3
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -4387,25 +4494,25 @@ module.exports = styleTagTransform;
    * If `arg` is a function, call it (with no arguments or context) and return the result.
    * Otherwise, just pass the value through
    *
-   * @param {Function | any} arg
-   * @returns {any}
+   * @param {(() => *) | *} arg
+   * @returns {*}
    */
   const callIfFunction = arg => typeof arg === 'function' ? arg() : arg;
 
   /**
-   * @param {any} arg
+   * @param {*} arg
    * @returns {boolean}
    */
   const hasToPromiseFn = arg => arg && typeof arg.toPromise === 'function';
 
   /**
-   * @param {any} arg
-   * @returns {Promise<any>}
+   * @param {*} arg
+   * @returns {Promise<*>}
    */
   const asPromise = arg => hasToPromiseFn(arg) ? arg.toPromise() : Promise.resolve(arg);
 
   /**
-   * @param {any} arg
+   * @param {*} arg
    * @returns {boolean}
    */
   const isPromise = arg => arg && Promise.resolve(arg) === arg;
@@ -4783,13 +4890,13 @@ module.exports = styleTagTransform;
   /**
    * @param {HTMLElement} elem
    * @param {string} property
-   * @param {*} value
+   * @param {string | number | null | undefined} value
    */
   const applyNumericalStyle = (elem, property, value) => {
-    if (value === `${parseInt(value)}`) {
+    if (value === `${parseInt(`${value}`)}`) {
       value = parseInt(value);
     }
-    if (value || parseInt(value) === 0) {
+    if (value || parseInt(`${value}`) === 0) {
       elem.style.setProperty(property, typeof value === 'number' ? `${value}px` : value);
     } else {
       elem.style.removeProperty(property);
@@ -4849,7 +4956,7 @@ module.exports = styleTagTransform;
 
   /**
    * @param {HTMLElement} elem
-   * @param {any} condition
+   * @param {boolean | string | null | undefined} condition
    * @param {string} display
    */
   const toggle = (elem, condition, display = 'flex') => {
@@ -5104,7 +5211,7 @@ module.exports = styleTagTransform;
   };
 
   /**
-   * @param {any} param
+   * @param {object} param
    * @param {HTMLElement} target
    */
   const handleObject = (param, target) => {
@@ -5121,7 +5228,7 @@ module.exports = styleTagTransform;
 
   /**
    * @param {HTMLElement} target
-   * @param {any} elem
+   * @param {object} elem
    */
   const handleJqueryElem = (target, elem) => {
     target.textContent = '';
@@ -5672,7 +5779,7 @@ module.exports = styleTagTransform;
       return;
     }
     showWhenInnerHtmlPresent(footer);
-    toggle(footer, params.footer, 'block');
+    toggle(footer, Boolean(params.footer), 'block');
     if (params.footer) {
       parseHtmlToContainer(params.footer, footer);
     }
@@ -6089,7 +6196,7 @@ module.exports = styleTagTransform;
       return;
     }
     showWhenInnerHtmlPresent(title);
-    toggle(title, params.title || params.titleText, 'block');
+    toggle(title, Boolean(params.title || params.titleText), 'block');
     if (params.title) {
       parseHtmlToContainer(params.title, title);
     }
@@ -6154,8 +6261,6 @@ module.exports = styleTagTransform;
     return (_dom$getCancelButton = getCancelButton()) === null || _dom$getCancelButton === void 0 ? void 0 : _dom$getCancelButton.click();
   };
 
-  /** @typedef {'cancel' | 'backdrop' | 'close' | 'esc' | 'timer'} DismissReason */
-
   /** @type {Record<DismissReason, DismissReason>} */
   const DismissReason = Object.freeze({
     cancel: 'cancel',
@@ -6180,7 +6285,7 @@ module.exports = styleTagTransform;
   /**
    * @param {GlobalState} globalState
    * @param {SweetAlertOptions} innerParams
-   * @param {*} dismissWith
+   * @param {(dismiss: DismissReason) => void} dismissWith
    */
   const addKeydownHandler = (globalState, innerParams, dismissWith) => {
     removeKeydownHandler(globalState);
@@ -6231,7 +6336,7 @@ module.exports = styleTagTransform;
   /**
    * @param {SweetAlertOptions} innerParams
    * @param {KeyboardEvent} event
-   * @param {Function} dismissWith
+   * @param {(dismiss: DismissReason) => void} dismissWith
    */
   const keydownHandler = (innerParams, event, dismissWith) => {
     if (!innerParams) {
@@ -6354,7 +6459,7 @@ module.exports = styleTagTransform;
   /**
    * @param {KeyboardEvent} event
    * @param {SweetAlertOptions} innerParams
-   * @param {Function} dismissWith
+   * @param {(dismiss: DismissReason) => void} dismissWith
    */
   const handleEsc = (event, innerParams, dismissWith) => {
     event.preventDefault();
@@ -6485,7 +6590,7 @@ module.exports = styleTagTransform;
   /**
    * https://github.com/sweetalert2/sweetalert2/issues/1786
    *
-   * @param {*} event
+   * @param {object} event
    * @returns {boolean}
    */
   const isStylus = event => {
@@ -6558,7 +6663,7 @@ module.exports = styleTagTransform;
    * @param {SweetAlert} instance
    * @param {HTMLElement} container
    * @param {boolean} returnFocus
-   * @param {Function} didClose
+   * @param {() => void} didClose
    */
   function removePopupAndResetState(instance, container, returnFocus, didClose) {
     if (isToast()) {
@@ -6595,7 +6700,7 @@ module.exports = styleTagTransform;
   /**
    * Instance method to close sweetAlert
    *
-   * @param {any} resolveValue
+   * @param {SweetAlertResult | undefined} resolveValue
    */
   function close(resolveValue) {
     resolveValue = prepareResolveValue(resolveValue);
@@ -6631,7 +6736,7 @@ module.exports = styleTagTransform;
   };
 
   /**
-   * @param {any} error
+   * @param {Error | string} error
    */
   function rejectPromise(error) {
     const rejectPromise = privateMethods.swalPromiseReject.get(this);
@@ -6656,7 +6761,7 @@ module.exports = styleTagTransform;
   };
 
   /**
-   * @param {any} resolveValue
+   * @param {SweetAlertResult | undefined} resolveValue
    * @returns {SweetAlertResult}
    */
   const prepareResolveValue = resolveValue => {
@@ -6702,7 +6807,7 @@ module.exports = styleTagTransform;
    * @param {HTMLElement} popup
    * @param {HTMLElement} container
    * @param {boolean} returnFocus
-   * @param {Function} didClose
+   * @param {() => void} didClose
    */
   const animatePopup = (instance, popup, container, returnFocus, didClose) => {
     globalState.swalCloseEventFinishedCallback = removePopupAndResetState.bind(null, instance, container, returnFocus, didClose);
@@ -6724,7 +6829,7 @@ module.exports = styleTagTransform;
 
   /**
    * @param {SweetAlert} instance
-   * @param {Function} didClose
+   * @param {() => void} didClose
    */
   const triggerDidCloseAndDispose = (instance, didClose) => {
     setTimeout(() => {
@@ -6852,7 +6957,7 @@ module.exports = styleTagTransform;
       return;
     }
     /**
-     * @param {Record<string, any>} inputOptions
+     * @param {*} inputOptions
      */
     const processInputOptions = inputOptions => {
       if (params.input === 'select') {
@@ -6979,7 +7084,7 @@ module.exports = styleTagTransform;
   /**
    * Converts `inputOptions` into an array of `[value, label]`s
    *
-   * @param {Record<string, any>} inputOptions
+   * @param {*} inputOptions
    * @typedef {string[]} InputOptionFlattened
    * @returns {InputOptionFlattened[]}
    */
@@ -7045,7 +7150,7 @@ module.exports = styleTagTransform;
 
   /**
    * @param {SweetAlert} instance
-   * @param {Function} dismissWith
+   * @param {(dismiss: DismissReason) => void} dismissWith
    */
   const handleCancelButtonClick = (instance, dismissWith) => {
     instance.disableButtons();
@@ -7100,7 +7205,7 @@ module.exports = styleTagTransform;
 
   /**
    * @param {SweetAlert} instance
-   * @param {any} value
+   * @param {*} value
    */
   const deny = (instance, value) => {
     const innerParams = privateProps.innerParams.get(instance || undefined);
@@ -7115,14 +7220,14 @@ module.exports = styleTagTransform;
           instance.hideLoading();
           handleAwaitingPromise(instance);
         } else {
-          instance.close({
+          instance.close(/** @type SweetAlertResult */{
             isDenied: true,
             value: typeof preDenyValue === 'undefined' ? value : preDenyValue
           });
         }
       }).catch(error => rejectWith(instance || undefined, error));
     } else {
-      instance.close({
+      instance.close(/** @type SweetAlertResult */{
         isDenied: true,
         value
       });
@@ -7131,10 +7236,10 @@ module.exports = styleTagTransform;
 
   /**
    * @param {SweetAlert} instance
-   * @param {any} value
+   * @param {*} value
    */
   const succeedWith = (instance, value) => {
-    instance.close({
+    instance.close(/** @type SweetAlertResult */{
       isConfirmed: true,
       value
     });
@@ -7152,7 +7257,7 @@ module.exports = styleTagTransform;
   /**
    *
    * @param {SweetAlert} instance
-   * @param {any} value
+   * @param {*} value
    */
   const confirm = (instance, value) => {
     const innerParams = privateProps.innerParams.get(instance || undefined);
@@ -7499,7 +7604,7 @@ module.exports = styleTagTransform;
     if (params.backdrop === false && params.allowOutsideClick) {
       warn('"allowOutsideClick" parameter requires `backdrop` parameter to be set to `true`');
     }
-    if (params.theme && !['light', 'dark', 'auto', 'minimal', 'borderless', 'embed-iframe', 'bulma', 'bulma-light', 'bulma-dark'].includes(params.theme)) {
+    if (params.theme && !['light', 'dark', 'auto', 'minimal', 'borderless', 'bootstrap-4', 'bootstrap-4-light', 'bootstrap-4-dark', 'bootstrap-5', 'bootstrap-5-light', 'bootstrap-5-dark', 'material-ui', 'material-ui-light', 'material-ui-dark', 'embed-iframe', 'bulma', 'bulma-light', 'bulma-dark'].includes(params.theme)) {
       warn(`Invalid theme "${params.theme}"`);
     }
     for (const param in params) {
@@ -7658,7 +7763,7 @@ module.exports = styleTagTransform;
   /**
    * @param {SweetAlertOptions} innerParams
    * @param {DomCache} domCache
-   * @param {Function} dismissWith
+   * @param {(dismiss: DismissReason) => void} dismissWith
    */
   const handlePopupClick = (innerParams, domCache, dismissWith) => {
     if (innerParams.toast) {
@@ -7677,7 +7782,7 @@ module.exports = styleTagTransform;
   /**
    * @param {SweetAlertOptions} innerParams
    * @param {DomCache} domCache
-   * @param {Function} dismissWith
+   * @param {(dismiss: DismissReason) => void} dismissWith
    */
   const handleToastClick = (innerParams, domCache, dismissWith) => {
     // Closing toast by internal click
@@ -7736,7 +7841,7 @@ module.exports = styleTagTransform;
   /**
    * @param {SweetAlertOptions} innerParams
    * @param {DomCache} domCache
-   * @param {Function} dismissWith
+   * @param {(dismiss: DismissReason) => void} dismissWith
    */
   const handleModalClick = (innerParams, domCache, dismissWith) => {
     domCache.container.onclick = e => {
@@ -8085,7 +8190,7 @@ module.exports = styleTagTransform;
 
   class Timer {
     /**
-     * @param {Function} callback
+     * @param {() => void} callback
      * @param {number} delay
      */
     constructor(callback, delay) {
@@ -8174,10 +8279,10 @@ module.exports = styleTagTransform;
 
   /**
    * @param {DocumentFragment} templateContent
-   * @returns {Record<string, any>}
+   * @returns {Record<string, string | boolean | number>}
    */
   const getSwalParams = templateContent => {
-    /** @type {Record<string, any>} */
+    /** @type {Record<string, string | boolean | number>} */
     const result = {};
     /** @type {HTMLElement[]} */
     const swalParams = Array.from(templateContent.querySelectorAll('swal-param'));
@@ -8201,10 +8306,10 @@ module.exports = styleTagTransform;
 
   /**
    * @param {DocumentFragment} templateContent
-   * @returns {Record<string, any>}
+   * @returns {Record<string, () => void>}
    */
   const getSwalFunctionParams = templateContent => {
-    /** @type {Record<string, any>} */
+    /** @type {Record<string, () => void>} */
     const result = {};
     /** @type {HTMLElement[]} */
     const swalFunctions = Array.from(templateContent.querySelectorAll('swal-function-param'));
@@ -8221,10 +8326,10 @@ module.exports = styleTagTransform;
 
   /**
    * @param {DocumentFragment} templateContent
-   * @returns {Record<string, any>}
+   * @returns {Record<string, string | boolean>}
    */
   const getSwalButtons = templateContent => {
-    /** @type {Record<string, any>} */
+    /** @type {Record<string, string | boolean>} */
     const result = {};
     /** @type {HTMLElement[]} */
     const swalButtons = Array.from(templateContent.querySelectorAll('swal-button'));
@@ -8274,7 +8379,7 @@ module.exports = styleTagTransform;
 
   /**
    * @param {DocumentFragment} templateContent
-   * @returns {Record<string, any>}
+   * @returns {object}
    */
   const getSwalIcon = templateContent => {
     const result = {};
@@ -8295,10 +8400,10 @@ module.exports = styleTagTransform;
 
   /**
    * @param {DocumentFragment} templateContent
-   * @returns {Record<string, any>}
+   * @returns {object}
    */
   const getSwalInput = templateContent => {
-    /** @type {Record<string, any>} */
+    /** @type {object} */
     const result = {};
     /** @type {HTMLElement | null} */
     const input = templateContent.querySelector('swal-input');
@@ -8335,10 +8440,10 @@ module.exports = styleTagTransform;
   /**
    * @param {DocumentFragment} templateContent
    * @param {string[]} paramNames
-   * @returns {Record<string, any>}
+   * @returns {Record<string, string>}
    */
   const getSwalStringParams = (templateContent, paramNames) => {
-    /** @type {Record<string, any>} */
+    /** @type {Record<string, string>} */
     const result = {};
     for (const i in paramNames) {
       const paramName = paramNames[i];
@@ -8410,7 +8515,6 @@ module.exports = styleTagTransform;
       setTimeout(() => params.didOpen(popup));
     }
     globalState.eventEmitter.emit('didOpen', popup);
-    removeClass(container, swalClasses['no-transition']);
   };
 
   /**
@@ -8425,6 +8529,9 @@ module.exports = styleTagTransform;
     popup.removeEventListener('animationend', swalOpenAnimationFinished);
     popup.removeEventListener('transitionend', swalOpenAnimationFinished);
     container.style.overflowY = 'auto';
+
+    // no-transition is added in init() in case one swal is opened right after another
+    removeClass(container, swalClasses['no-transition']);
   };
 
   /**
@@ -8557,7 +8664,7 @@ module.exports = styleTagTransform;
   var _promise = /*#__PURE__*/new WeakMap();
   class SweetAlert {
     /**
-     * @param {...any} args
+     * @param {...(SweetAlertOptions | string)} args
      * @this {SweetAlert}
      */
     constructor(...args) {
@@ -8641,7 +8748,9 @@ module.exports = styleTagTransform;
       const dismissWith = dismiss => {
         instance.close({
           isDismissed: true,
-          dismiss
+          dismiss,
+          isConfirmed: false,
+          isDenied: false
         });
       };
       privateMethods.swalPromiseResolve.set(instance, resolve);
@@ -8715,7 +8824,7 @@ module.exports = styleTagTransform;
   /**
    * @param {GlobalState} globalState
    * @param {SweetAlertOptions} innerParams
-   * @param {Function} dismissWith
+   * @param {(dismiss: DismissReason) => void} dismissWith
    */
   const setupTimer = (globalState, innerParams, dismissWith) => {
     const timerProgressBar = getTimerProgressBar();
@@ -8835,8 +8944,8 @@ module.exports = styleTagTransform;
   // Proxy to instance methods to constructor, for now, for backwards compatibility
   Object.keys(instanceMethods).forEach(key => {
     /**
-     * @param {...any} args
-     * @returns {any | undefined}
+     * @param {...(SweetAlertOptions | string | undefined)} args
+     * @returns {SweetAlertResult | Promise<SweetAlertResult> | undefined}
      */
     SweetAlert[key] = function (...args) {
       if (currentInstance && currentInstance[key]) {
@@ -8846,7 +8955,7 @@ module.exports = styleTagTransform;
     };
   });
   SweetAlert.DismissReason = DismissReason;
-  SweetAlert.version = '11.23.0';
+  SweetAlert.version = '11.26.3';
 
   const Swal = SweetAlert;
   // @ts-ignore
@@ -8856,7 +8965,7 @@ module.exports = styleTagTransform;
 
 }));
 if (typeof this !== 'undefined' && this.Sweetalert2){this.swal = this.sweetAlert = this.Swal = this.SweetAlert = this.Sweetalert2}
-"undefined"!=typeof document&&function(e,t){var n=e.createElement("style");if(e.getElementsByTagName("head")[0].appendChild(n),n.styleSheet)n.styleSheet.disabled||(n.styleSheet.cssText=t);else try{n.innerHTML=t}catch(e){n.innerText=t}}(document,":root{--swal2-outline: 0 0 0 3px rgba(100, 150, 200, 0.5);--swal2-container-padding: 0.625em;--swal2-backdrop: rgba(0, 0, 0, 0.4);--swal2-backdrop-transition: background-color 0.1s;--swal2-width: 32em;--swal2-padding: 0 0 1.25em;--swal2-border: none;--swal2-border-radius: 0.3125rem;--swal2-background: white;--swal2-color: #545454;--swal2-show-animation: swal2-show 0.3s;--swal2-hide-animation: swal2-hide 0.15s forwards;--swal2-icon-zoom: 1;--swal2-icon-animations: true;--swal2-title-padding: 0.8em 1em 0;--swal2-html-container-padding: 1em 1.6em 0.3em;--swal2-input-border: 1px solid #d9d9d9;--swal2-input-border-radius: 0.1875em;--swal2-input-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px transparent;--swal2-input-background: transparent;--swal2-input-transition: border-color 0.2s, box-shadow 0.2s;--swal2-input-hover-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px transparent;--swal2-input-focus-border: 1px solid #b4dbed;--swal2-input-focus-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px $swal2-outline-color;--swal2-progress-step-background: #add8e6;--swal2-validation-message-background: #f0f0f0;--swal2-validation-message-color: #666;--swal2-footer-border-color: #eee;--swal2-footer-background: transparent;--swal2-footer-color: inherit;--swal2-timer-progress-bar-background: rgba(0, 0, 0, 0.3);--swal2-close-button-position: initial;--swal2-close-button-inset: auto;--swal2-close-button-font-size: 2.5em;--swal2-close-button-color: #ccc;--swal2-close-button-transition: color 0.2s, box-shadow 0.2s;--swal2-close-button-outline: initial;--swal2-close-button-box-shadow: inset 0 0 0 3px transparent;--swal2-close-button-focus-box-shadow: inset var(--swal2-outline);--swal2-close-button-hover-transform: none;--swal2-actions-justify-content: center;--swal2-actions-width: auto;--swal2-actions-margin: 1.25em auto 0;--swal2-actions-padding: 0;--swal2-actions-border-radius: 0;--swal2-actions-background: transparent;--swal2-action-button-transition: background-color 0.2s, box-shadow 0.2s;--swal2-action-button-hover: black 10%;--swal2-action-button-active: black 10%;--swal2-confirm-button-box-shadow: none;--swal2-confirm-button-border-radius: 0.25em;--swal2-confirm-button-background-color: #7066e0;--swal2-confirm-button-color: #fff;--swal2-deny-button-box-shadow: none;--swal2-deny-button-border-radius: 0.25em;--swal2-deny-button-background-color: #dc3741;--swal2-deny-button-color: #fff;--swal2-cancel-button-box-shadow: none;--swal2-cancel-button-border-radius: 0.25em;--swal2-cancel-button-background-color: #6e7881;--swal2-cancel-button-color: #fff;--swal2-toast-show-animation: swal2-toast-show 0.5s;--swal2-toast-hide-animation: swal2-toast-hide 0.1s forwards;--swal2-toast-border: none;--swal2-toast-box-shadow: 0 0 1px hsl(0deg 0% 0% / 0.075), 0 1px 2px hsl(0deg 0% 0% / 0.075), 1px 2px 4px hsl(0deg 0% 0% / 0.075), 1px 3px 8px hsl(0deg 0% 0% / 0.075), 2px 4px 16px hsl(0deg 0% 0% / 0.075)}[data-swal2-theme=dark]{--swal2-dark-theme-black: #19191a;--swal2-dark-theme-white: #e1e1e1;--swal2-background: var(--swal2-dark-theme-black);--swal2-color: var(--swal2-dark-theme-white);--swal2-footer-border-color: #555;--swal2-input-background: color-mix(in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10%);--swal2-validation-message-background: color-mix( in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10% );--swal2-validation-message-color: var(--swal2-dark-theme-white);--swal2-timer-progress-bar-background: rgba(255, 255, 255, 0.7)}@media(prefers-color-scheme: dark){[data-swal2-theme=auto]{--swal2-dark-theme-black: #19191a;--swal2-dark-theme-white: #e1e1e1;--swal2-background: var(--swal2-dark-theme-black);--swal2-color: var(--swal2-dark-theme-white);--swal2-footer-border-color: #555;--swal2-input-background: color-mix(in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10%);--swal2-validation-message-background: color-mix( in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10% );--swal2-validation-message-color: var(--swal2-dark-theme-white);--swal2-timer-progress-bar-background: rgba(255, 255, 255, 0.7)}}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown){overflow:hidden}body.swal2-height-auto{height:auto !important}body.swal2-no-backdrop .swal2-container{background-color:rgba(0,0,0,0) !important;pointer-events:none}body.swal2-no-backdrop .swal2-container .swal2-popup{pointer-events:all}body.swal2-no-backdrop .swal2-container .swal2-modal{box-shadow:0 0 10px var(--swal2-backdrop)}body.swal2-toast-shown .swal2-container{box-sizing:border-box;width:360px;max-width:100%;background-color:rgba(0,0,0,0);pointer-events:none}body.swal2-toast-shown .swal2-container.swal2-top{inset:0 auto auto 50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-top-end,body.swal2-toast-shown .swal2-container.swal2-top-right{inset:0 0 auto auto}body.swal2-toast-shown .swal2-container.swal2-top-start,body.swal2-toast-shown .swal2-container.swal2-top-left{inset:0 auto auto 0}body.swal2-toast-shown .swal2-container.swal2-center-start,body.swal2-toast-shown .swal2-container.swal2-center-left{inset:50% auto auto 0;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-center{inset:50% auto auto 50%;transform:translate(-50%, -50%)}body.swal2-toast-shown .swal2-container.swal2-center-end,body.swal2-toast-shown .swal2-container.swal2-center-right{inset:50% 0 auto auto;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-start,body.swal2-toast-shown .swal2-container.swal2-bottom-left{inset:auto auto 0 0}body.swal2-toast-shown .swal2-container.swal2-bottom{inset:auto auto 0 50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-end,body.swal2-toast-shown .swal2-container.swal2-bottom-right{inset:auto 0 0 auto}@media print{body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown){overflow-y:scroll !important}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown)>[aria-hidden=true]{display:none}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown) .swal2-container{position:static !important}}div:where(.swal2-container){display:grid;position:fixed;z-index:1060;inset:0;box-sizing:border-box;grid-template-areas:\"top-start     top            top-end\" \"center-start  center         center-end\" \"bottom-start  bottom-center  bottom-end\";grid-template-rows:minmax(min-content, auto) minmax(min-content, auto) minmax(min-content, auto);height:100%;padding:var(--swal2-container-padding);overflow-x:hidden;transition:var(--swal2-backdrop-transition);-webkit-overflow-scrolling:touch}div:where(.swal2-container).swal2-backdrop-show,div:where(.swal2-container).swal2-noanimation{background:var(--swal2-backdrop)}div:where(.swal2-container).swal2-backdrop-hide{background:rgba(0,0,0,0) !important}div:where(.swal2-container).swal2-top-start,div:where(.swal2-container).swal2-center-start,div:where(.swal2-container).swal2-bottom-start{grid-template-columns:minmax(0, 1fr) auto auto}div:where(.swal2-container).swal2-top,div:where(.swal2-container).swal2-center,div:where(.swal2-container).swal2-bottom{grid-template-columns:auto minmax(0, 1fr) auto}div:where(.swal2-container).swal2-top-end,div:where(.swal2-container).swal2-center-end,div:where(.swal2-container).swal2-bottom-end{grid-template-columns:auto auto minmax(0, 1fr)}div:where(.swal2-container).swal2-top-start>.swal2-popup{align-self:start}div:where(.swal2-container).swal2-top>.swal2-popup{grid-column:2;place-self:start center}div:where(.swal2-container).swal2-top-end>.swal2-popup,div:where(.swal2-container).swal2-top-right>.swal2-popup{grid-column:3;place-self:start end}div:where(.swal2-container).swal2-center-start>.swal2-popup,div:where(.swal2-container).swal2-center-left>.swal2-popup{grid-row:2;align-self:center}div:where(.swal2-container).swal2-center>.swal2-popup{grid-column:2;grid-row:2;place-self:center center}div:where(.swal2-container).swal2-center-end>.swal2-popup,div:where(.swal2-container).swal2-center-right>.swal2-popup{grid-column:3;grid-row:2;place-self:center end}div:where(.swal2-container).swal2-bottom-start>.swal2-popup,div:where(.swal2-container).swal2-bottom-left>.swal2-popup{grid-column:1;grid-row:3;align-self:end}div:where(.swal2-container).swal2-bottom>.swal2-popup{grid-column:2;grid-row:3;place-self:end center}div:where(.swal2-container).swal2-bottom-end>.swal2-popup,div:where(.swal2-container).swal2-bottom-right>.swal2-popup{grid-column:3;grid-row:3;place-self:end end}div:where(.swal2-container).swal2-grow-row>.swal2-popup,div:where(.swal2-container).swal2-grow-fullscreen>.swal2-popup{grid-column:1/4;width:100%}div:where(.swal2-container).swal2-grow-column>.swal2-popup,div:where(.swal2-container).swal2-grow-fullscreen>.swal2-popup{grid-row:1/4;align-self:stretch}div:where(.swal2-container).swal2-no-transition{transition:none !important}div:where(.swal2-container)[popover]{width:auto;border:0}div:where(.swal2-container) div:where(.swal2-popup){display:none;position:relative;box-sizing:border-box;grid-template-columns:minmax(0, 100%);width:var(--swal2-width);max-width:100%;padding:var(--swal2-padding);border:var(--swal2-border);border-radius:var(--swal2-border-radius);background:var(--swal2-background);color:var(--swal2-color);font-family:inherit;font-size:1rem;container-name:swal2-popup}div:where(.swal2-container) div:where(.swal2-popup):focus{outline:none}div:where(.swal2-container) div:where(.swal2-popup).swal2-loading{overflow-y:hidden}div:where(.swal2-container) div:where(.swal2-popup).swal2-draggable{cursor:grab}div:where(.swal2-container) div:where(.swal2-popup).swal2-draggable div:where(.swal2-icon){cursor:grab}div:where(.swal2-container) div:where(.swal2-popup).swal2-dragging{cursor:grabbing}div:where(.swal2-container) div:where(.swal2-popup).swal2-dragging div:where(.swal2-icon){cursor:grabbing}div:where(.swal2-container) h2:where(.swal2-title){position:relative;max-width:100%;margin:0;padding:var(--swal2-title-padding);color:inherit;font-size:1.875em;font-weight:600;text-align:center;text-transform:none;overflow-wrap:break-word;cursor:initial}div:where(.swal2-container) div:where(.swal2-actions){display:flex;z-index:1;box-sizing:border-box;flex-wrap:wrap;align-items:center;justify-content:var(--swal2-actions-justify-content);width:var(--swal2-actions-width);margin:var(--swal2-actions-margin);padding:var(--swal2-actions-padding);border-radius:var(--swal2-actions-border-radius);background:var(--swal2-actions-background)}div:where(.swal2-container) div:where(.swal2-loader){display:none;align-items:center;justify-content:center;width:2.2em;height:2.2em;margin:0 1.875em;animation:swal2-rotate-loading 1.5s linear 0s infinite normal;border-width:.25em;border-style:solid;border-radius:100%;border-color:#2778c4 rgba(0,0,0,0) #2778c4 rgba(0,0,0,0)}div:where(.swal2-container) button:where(.swal2-styled){margin:.3125em;padding:.625em 1.1em;transition:var(--swal2-action-button-transition);border:none;box-shadow:0 0 0 3px rgba(0,0,0,0);font-weight:500}div:where(.swal2-container) button:where(.swal2-styled):not([disabled]){cursor:pointer}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){border-radius:var(--swal2-confirm-button-border-radius);background:initial;background-color:var(--swal2-confirm-button-background-color);box-shadow:var(--swal2-confirm-button-box-shadow);color:var(--swal2-confirm-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm):hover{background-color:color-mix(in srgb, var(--swal2-confirm-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm):active{background-color:color-mix(in srgb, var(--swal2-confirm-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny){border-radius:var(--swal2-deny-button-border-radius);background:initial;background-color:var(--swal2-deny-button-background-color);box-shadow:var(--swal2-deny-button-box-shadow);color:var(--swal2-deny-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny):hover{background-color:color-mix(in srgb, var(--swal2-deny-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny):active{background-color:color-mix(in srgb, var(--swal2-deny-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel){border-radius:var(--swal2-cancel-button-border-radius);background:initial;background-color:var(--swal2-cancel-button-background-color);box-shadow:var(--swal2-cancel-button-box-shadow);color:var(--swal2-cancel-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel):hover{background-color:color-mix(in srgb, var(--swal2-cancel-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel):active{background-color:color-mix(in srgb, var(--swal2-cancel-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):focus-visible{outline:none;box-shadow:var(--swal2-action-button-focus-box-shadow)}div:where(.swal2-container) button:where(.swal2-styled)[disabled]:not(.swal2-loading){opacity:.4}div:where(.swal2-container) button:where(.swal2-styled)::-moz-focus-inner{border:0}div:where(.swal2-container) div:where(.swal2-footer){margin:1em 0 0;padding:1em 1em 0;border-top:1px solid var(--swal2-footer-border-color);background:var(--swal2-footer-background);color:var(--swal2-footer-color);font-size:1em;text-align:center;cursor:initial}div:where(.swal2-container) .swal2-timer-progress-bar-container{position:absolute;right:0;bottom:0;left:0;grid-column:auto !important;overflow:hidden;border-bottom-right-radius:var(--swal2-border-radius);border-bottom-left-radius:var(--swal2-border-radius)}div:where(.swal2-container) div:where(.swal2-timer-progress-bar){width:100%;height:.25em;background:var(--swal2-timer-progress-bar-background)}div:where(.swal2-container) img:where(.swal2-image){max-width:100%;margin:2em auto 1em;cursor:initial}div:where(.swal2-container) button:where(.swal2-close){position:var(--swal2-close-button-position);inset:var(--swal2-close-button-inset);z-index:2;align-items:center;justify-content:center;width:1.2em;height:1.2em;margin-top:0;margin-right:0;margin-bottom:-1.2em;padding:0;overflow:hidden;transition:var(--swal2-close-button-transition);border:none;border-radius:var(--swal2-border-radius);outline:var(--swal2-close-button-outline);background:rgba(0,0,0,0);color:var(--swal2-close-button-color);font-family:monospace;font-size:var(--swal2-close-button-font-size);cursor:pointer;justify-self:end}div:where(.swal2-container) button:where(.swal2-close):hover{transform:var(--swal2-close-button-hover-transform);background:rgba(0,0,0,0);color:#f27474}div:where(.swal2-container) button:where(.swal2-close):focus-visible{outline:none;box-shadow:var(--swal2-close-button-focus-box-shadow)}div:where(.swal2-container) button:where(.swal2-close)::-moz-focus-inner{border:0}div:where(.swal2-container) div:where(.swal2-html-container){z-index:1;justify-content:center;margin:0;padding:var(--swal2-html-container-padding);overflow:auto;color:inherit;font-size:1.125em;font-weight:normal;line-height:normal;text-align:center;overflow-wrap:break-word;word-break:break-word;cursor:initial}div:where(.swal2-container) input:where(.swal2-input),div:where(.swal2-container) input:where(.swal2-file),div:where(.swal2-container) textarea:where(.swal2-textarea),div:where(.swal2-container) select:where(.swal2-select),div:where(.swal2-container) div:where(.swal2-radio),div:where(.swal2-container) label:where(.swal2-checkbox){margin:1em 2em 3px}div:where(.swal2-container) input:where(.swal2-input),div:where(.swal2-container) input:where(.swal2-file),div:where(.swal2-container) textarea:where(.swal2-textarea){box-sizing:border-box;width:auto;transition:var(--swal2-input-transition);border:var(--swal2-input-border);border-radius:var(--swal2-input-border-radius);background:var(--swal2-input-background);box-shadow:var(--swal2-input-box-shadow);color:inherit;font-size:1.125em}div:where(.swal2-container) input:where(.swal2-input).swal2-inputerror,div:where(.swal2-container) input:where(.swal2-file).swal2-inputerror,div:where(.swal2-container) textarea:where(.swal2-textarea).swal2-inputerror{border-color:#f27474 !important;box-shadow:0 0 2px #f27474 !important}div:where(.swal2-container) input:where(.swal2-input):hover,div:where(.swal2-container) input:where(.swal2-file):hover,div:where(.swal2-container) textarea:where(.swal2-textarea):hover{box-shadow:var(--swal2-input-hover-box-shadow)}div:where(.swal2-container) input:where(.swal2-input):focus,div:where(.swal2-container) input:where(.swal2-file):focus,div:where(.swal2-container) textarea:where(.swal2-textarea):focus{border:var(--swal2-input-focus-border);outline:none;box-shadow:var(--swal2-input-focus-box-shadow)}div:where(.swal2-container) input:where(.swal2-input)::placeholder,div:where(.swal2-container) input:where(.swal2-file)::placeholder,div:where(.swal2-container) textarea:where(.swal2-textarea)::placeholder{color:#ccc}div:where(.swal2-container) .swal2-range{margin:1em 2em 3px;background:var(--swal2-background)}div:where(.swal2-container) .swal2-range input{width:80%}div:where(.swal2-container) .swal2-range output{width:20%;color:inherit;font-weight:600;text-align:center}div:where(.swal2-container) .swal2-range input,div:where(.swal2-container) .swal2-range output{height:2.625em;padding:0;font-size:1.125em;line-height:2.625em}div:where(.swal2-container) .swal2-input{height:2.625em;padding:0 .75em}div:where(.swal2-container) .swal2-file{width:75%;margin-right:auto;margin-left:auto;background:var(--swal2-input-background);font-size:1.125em}div:where(.swal2-container) .swal2-textarea{height:6.75em;padding:.75em}div:where(.swal2-container) .swal2-select{min-width:50%;max-width:100%;padding:.375em .625em;background:var(--swal2-input-background);color:inherit;font-size:1.125em}div:where(.swal2-container) .swal2-radio,div:where(.swal2-container) .swal2-checkbox{align-items:center;justify-content:center;background:var(--swal2-background);color:inherit}div:where(.swal2-container) .swal2-radio label,div:where(.swal2-container) .swal2-checkbox label{margin:0 .6em;font-size:1.125em}div:where(.swal2-container) .swal2-radio input,div:where(.swal2-container) .swal2-checkbox input{flex-shrink:0;margin:0 .4em}div:where(.swal2-container) label:where(.swal2-input-label){display:flex;justify-content:center;margin:1em auto 0}div:where(.swal2-container) div:where(.swal2-validation-message){align-items:center;justify-content:center;margin:1em 0 0;padding:.625em;overflow:hidden;background:var(--swal2-validation-message-background);color:var(--swal2-validation-message-color);font-size:1em;font-weight:300}div:where(.swal2-container) div:where(.swal2-validation-message)::before{content:\"!\";display:inline-block;width:1.5em;min-width:1.5em;height:1.5em;margin:0 .625em;border-radius:50%;background-color:#f27474;color:#fff;font-weight:600;line-height:1.5em;text-align:center}div:where(.swal2-container) .swal2-progress-steps{flex-wrap:wrap;align-items:center;max-width:100%;margin:1.25em auto;padding:0;background:rgba(0,0,0,0);font-weight:600}div:where(.swal2-container) .swal2-progress-steps li{display:inline-block;position:relative}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step{z-index:20;flex-shrink:0;width:2em;height:2em;border-radius:2em;background:#2778c4;color:#fff;line-height:2em;text-align:center}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step{background:#2778c4}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step{background:var(--swal2-progress-step-background);color:#fff}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line{background:var(--swal2-progress-step-background)}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step-line{z-index:10;flex-shrink:0;width:2.5em;height:.4em;margin:0 -1px;background:#2778c4}div:where(.swal2-icon){position:relative;box-sizing:content-box;justify-content:center;width:5em;height:5em;margin:2.5em auto .6em;zoom:var(--swal2-icon-zoom);border:.25em solid rgba(0,0,0,0);border-radius:50%;border-color:#000;font-family:inherit;line-height:5em;cursor:default;user-select:none}div:where(.swal2-icon) .swal2-icon-content{display:flex;align-items:center;font-size:3.75em}div:where(.swal2-icon).swal2-error{border-color:#f27474;color:#f27474}div:where(.swal2-icon).swal2-error .swal2-x-mark{position:relative;flex-grow:1}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line]{display:block;position:absolute;top:2.3125em;width:2.9375em;height:.3125em;border-radius:.125em;background-color:#f27474}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line][class$=left]{left:1.0625em;transform:rotate(45deg)}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line][class$=right]{right:1em;transform:rotate(-45deg)}@container swal2-popup style(--swal2-icon-animations:true){div:where(.swal2-icon).swal2-error.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-error.swal2-icon-show .swal2-x-mark{animation:swal2-animate-error-x-mark .5s}}div:where(.swal2-icon).swal2-warning{border-color:#f8bb86;color:#f8bb86}@container swal2-popup style(--swal2-icon-animations:true){div:where(.swal2-icon).swal2-warning.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-warning.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .5s}}div:where(.swal2-icon).swal2-info{border-color:#3fc3ee;color:#3fc3ee}@container swal2-popup style(--swal2-icon-animations:true){div:where(.swal2-icon).swal2-info.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-info.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .8s}}div:where(.swal2-icon).swal2-question{border-color:#87adbd;color:#87adbd}@container swal2-popup style(--swal2-icon-animations:true){div:where(.swal2-icon).swal2-question.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-question.swal2-icon-show .swal2-icon-content{animation:swal2-animate-question-mark .8s}}div:where(.swal2-icon).swal2-success{border-color:#a5dc86;color:#a5dc86}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line]{position:absolute;width:3.75em;height:7.5em;border-radius:50%}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.4375em;left:-2.0635em;transform:rotate(-45deg);transform-origin:3.75em 3.75em;border-radius:7.5em 0 0 7.5em}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.6875em;left:1.875em;transform:rotate(-45deg);transform-origin:0 3.75em;border-radius:0 7.5em 7.5em 0}div:where(.swal2-icon).swal2-success .swal2-success-ring{position:absolute;z-index:2;top:-0.25em;left:-0.25em;box-sizing:content-box;width:100%;height:100%;border:.25em solid rgba(165,220,134,.3);border-radius:50%}div:where(.swal2-icon).swal2-success .swal2-success-fix{position:absolute;z-index:1;top:.5em;left:1.625em;width:.4375em;height:5.625em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-success [class^=swal2-success-line]{display:block;position:absolute;z-index:2;height:.3125em;border-radius:.125em;background-color:#a5dc86}div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=tip]{top:2.875em;left:.8125em;width:1.5625em;transform:rotate(45deg)}div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=long]{top:2.375em;right:.5em;width:2.9375em;transform:rotate(-45deg)}@container swal2-popup style(--swal2-icon-animations:true){div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-animate-success-line-tip .75s}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-animate-success-line-long .75s}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-circular-line-right{animation:swal2-rotate-success-circular-line 4.25s ease-in}}[class^=swal2]{-webkit-tap-highlight-color:rgba(0,0,0,0)}.swal2-show{animation:var(--swal2-show-animation)}.swal2-hide{animation:var(--swal2-hide-animation)}.swal2-noanimation{transition:none}.swal2-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.swal2-rtl .swal2-close{margin-right:initial;margin-left:0}.swal2-rtl .swal2-timer-progress-bar{right:0;left:auto}.swal2-toast{box-sizing:border-box;grid-column:1/4 !important;grid-row:1/4 !important;grid-template-columns:min-content auto min-content;padding:1em;overflow-y:hidden;border:var(--swal2-toast-border);background:var(--swal2-background);box-shadow:var(--swal2-toast-box-shadow);pointer-events:all}.swal2-toast>*{grid-column:2}.swal2-toast h2:where(.swal2-title){margin:.5em 1em;padding:0;font-size:1em;text-align:initial}.swal2-toast .swal2-loading{justify-content:center}.swal2-toast input:where(.swal2-input){height:2em;margin:.5em;font-size:1em}.swal2-toast .swal2-validation-message{font-size:1em}.swal2-toast div:where(.swal2-footer){margin:.5em 0 0;padding:.5em 0 0;font-size:.8em}.swal2-toast button:where(.swal2-close){grid-column:3/3;grid-row:1/99;align-self:center;width:.8em;height:.8em;margin:0;font-size:2em}.swal2-toast div:where(.swal2-html-container){margin:.5em 1em;padding:0;overflow:initial;font-size:1em;text-align:initial}.swal2-toast div:where(.swal2-html-container):empty{padding:0}.swal2-toast .swal2-loader{grid-column:1;grid-row:1/99;align-self:center;width:2em;height:2em;margin:.25em}.swal2-toast .swal2-icon{grid-column:1;grid-row:1/99;align-self:center;width:2em;min-width:2em;height:2em;margin:0 .5em 0 0}.swal2-toast .swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:1.8em;font-weight:bold}.swal2-toast .swal2-icon.swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line]{top:.875em;width:1.375em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:.3125em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:.3125em}.swal2-toast div:where(.swal2-actions){justify-content:flex-start;height:auto;margin:0;margin-top:.5em;padding:0 .5em}.swal2-toast button:where(.swal2-styled){margin:.25em .5em;padding:.4em .6em;font-size:1em}.swal2-toast .swal2-success{border-color:#a5dc86}.swal2-toast .swal2-success [class^=swal2-success-circular-line]{position:absolute;width:1.6em;height:3em;border-radius:50%}.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.8em;left:-0.5em;transform:rotate(-45deg);transform-origin:2em 2em;border-radius:4em 0 0 4em}.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.25em;left:.9375em;transform-origin:0 1.5em;border-radius:0 4em 4em 0}.swal2-toast .swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-toast .swal2-success .swal2-success-fix{top:0;left:.4375em;width:.4375em;height:2.6875em}.swal2-toast .swal2-success [class^=swal2-success-line]{height:.3125em}.swal2-toast .swal2-success [class^=swal2-success-line][class$=tip]{top:1.125em;left:.1875em;width:.75em}.swal2-toast .swal2-success [class^=swal2-success-line][class$=long]{top:.9375em;right:.1875em;width:1.375em}@container swal2-popup style(--swal2-icon-animations:true){.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-toast-animate-success-line-tip .75s}.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-toast-animate-success-line-long .75s}}.swal2-toast.swal2-show{animation:var(--swal2-toast-show-animation)}.swal2-toast.swal2-hide{animation:var(--swal2-toast-hide-animation)}@keyframes swal2-show{0%{transform:scale(0.7)}45%{transform:scale(1.05)}80%{transform:scale(0.95)}100%{transform:scale(1)}}@keyframes swal2-hide{0%{transform:scale(1);opacity:1}100%{transform:scale(0.5);opacity:0}}@keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-0.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(0.4);opacity:0}50%{margin-top:1.625em;transform:scale(0.4);opacity:0}80%{margin-top:-0.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0deg);opacity:1}}@keyframes swal2-rotate-loading{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}@keyframes swal2-animate-question-mark{0%{transform:rotateY(-360deg)}100%{transform:rotateY(0)}}@keyframes swal2-animate-i-mark{0%{transform:rotateZ(45deg);opacity:0}25%{transform:rotateZ(-25deg);opacity:.4}50%{transform:rotateZ(15deg);opacity:.8}75%{transform:rotateZ(-5deg);opacity:1}100%{transform:rotateX(0);opacity:1}}@keyframes swal2-toast-show{0%{transform:translateY(-0.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(0.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0deg)}}@keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-0.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}");
+"undefined"!=typeof document&&function(e,t){var n=e.createElement("style");if(e.getElementsByTagName("head")[0].appendChild(n),n.styleSheet)n.styleSheet.disabled||(n.styleSheet.cssText=t);else try{n.innerHTML=t}catch(e){n.innerText=t}}(document,":root{--swal2-outline: 0 0 0 3px rgba(100, 150, 200, 0.5);--swal2-container-padding: 0.625em;--swal2-backdrop: rgba(0, 0, 0, 0.4);--swal2-backdrop-transition: background-color 0.15s;--swal2-width: 32em;--swal2-padding: 0 0 1.25em;--swal2-border: none;--swal2-border-radius: 0.3125rem;--swal2-background: white;--swal2-color: #545454;--swal2-show-animation: swal2-show 0.3s;--swal2-hide-animation: swal2-hide 0.15s forwards;--swal2-icon-zoom: 1;--swal2-icon-animations: true;--swal2-title-padding: 0.8em 1em 0;--swal2-html-container-padding: 1em 1.6em 0.3em;--swal2-input-border: 1px solid #d9d9d9;--swal2-input-border-radius: 0.1875em;--swal2-input-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px transparent;--swal2-input-background: transparent;--swal2-input-transition: border-color 0.2s, box-shadow 0.2s;--swal2-input-hover-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px transparent;--swal2-input-focus-border: 1px solid #b4dbed;--swal2-input-focus-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px rgba(100, 150, 200, 0.5);--swal2-progress-step-background: #add8e6;--swal2-validation-message-background: #f0f0f0;--swal2-validation-message-color: #666;--swal2-footer-border-color: #eee;--swal2-footer-background: transparent;--swal2-footer-color: inherit;--swal2-timer-progress-bar-background: rgba(0, 0, 0, 0.3);--swal2-close-button-position: initial;--swal2-close-button-inset: auto;--swal2-close-button-font-size: 2.5em;--swal2-close-button-color: #ccc;--swal2-close-button-transition: color 0.2s, box-shadow 0.2s;--swal2-close-button-outline: initial;--swal2-close-button-box-shadow: inset 0 0 0 3px transparent;--swal2-close-button-focus-box-shadow: inset var(--swal2-outline);--swal2-close-button-hover-transform: none;--swal2-actions-justify-content: center;--swal2-actions-width: auto;--swal2-actions-margin: 1.25em auto 0;--swal2-actions-padding: 0;--swal2-actions-border-radius: 0;--swal2-actions-background: transparent;--swal2-action-button-transition: background-color 0.2s, box-shadow 0.2s;--swal2-action-button-hover: black 10%;--swal2-action-button-active: black 10%;--swal2-confirm-button-box-shadow: none;--swal2-confirm-button-border-radius: 0.25em;--swal2-confirm-button-background-color: #7066e0;--swal2-confirm-button-color: #fff;--swal2-deny-button-box-shadow: none;--swal2-deny-button-border-radius: 0.25em;--swal2-deny-button-background-color: #dc3741;--swal2-deny-button-color: #fff;--swal2-cancel-button-box-shadow: none;--swal2-cancel-button-border-radius: 0.25em;--swal2-cancel-button-background-color: #6e7881;--swal2-cancel-button-color: #fff;--swal2-toast-show-animation: swal2-toast-show 0.5s;--swal2-toast-hide-animation: swal2-toast-hide 0.1s forwards;--swal2-toast-border: none;--swal2-toast-box-shadow: 0 0 1px hsl(0deg 0% 0% / 0.075), 0 1px 2px hsl(0deg 0% 0% / 0.075), 1px 2px 4px hsl(0deg 0% 0% / 0.075), 1px 3px 8px hsl(0deg 0% 0% / 0.075), 2px 4px 16px hsl(0deg 0% 0% / 0.075)}[data-swal2-theme=dark]{--swal2-dark-theme-black: #19191a;--swal2-dark-theme-white: #e1e1e1;--swal2-background: var(--swal2-dark-theme-black);--swal2-color: var(--swal2-dark-theme-white);--swal2-footer-border-color: #555;--swal2-input-background: color-mix(in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10%);--swal2-validation-message-background: color-mix( in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10% );--swal2-validation-message-color: var(--swal2-dark-theme-white);--swal2-timer-progress-bar-background: rgba(255, 255, 255, 0.7)}@media(prefers-color-scheme: dark){[data-swal2-theme=auto]{--swal2-dark-theme-black: #19191a;--swal2-dark-theme-white: #e1e1e1;--swal2-background: var(--swal2-dark-theme-black);--swal2-color: var(--swal2-dark-theme-white);--swal2-footer-border-color: #555;--swal2-input-background: color-mix(in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10%);--swal2-validation-message-background: color-mix( in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10% );--swal2-validation-message-color: var(--swal2-dark-theme-white);--swal2-timer-progress-bar-background: rgba(255, 255, 255, 0.7)}}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown){overflow:hidden}body.swal2-height-auto{height:auto !important}body.swal2-no-backdrop .swal2-container{background-color:rgba(0,0,0,0) !important;pointer-events:none}body.swal2-no-backdrop .swal2-container .swal2-popup{pointer-events:all}body.swal2-no-backdrop .swal2-container .swal2-modal{box-shadow:0 0 10px var(--swal2-backdrop)}body.swal2-toast-shown .swal2-container{box-sizing:border-box;width:360px;max-width:100%;background-color:rgba(0,0,0,0);pointer-events:none}body.swal2-toast-shown .swal2-container.swal2-top{inset:0 auto auto 50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-top-end,body.swal2-toast-shown .swal2-container.swal2-top-right{inset:0 0 auto auto}body.swal2-toast-shown .swal2-container.swal2-top-start,body.swal2-toast-shown .swal2-container.swal2-top-left{inset:0 auto auto 0}body.swal2-toast-shown .swal2-container.swal2-center-start,body.swal2-toast-shown .swal2-container.swal2-center-left{inset:50% auto auto 0;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-center{inset:50% auto auto 50%;transform:translate(-50%, -50%)}body.swal2-toast-shown .swal2-container.swal2-center-end,body.swal2-toast-shown .swal2-container.swal2-center-right{inset:50% 0 auto auto;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-start,body.swal2-toast-shown .swal2-container.swal2-bottom-left{inset:auto auto 0 0}body.swal2-toast-shown .swal2-container.swal2-bottom{inset:auto auto 0 50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-end,body.swal2-toast-shown .swal2-container.swal2-bottom-right{inset:auto 0 0 auto}@media print{body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown){overflow-y:scroll !important}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown)>[aria-hidden=true]{display:none}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown) .swal2-container{position:static !important}}div:where(.swal2-container){display:grid;position:fixed;z-index:1060;inset:0;box-sizing:border-box;grid-template-areas:\"top-start     top            top-end\" \"center-start  center         center-end\" \"bottom-start  bottom-center  bottom-end\";grid-template-rows:minmax(min-content, auto) minmax(min-content, auto) minmax(min-content, auto);height:100%;padding:var(--swal2-container-padding);overflow-x:hidden;transition:var(--swal2-backdrop-transition);-webkit-overflow-scrolling:touch}div:where(.swal2-container).swal2-backdrop-show,div:where(.swal2-container).swal2-noanimation{background:var(--swal2-backdrop)}div:where(.swal2-container).swal2-backdrop-hide{background:rgba(0,0,0,0) !important}div:where(.swal2-container).swal2-top-start,div:where(.swal2-container).swal2-center-start,div:where(.swal2-container).swal2-bottom-start{grid-template-columns:minmax(0, 1fr) auto auto}div:where(.swal2-container).swal2-top,div:where(.swal2-container).swal2-center,div:where(.swal2-container).swal2-bottom{grid-template-columns:auto minmax(0, 1fr) auto}div:where(.swal2-container).swal2-top-end,div:where(.swal2-container).swal2-center-end,div:where(.swal2-container).swal2-bottom-end{grid-template-columns:auto auto minmax(0, 1fr)}div:where(.swal2-container).swal2-top-start>.swal2-popup{align-self:start}div:where(.swal2-container).swal2-top>.swal2-popup{grid-column:2;place-self:start center}div:where(.swal2-container).swal2-top-end>.swal2-popup,div:where(.swal2-container).swal2-top-right>.swal2-popup{grid-column:3;place-self:start end}div:where(.swal2-container).swal2-center-start>.swal2-popup,div:where(.swal2-container).swal2-center-left>.swal2-popup{grid-row:2;align-self:center}div:where(.swal2-container).swal2-center>.swal2-popup{grid-column:2;grid-row:2;place-self:center center}div:where(.swal2-container).swal2-center-end>.swal2-popup,div:where(.swal2-container).swal2-center-right>.swal2-popup{grid-column:3;grid-row:2;place-self:center end}div:where(.swal2-container).swal2-bottom-start>.swal2-popup,div:where(.swal2-container).swal2-bottom-left>.swal2-popup{grid-column:1;grid-row:3;align-self:end}div:where(.swal2-container).swal2-bottom>.swal2-popup{grid-column:2;grid-row:3;place-self:end center}div:where(.swal2-container).swal2-bottom-end>.swal2-popup,div:where(.swal2-container).swal2-bottom-right>.swal2-popup{grid-column:3;grid-row:3;place-self:end end}div:where(.swal2-container).swal2-grow-row>.swal2-popup,div:where(.swal2-container).swal2-grow-fullscreen>.swal2-popup{grid-column:1/4;width:100%}div:where(.swal2-container).swal2-grow-column>.swal2-popup,div:where(.swal2-container).swal2-grow-fullscreen>.swal2-popup{grid-row:1/4;align-self:stretch}div:where(.swal2-container).swal2-no-transition{transition:none !important}div:where(.swal2-container)[popover]{width:auto;border:0}div:where(.swal2-container) div:where(.swal2-popup){display:none;position:relative;box-sizing:border-box;grid-template-columns:minmax(0, 100%);width:var(--swal2-width);max-width:100%;padding:var(--swal2-padding);border:var(--swal2-border);border-radius:var(--swal2-border-radius);background:var(--swal2-background);color:var(--swal2-color);font-family:inherit;font-size:1rem;container-name:swal2-popup}div:where(.swal2-container) div:where(.swal2-popup):focus{outline:none}div:where(.swal2-container) div:where(.swal2-popup).swal2-loading{overflow-y:hidden}div:where(.swal2-container) div:where(.swal2-popup).swal2-draggable{cursor:grab}div:where(.swal2-container) div:where(.swal2-popup).swal2-draggable div:where(.swal2-icon){cursor:grab}div:where(.swal2-container) div:where(.swal2-popup).swal2-dragging{cursor:grabbing}div:where(.swal2-container) div:where(.swal2-popup).swal2-dragging div:where(.swal2-icon){cursor:grabbing}div:where(.swal2-container) h2:where(.swal2-title){position:relative;max-width:100%;margin:0;padding:var(--swal2-title-padding);color:inherit;font-size:1.875em;font-weight:600;text-align:center;text-transform:none;overflow-wrap:break-word;cursor:initial}div:where(.swal2-container) div:where(.swal2-actions){display:flex;z-index:1;box-sizing:border-box;flex-wrap:wrap;align-items:center;justify-content:var(--swal2-actions-justify-content);width:var(--swal2-actions-width);margin:var(--swal2-actions-margin);padding:var(--swal2-actions-padding);border-radius:var(--swal2-actions-border-radius);background:var(--swal2-actions-background)}div:where(.swal2-container) div:where(.swal2-loader){display:none;align-items:center;justify-content:center;width:2.2em;height:2.2em;margin:0 1.875em;animation:swal2-rotate-loading 1.5s linear 0s infinite normal;border-width:.25em;border-style:solid;border-radius:100%;border-color:#2778c4 rgba(0,0,0,0) #2778c4 rgba(0,0,0,0)}div:where(.swal2-container) button:where(.swal2-styled){margin:.3125em;padding:.625em 1.1em;transition:var(--swal2-action-button-transition);border:none;box-shadow:0 0 0 3px rgba(0,0,0,0);font-weight:500}div:where(.swal2-container) button:where(.swal2-styled):not([disabled]){cursor:pointer}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){border-radius:var(--swal2-confirm-button-border-radius);background:initial;background-color:var(--swal2-confirm-button-background-color);box-shadow:var(--swal2-confirm-button-box-shadow);color:var(--swal2-confirm-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm):hover{background-color:color-mix(in srgb, var(--swal2-confirm-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm):active{background-color:color-mix(in srgb, var(--swal2-confirm-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny){border-radius:var(--swal2-deny-button-border-radius);background:initial;background-color:var(--swal2-deny-button-background-color);box-shadow:var(--swal2-deny-button-box-shadow);color:var(--swal2-deny-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny):hover{background-color:color-mix(in srgb, var(--swal2-deny-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny):active{background-color:color-mix(in srgb, var(--swal2-deny-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel){border-radius:var(--swal2-cancel-button-border-radius);background:initial;background-color:var(--swal2-cancel-button-background-color);box-shadow:var(--swal2-cancel-button-box-shadow);color:var(--swal2-cancel-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel):hover{background-color:color-mix(in srgb, var(--swal2-cancel-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel):active{background-color:color-mix(in srgb, var(--swal2-cancel-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):focus-visible{outline:none;box-shadow:var(--swal2-action-button-focus-box-shadow)}div:where(.swal2-container) button:where(.swal2-styled)[disabled]:not(.swal2-loading){opacity:.4}div:where(.swal2-container) button:where(.swal2-styled)::-moz-focus-inner{border:0}div:where(.swal2-container) div:where(.swal2-footer){margin:1em 0 0;padding:1em 1em 0;border-top:1px solid var(--swal2-footer-border-color);background:var(--swal2-footer-background);color:var(--swal2-footer-color);font-size:1em;text-align:center;cursor:initial}div:where(.swal2-container) .swal2-timer-progress-bar-container{position:absolute;right:0;bottom:0;left:0;grid-column:auto !important;overflow:hidden;border-bottom-right-radius:var(--swal2-border-radius);border-bottom-left-radius:var(--swal2-border-radius)}div:where(.swal2-container) div:where(.swal2-timer-progress-bar){width:100%;height:.25em;background:var(--swal2-timer-progress-bar-background)}div:where(.swal2-container) img:where(.swal2-image){max-width:100%;margin:2em auto 1em;cursor:initial}div:where(.swal2-container) button:where(.swal2-close){position:var(--swal2-close-button-position);inset:var(--swal2-close-button-inset);z-index:2;align-items:center;justify-content:center;width:1.2em;height:1.2em;margin-top:0;margin-right:0;margin-bottom:-1.2em;padding:0;overflow:hidden;transition:var(--swal2-close-button-transition);border:none;border-radius:var(--swal2-border-radius);outline:var(--swal2-close-button-outline);background:rgba(0,0,0,0);color:var(--swal2-close-button-color);font-family:monospace;font-size:var(--swal2-close-button-font-size);cursor:pointer;justify-self:end}div:where(.swal2-container) button:where(.swal2-close):hover{transform:var(--swal2-close-button-hover-transform);background:rgba(0,0,0,0);color:#f27474}div:where(.swal2-container) button:where(.swal2-close):focus-visible{outline:none;box-shadow:var(--swal2-close-button-focus-box-shadow)}div:where(.swal2-container) button:where(.swal2-close)::-moz-focus-inner{border:0}div:where(.swal2-container) div:where(.swal2-html-container){z-index:1;justify-content:center;margin:0;padding:var(--swal2-html-container-padding);overflow:auto;color:inherit;font-size:1.125em;font-weight:normal;line-height:normal;text-align:center;overflow-wrap:break-word;word-break:break-word;cursor:initial}div:where(.swal2-container) input:where(.swal2-input),div:where(.swal2-container) input:where(.swal2-file),div:where(.swal2-container) textarea:where(.swal2-textarea),div:where(.swal2-container) select:where(.swal2-select),div:where(.swal2-container) div:where(.swal2-radio),div:where(.swal2-container) label:where(.swal2-checkbox){margin:1em 2em 3px}div:where(.swal2-container) input:where(.swal2-input),div:where(.swal2-container) input:where(.swal2-file),div:where(.swal2-container) textarea:where(.swal2-textarea){box-sizing:border-box;width:auto;transition:var(--swal2-input-transition);border:var(--swal2-input-border);border-radius:var(--swal2-input-border-radius);background:var(--swal2-input-background);box-shadow:var(--swal2-input-box-shadow);color:inherit;font-size:1.125em}div:where(.swal2-container) input:where(.swal2-input).swal2-inputerror,div:where(.swal2-container) input:where(.swal2-file).swal2-inputerror,div:where(.swal2-container) textarea:where(.swal2-textarea).swal2-inputerror{border-color:#f27474 !important;box-shadow:0 0 2px #f27474 !important}div:where(.swal2-container) input:where(.swal2-input):hover,div:where(.swal2-container) input:where(.swal2-file):hover,div:where(.swal2-container) textarea:where(.swal2-textarea):hover{box-shadow:var(--swal2-input-hover-box-shadow)}div:where(.swal2-container) input:where(.swal2-input):focus,div:where(.swal2-container) input:where(.swal2-file):focus,div:where(.swal2-container) textarea:where(.swal2-textarea):focus{border:var(--swal2-input-focus-border);outline:none;box-shadow:var(--swal2-input-focus-box-shadow)}div:where(.swal2-container) input:where(.swal2-input)::placeholder,div:where(.swal2-container) input:where(.swal2-file)::placeholder,div:where(.swal2-container) textarea:where(.swal2-textarea)::placeholder{color:#ccc}div:where(.swal2-container) .swal2-range{margin:1em 2em 3px;background:var(--swal2-background)}div:where(.swal2-container) .swal2-range input{width:80%}div:where(.swal2-container) .swal2-range output{width:20%;color:inherit;font-weight:600;text-align:center}div:where(.swal2-container) .swal2-range input,div:where(.swal2-container) .swal2-range output{height:2.625em;padding:0;font-size:1.125em;line-height:2.625em}div:where(.swal2-container) .swal2-input{height:2.625em;padding:0 .75em}div:where(.swal2-container) .swal2-file{width:75%;margin-right:auto;margin-left:auto;background:var(--swal2-input-background);font-size:1.125em}div:where(.swal2-container) .swal2-textarea{height:6.75em;padding:.75em}div:where(.swal2-container) .swal2-select{min-width:50%;max-width:100%;padding:.375em .625em;background:var(--swal2-input-background);color:inherit;font-size:1.125em}div:where(.swal2-container) .swal2-radio,div:where(.swal2-container) .swal2-checkbox{align-items:center;justify-content:center;background:var(--swal2-background);color:inherit}div:where(.swal2-container) .swal2-radio label,div:where(.swal2-container) .swal2-checkbox label{margin:0 .6em;font-size:1.125em}div:where(.swal2-container) .swal2-radio input,div:where(.swal2-container) .swal2-checkbox input{flex-shrink:0;margin:0 .4em}div:where(.swal2-container) label:where(.swal2-input-label){display:flex;justify-content:center;margin:1em auto 0}div:where(.swal2-container) div:where(.swal2-validation-message){align-items:center;justify-content:center;margin:1em 0 0;padding:.625em;overflow:hidden;background:var(--swal2-validation-message-background);color:var(--swal2-validation-message-color);font-size:1em;font-weight:300}div:where(.swal2-container) div:where(.swal2-validation-message)::before{content:\"!\";display:inline-block;width:1.5em;min-width:1.5em;height:1.5em;margin:0 .625em;border-radius:50%;background-color:#f27474;color:#fff;font-weight:600;line-height:1.5em;text-align:center}div:where(.swal2-container) .swal2-progress-steps{flex-wrap:wrap;align-items:center;max-width:100%;margin:1.25em auto;padding:0;background:rgba(0,0,0,0);font-weight:600}div:where(.swal2-container) .swal2-progress-steps li{display:inline-block;position:relative}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step{z-index:20;flex-shrink:0;width:2em;height:2em;border-radius:2em;background:#2778c4;color:#fff;line-height:2em;text-align:center}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step{background:#2778c4}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step{background:var(--swal2-progress-step-background);color:#fff}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line{background:var(--swal2-progress-step-background)}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step-line{z-index:10;flex-shrink:0;width:2.5em;height:.4em;margin:0 -1px;background:#2778c4}div:where(.swal2-icon){position:relative;box-sizing:content-box;justify-content:center;width:5em;height:5em;margin:2.5em auto .6em;zoom:var(--swal2-icon-zoom);border:.25em solid rgba(0,0,0,0);border-radius:50%;border-color:#000;font-family:inherit;line-height:5em;cursor:default;user-select:none}div:where(.swal2-icon) .swal2-icon-content{display:flex;align-items:center;font-size:3.75em}div:where(.swal2-icon).swal2-error{border-color:#f27474;color:#f27474}div:where(.swal2-icon).swal2-error .swal2-x-mark{position:relative;flex-grow:1}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line]{display:block;position:absolute;top:2.3125em;width:2.9375em;height:.3125em;border-radius:.125em;background-color:#f27474}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line][class$=left]{left:1.0625em;transform:rotate(45deg)}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line][class$=right]{right:1em;transform:rotate(-45deg)}@container swal2-popup style(--swal2-icon-animations:true){div:where(.swal2-icon).swal2-error.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-error.swal2-icon-show .swal2-x-mark{animation:swal2-animate-error-x-mark .5s}}div:where(.swal2-icon).swal2-warning{border-color:#f8bb86;color:#f8bb86}@container swal2-popup style(--swal2-icon-animations:true){div:where(.swal2-icon).swal2-warning.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-warning.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .5s}}div:where(.swal2-icon).swal2-info{border-color:#3fc3ee;color:#3fc3ee}@container swal2-popup style(--swal2-icon-animations:true){div:where(.swal2-icon).swal2-info.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-info.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .8s}}div:where(.swal2-icon).swal2-question{border-color:#87adbd;color:#87adbd}@container swal2-popup style(--swal2-icon-animations:true){div:where(.swal2-icon).swal2-question.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-question.swal2-icon-show .swal2-icon-content{animation:swal2-animate-question-mark .8s}}div:where(.swal2-icon).swal2-success{border-color:#a5dc86;color:#a5dc86}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line]{position:absolute;width:3.75em;height:7.5em;border-radius:50%}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.4375em;left:-2.0635em;transform:rotate(-45deg);transform-origin:3.75em 3.75em;border-radius:7.5em 0 0 7.5em}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.6875em;left:1.875em;transform:rotate(-45deg);transform-origin:0 3.75em;border-radius:0 7.5em 7.5em 0}div:where(.swal2-icon).swal2-success .swal2-success-ring{position:absolute;z-index:2;top:-0.25em;left:-0.25em;box-sizing:content-box;width:100%;height:100%;border:.25em solid rgba(165,220,134,.3);border-radius:50%}div:where(.swal2-icon).swal2-success .swal2-success-fix{position:absolute;z-index:1;top:.5em;left:1.625em;width:.4375em;height:5.625em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-success [class^=swal2-success-line]{display:block;position:absolute;z-index:2;height:.3125em;border-radius:.125em;background-color:#a5dc86}div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=tip]{top:2.875em;left:.8125em;width:1.5625em;transform:rotate(45deg)}div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=long]{top:2.375em;right:.5em;width:2.9375em;transform:rotate(-45deg)}@container swal2-popup style(--swal2-icon-animations:true){div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-animate-success-line-tip .75s}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-animate-success-line-long .75s}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-circular-line-right{animation:swal2-rotate-success-circular-line 4.25s ease-in}}[class^=swal2]{-webkit-tap-highlight-color:rgba(0,0,0,0)}.swal2-show{animation:var(--swal2-show-animation)}.swal2-hide{animation:var(--swal2-hide-animation)}.swal2-noanimation{transition:none}.swal2-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.swal2-rtl .swal2-close{margin-right:initial;margin-left:0}.swal2-rtl .swal2-timer-progress-bar{right:0;left:auto}.swal2-toast{box-sizing:border-box;grid-column:1/4 !important;grid-row:1/4 !important;grid-template-columns:min-content auto min-content;padding:1em;overflow-y:hidden;border:var(--swal2-toast-border);background:var(--swal2-background);box-shadow:var(--swal2-toast-box-shadow);pointer-events:all}.swal2-toast>*{grid-column:2}.swal2-toast h2:where(.swal2-title){margin:.5em 1em;padding:0;font-size:1em;text-align:initial}.swal2-toast .swal2-loading{justify-content:center}.swal2-toast input:where(.swal2-input){height:2em;margin:.5em;font-size:1em}.swal2-toast .swal2-validation-message{font-size:1em}.swal2-toast div:where(.swal2-footer){margin:.5em 0 0;padding:.5em 0 0;font-size:.8em}.swal2-toast button:where(.swal2-close){grid-column:3/3;grid-row:1/99;align-self:center;width:.8em;height:.8em;margin:0;font-size:2em}.swal2-toast div:where(.swal2-html-container){margin:.5em 1em;padding:0;overflow:initial;font-size:1em;text-align:initial}.swal2-toast div:where(.swal2-html-container):empty{padding:0}.swal2-toast .swal2-loader{grid-column:1;grid-row:1/99;align-self:center;width:2em;height:2em;margin:.25em}.swal2-toast .swal2-icon{grid-column:1;grid-row:1/99;align-self:center;width:2em;min-width:2em;height:2em;margin:0 .5em 0 0}.swal2-toast .swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:1.8em;font-weight:bold}.swal2-toast .swal2-icon.swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line]{top:.875em;width:1.375em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:.3125em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:.3125em}.swal2-toast div:where(.swal2-actions){justify-content:flex-start;height:auto;margin:0;margin-top:.5em;padding:0 .5em}.swal2-toast button:where(.swal2-styled){margin:.25em .5em;padding:.4em .6em;font-size:1em}.swal2-toast .swal2-success{border-color:#a5dc86}.swal2-toast .swal2-success [class^=swal2-success-circular-line]{position:absolute;width:1.6em;height:3em;border-radius:50%}.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.8em;left:-0.5em;transform:rotate(-45deg);transform-origin:2em 2em;border-radius:4em 0 0 4em}.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.25em;left:.9375em;transform-origin:0 1.5em;border-radius:0 4em 4em 0}.swal2-toast .swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-toast .swal2-success .swal2-success-fix{top:0;left:.4375em;width:.4375em;height:2.6875em}.swal2-toast .swal2-success [class^=swal2-success-line]{height:.3125em}.swal2-toast .swal2-success [class^=swal2-success-line][class$=tip]{top:1.125em;left:.1875em;width:.75em}.swal2-toast .swal2-success [class^=swal2-success-line][class$=long]{top:.9375em;right:.1875em;width:1.375em}@container swal2-popup style(--swal2-icon-animations:true){.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-toast-animate-success-line-tip .75s}.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-toast-animate-success-line-long .75s}}.swal2-toast.swal2-show{animation:var(--swal2-toast-show-animation)}.swal2-toast.swal2-hide{animation:var(--swal2-toast-hide-animation)}@keyframes swal2-show{0%{transform:translate3d(0, -50px, 0) scale(0.9);opacity:0}100%{transform:translate3d(0, 0, 0) scale(1);opacity:1}}@keyframes swal2-hide{0%{transform:translate3d(0, 0, 0) scale(1);opacity:1}100%{transform:translate3d(0, -50px, 0) scale(0.9);opacity:0}}@keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-0.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(0.4);opacity:0}50%{margin-top:1.625em;transform:scale(0.4);opacity:0}80%{margin-top:-0.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0deg);opacity:1}}@keyframes swal2-rotate-loading{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}@keyframes swal2-animate-question-mark{0%{transform:rotateY(-360deg)}100%{transform:rotateY(0)}}@keyframes swal2-animate-i-mark{0%{transform:rotateZ(45deg);opacity:0}25%{transform:rotateZ(-25deg);opacity:.4}50%{transform:rotateZ(15deg);opacity:.8}75%{transform:rotateZ(-5deg);opacity:1}100%{transform:rotateX(0);opacity:1}}@keyframes swal2-toast-show{0%{transform:translateY(-0.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(0.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0deg)}}@keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-0.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}");
 
 /***/ }),
 
@@ -9397,18 +9506,13 @@ var __webpack_exports__ = {};
   \**********************************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   events: () => (/* binding */ events),
-/* harmony export */   initTinyMCE: () => (/* binding */ initTinyMCE),
-/* harmony export */   showToast: () => (/* binding */ showToast),
-/* harmony export */   sortAbleQuestionAnswer: () => (/* binding */ sortAbleQuestionAnswer)
+/* harmony export */   EditQuestion: () => (/* binding */ EditQuestion)
 /* harmony export */ });
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./assets/src/js/utils.js");
-/* harmony import */ var toastify_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! toastify-js */ "./node_modules/toastify-js/src/toastify.js");
-/* harmony import */ var toastify_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(toastify_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var toastify_js_src_toastify_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! toastify-js/src/toastify.css */ "./node_modules/toastify-js/src/toastify.css");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var sortablejs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/modular/sortable.esm.js");
+/* harmony import */ var lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lpAssetsJsPath/utils.js */ "./assets/src/js/utils.js");
+/* harmony import */ var lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lpAssetsJsPath/lpToastify */ "./assets/src/js/lpToastify.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var sortablejs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! sortablejs */ "./node_modules/sortablejs/modular/sortable.esm.js");
 /**
  * Edit question JS handler.
  *
@@ -9420,442 +9524,1071 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-const className = {
-  elEditQuestionWrap: '.lp-edit-question-wrap',
-  elQuestionEditMain: '.lp-question-edit-main',
-  elQuestionToggleAll: '.lp-question-toggle-all',
-  elEditListQuestions: '.lp-edit-list-questions',
-  elQuestionToggle: '.lp-question-toggle',
-  elBtnShowPopupItemsToSelect: '.lp-btn-show-popup-items-to-select',
-  elPopupItemsToSelectClone: '.lp-popup-items-to-select.clone',
-  elBtnAddQuestion: '.lp-btn-add-question',
-  elBtnRemoveQuestion: '.lp-btn-remove-question',
-  elBtnUpdateQuestionTitle: '.lp-btn-update-question-title',
-  elBtnUpdateQuestionDes: '.lp-btn-update-question-des',
-  elBtnUpdateQuestionHint: '.lp-btn-update-question-hint',
-  elBtnUpdateQuestionExplain: '.lp-btn-update-question-explanation',
-  elQuestionTitleNewInput: '.lp-question-title-new-input',
-  elQuestionTitleInput: '.lp-question-title-input',
-  elQuestionTypeLabel: '.lp-question-type-label',
-  elQuestionTypeNew: '.lp-question-type-new',
-  elAddNewQuestion: 'add-new-question',
-  elQuestionClone: '.lp-question-item.clone',
-  elAnswersConfig: '.lp-answers-config',
-  elBtnAddAnswer: '.lp-btn-add-question-answer',
-  elQuestionAnswerItemAddNew: '.lp-question-answer-item-add-new',
-  elQuestionAnswerTitleNewInput: '.lp-question-answer-title-new-input',
-  elQuestionAnswerTitleInput: '.lp-question-answer-title-input',
-  elBtnDeleteAnswer: '.lp-btn-delete-question-answer',
-  elQuestionByType: '.lp-question-by-type',
-  elInputAnswerSetTrue: '.lp-input-answer-set-true',
-  elQuestionAnswerItem: '.lp-question-answer-item',
-  elBtnUpdateQuestionAnswer: '.lp-btn-update-question-answer',
-  elBtnFibInsertBlank: '.lp-btn-fib-insert-blank',
-  elBtnFibDeleteAllBlanks: '.lp-btn-fib-delete-all-blanks',
-  elBtnFibSaveContent: '.lp-btn-fib-save-content',
-  elBtnFibClearAllContent: '.lp-btn-fib-clear-all-content',
-  elFibOptionTitleInput: '.lp-question-fib-option-title-input',
-  elFibBlankOptions: '.lp-question-fib-blank-options',
-  elFibBlankOptionItem: '.lp-question-fib-blank-option-item',
-  elFibBlankOptionItemClone: '.lp-question-fib-blank-option-item.clone',
-  elFibBlankOptionIndex: '.lp-question-fib-option-index',
-  elBtnFibOptionDelete: '.lp-btn-fib-option-delete',
-  elFibOptionMatchCaseWrap: '.lp-question-fib-option-match-case-wrap',
-  elFibOptionMatchCaseInput: '.lp-question-fib-option-match-case-input',
-  elQuestionFibOptionDetail: '.lp-question-fib-option-detail',
-  elFibOptionComparisonInput: '.lp-question-fib-option-comparison-input',
-  elAutoSaveFib: '.lp-auto-save-fib',
-  LPTarget: '.lp-target',
-  elCollapse: 'lp-collapse',
-  elSectionToggle: '.lp-section-toggle',
-  elTriggerToggle: '.lp-trigger-toggle',
-  elAutoSaveQuestion: '.lp-auto-save-question',
-  elAutoSaveAnswer: '.lp-auto-save-question-answer',
-  elQuestionFibInput: 'lp-question-fib-input',
-  elBtnQuestionCreateType: '.lp-btn-question-create-type'
-};
 const idUrlHandle = 'edit-question';
-let lpSettings = {};
-if ('undefined' !== typeof lpDataAdmin) {
-  lpSettings = lpDataAdmin;
-} else if ('undefined' !== typeof lpData) {
-  lpSettings = lpData;
-}
 let fibSelection;
+let timeoutAutoUpdateAnswer, timeoutAutoUpdateFib, timeoutAutoUpdateQuestion;
 
-// Get section by id
-const initTinyMCE = () => {
-  const elTextareas = document.querySelectorAll('.lp-editor-tinymce');
-  elTextareas.forEach(elTextarea => {
-    // const elParent = elTextarea.closest( '.lp-question-item' );
-    const idTextarea = elTextarea.id;
-    reInitTinymce(idTextarea);
-  });
-};
-
-// Re-initialize TinyMCE editor
-const reInitTinymce = id => {
-  window.tinymce.execCommand('mceRemoveEditor', true, id);
-  window.tinymce.execCommand('mceAddEditor', true, id);
-  eventEditorTinymce(id);
-
-  // Active tab visual
-  const wrapEditor = document.querySelector(`#wp-${id}-wrap`);
-  if (wrapEditor) {
-    wrapEditor.classList.add('tmce-active');
-    wrapEditor.classList.remove('html-active');
+// EditQuestion class
+class EditQuestion {
+  static selectors = {
+    elEditQuestionWrap: '.lp-edit-question-wrap',
+    elQuestionEditMain: '.lp-question-edit-main',
+    elQuestionToggleAll: '.lp-question-toggle-all',
+    elEditListQuestions: '.lp-edit-list-questions',
+    elQuestionToggle: '.lp-question-toggle',
+    elBtnShowPopupItemsToSelect: '.lp-btn-show-popup-items-to-select',
+    elPopupItemsToSelectClone: '.lp-popup-items-to-select.clone',
+    elBtnAddQuestion: '.lp-btn-add-question',
+    elBtnRemoveQuestion: '.lp-btn-remove-question',
+    elBtnUpdateQuestionTitle: '.lp-btn-update-question-title',
+    elBtnUpdateQuestionDes: '.lp-btn-update-question-des',
+    elBtnUpdateQuestionHint: '.lp-btn-update-question-hint',
+    elBtnUpdateQuestionExplain: '.lp-btn-update-question-explanation',
+    elQuestionTitleNewInput: '.lp-question-title-new-input',
+    elQuestionTitleInput: '.lp-question-title-input',
+    elQuestionTypeLabel: '.lp-question-type-label',
+    elQuestionTypeNew: '.lp-question-type-new',
+    elAddNewQuestion: 'add-new-question',
+    elQuestionClone: '.lp-question-item.clone',
+    elAnswersConfig: '.lp-answers-config',
+    elBtnAddAnswer: '.lp-btn-add-question-answer',
+    elQuestionAnswerItemAddNew: '.lp-question-answer-item-add-new',
+    elQuestionAnswerTitleNewInput: '.lp-question-answer-title-new-input',
+    elQuestionAnswerTitleInput: '.lp-question-answer-title-input',
+    elBtnDeleteAnswer: '.lp-btn-delete-question-answer',
+    elQuestionByType: '.lp-question-by-type',
+    elInputAnswerSetTrue: '.lp-input-answer-set-true',
+    elQuestionAnswerItem: '.lp-question-answer-item',
+    elBtnUpdateQuestionAnswer: '.lp-btn-update-question-answer',
+    elBtnFibInsertBlank: '.lp-btn-fib-insert-blank',
+    elBtnFibDeleteAllBlanks: '.lp-btn-fib-delete-all-blanks',
+    elBtnFibSaveContent: '.lp-btn-fib-save-content',
+    elBtnFibClearAllContent: '.lp-btn-fib-clear-all-content',
+    elFibOptionTitleInput: '.lp-question-fib-option-title-input',
+    elFibBlankOptions: '.lp-question-fib-blank-options',
+    elFibBlankOptionItem: '.lp-question-fib-blank-option-item',
+    elFibBlankOptionItemClone: '.lp-question-fib-blank-option-item.clone',
+    elFibBlankOptionIndex: '.lp-question-fib-option-index',
+    elBtnFibOptionDelete: '.lp-btn-fib-option-delete',
+    elFibOptionMatchCaseWrap: '.lp-question-fib-option-match-case-wrap',
+    elFibOptionMatchCaseInput: '.lp-question-fib-option-match-case-input',
+    elQuestionFibOptionDetail: '.lp-question-fib-option-detail',
+    elFibOptionComparisonInput: '.lp-question-fib-option-comparison-input',
+    elAutoSaveFib: '.lp-auto-save-fib',
+    LPTarget: '.lp-target',
+    elCollapse: 'lp-collapse',
+    elSectionToggle: '.lp-section-toggle',
+    elTriggerToggle: '.lp-trigger-toggle',
+    elAutoSaveQuestion: '.lp-auto-save-question',
+    elAutoSaveAnswer: '.lp-auto-save-question-answer',
+    elQuestionFibInput: 'lp-question-fib-input',
+    elBtnQuestionCreateType: '.lp-btn-question-create-type'
+  };
+  constructor() {}
+  init() {
+    this.events();
+    this.initTinyMCE().then();
   }
-};
-
-// Events for TinyMCE editor
-const eventEditorTinymce = id => {
-  const editor = window.tinymce.get(id);
-  const elTextarea = document.getElementById(id);
-  const elQuestionEditMain = elTextarea.closest(`${className.elQuestionEditMain}`);
-  const questionId = elQuestionEditMain.dataset.questionId;
-  editor.settings.force_p_newlines = false;
-  editor.settings.forced_root_block = '';
-  editor.settings.force_br_newlines = true;
-  // Events focus in TinyMCE editor
-  editor.on('change', e => {
-    //console.log( 'Editor changed:', e.target.id );
-    // Auto save if it has class lp-auto-save
-    elTextarea.value = editor.getContent();
-    autoUpdateQuestion(e, elTextarea);
-  });
-  editor.on('keyup', e => {
-    //console.log( 'Editor keyup:', e.target.id );
-    // Auto save if it has class lp-auto-save
-    elTextarea.value = editor.getContent();
-    autoUpdateQuestion(e, elTextarea);
-  });
-  editor.on('blur', e => {
-    //console.log( 'Editor blurred:', e.target.id );
-  });
-  editor.on('focusin', e => {});
-  editor.on('init', () => {
-    // Add style
-    editor.dom.addStyle(`
-			body {
-				line-height: 2.2;
-			}
-			.${className.elQuestionFibInput} {
-				border: 1px dashed rebeccapurple;
-				padding: 5px;
-			}
-		`);
-  });
-  editor.on('setcontent', e => {
-    const uniquid = randomString();
-    const elementg = editor.dom.select(`.${className.elQuestionFibInput}[data-id="${uniquid}"]`);
-    if (elementg[0]) {
-      elementg[0].focus();
+  events() {
+    if (EditQuestion._loadedEvents) {
+      return;
     }
-    editor.dom.bind(elementg[0], 'input', function (e) {
-      //console.log( 'Input changed:', e.target.value );
-    });
-  });
-  editor.on('selectionchange', e => {
-    fibSelection = editor.selection;
+    EditQuestion._loadedEvents = true;
 
-    // Check selection is blank, check empty blank content
-    if (fibSelection.getNode().classList.contains(`${className.elQuestionFibInput}`)) {
-      const blankId = fibSelection.getNode().dataset.id;
-      const textBlank = fibSelection.getNode().textContent.trim();
-      if (textBlank.length === 0) {
-        const editorId = editor.id;
-        const questionId = editorId.replace(`${className.elQuestionFibInput}-`, '');
-        const elQuestionEditMain = document.querySelector(`${className.elQuestionEditMain}[data-question-id="${questionId}"]`);
-        const elQuestionBlankOptions = elQuestionEditMain.querySelector(`${className.elFibBlankOptions}`);
-        const elFibBlankOptionItem = elQuestionBlankOptions.querySelector(`${className.elFibBlankOptionItem}[data-id="${blankId}"]`);
-        if (elFibBlankOptionItem) {
-          _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elFibBlankOptionItem, 0);
-        }
-      } else {
-        const elTextarea = document.getElementById(id);
-        const elAnswersConfig = elTextarea.closest(`${className.elAnswersConfig}`);
-        const elFibBlankOptionItem = elAnswersConfig.querySelector(`${className.elFibBlankOptionItem}[data-id="${blankId}"]`);
-        if (elFibBlankOptionItem) {
-          const elFibOptionTitleInput = elFibBlankOptionItem.querySelector(`${className.elFibOptionTitleInput}`);
-          if (elFibOptionTitleInput) {
-            elFibOptionTitleInput.value = textBlank;
+    // Sortable answers's question
+    const elQuestionEditMains = document.querySelectorAll(`${EditQuestion.selectors.elQuestionEditMain}`);
+    elQuestionEditMains.forEach(elQuestionEditMain => {
+      this.sortAbleQuestionAnswer(elQuestionEditMain);
+    });
+    // End sortable
+
+    // Event click
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.eventHandlers('click', [{
+      selector: EditQuestion.selectors.elBtnQuestionCreateType,
+      callBack: this.createQuestionType.name,
+      class: this
+    }, {
+      selector: EditQuestion.selectors.elBtnAddAnswer,
+      callBack: this.addQuestionAnswer.name,
+      class: this
+    }, {
+      selector: EditQuestion.selectors.elBtnDeleteAnswer,
+      callBack: this.deleteQuestionAnswer.name,
+      class: this
+    }, {
+      selector: EditQuestion.selectors.elBtnFibInsertBlank,
+      callBack: this.fibInsertBlank.name,
+      class: this
+    }, {
+      selector: EditQuestion.selectors.elBtnFibDeleteAllBlanks,
+      callBack: this.fibDeleteAllBlanks.name,
+      class: this
+    }, {
+      selector: EditQuestion.selectors.elBtnFibSaveContent,
+      callBack: this.fibSaveContent.name,
+      class: this
+    }, {
+      selector: EditQuestion.selectors.elBtnFibClearAllContent,
+      callBack: this.fibClearContent.name,
+      class: this
+    }, {
+      selector: EditQuestion.selectors.elBtnFibOptionDelete,
+      callBack: this.fibDeleteBlank.name,
+      class: this
+    }, {
+      selector: EditQuestion.selectors.elFibOptionMatchCaseInput,
+      callBack: this.fibShowHideMatchCaseOption.name,
+      class: this
+    }, {
+      selector: EditQuestion.selectors.elFibOptionComparisonInput,
+      callBack: args => {
+        const {
+          e,
+          target
+        } = args;
+        const elQuestionEditMain = target.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+        const elBtnFibSaveContent = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elBtnFibSaveContent}`);
+        elBtnFibSaveContent.click();
+      }
+    }]);
+
+    // Toggle collapse
+    document.addEventListener('click', e => {
+      const target = e.target;
+      lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.toggleCollapse(e, target, EditQuestion.selectors.elTriggerToggle);
+    });
+
+    // Event keyup
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.eventHandlers('keyup', [{
+      selector: EditQuestion.selectors.elQuestionAnswerTitleNewInput,
+      callBack: this.checkCanAddAnswer.name,
+      class: this
+    }, {
+      selector: EditQuestion.selectors.elFibOptionTitleInput,
+      callBack: this.fibOptionTitleInputChange.name,
+      class: this
+    }, {
+      selector: EditQuestion.selectors.elAutoSaveQuestion,
+      callBack: this.autoUpdateQuestion.name,
+      class: this
+    }]);
+
+    // Event keydown
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.eventHandlers('keydown', [{
+      selector: EditQuestion.selectors.elQuestionAnswerTitleNewInput,
+      callBack: this.addQuestionAnswer.name,
+      class: this,
+      checkIsEventEnter: true
+    }]);
+
+    // Event change
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.eventHandlers('change', [{
+      selector: EditQuestion.selectors.elAutoSaveAnswer,
+      callBack: this.autoUpdateAnswer.name,
+      class: this
+    }]);
+  }
+
+  // Run async to re-init all TinyMCE editors, because it slow if have many editors
+  async initTinyMCE() {
+    const elTextareas = document.querySelectorAll('.lp-editor-tinymce');
+    elTextareas.forEach(elTextarea => {
+      const idTextarea = elTextarea.id;
+      this.reInitTinymce(idTextarea);
+    });
+  }
+  reInitTinymce(id) {
+    window.tinymce.execCommand('mceRemoveEditor', true, id);
+    window.tinymce.execCommand('mceAddEditor', true, id);
+    this.eventEditorTinymce(id);
+
+    // Active tab visual
+    const wrapEditor = document.querySelector(`#wp-${id}-wrap`);
+    if (wrapEditor) {
+      wrapEditor.classList.add('tmce-active');
+      wrapEditor.classList.remove('html-active');
+    }
+  }
+  eventEditorTinymce(id) {
+    const editor = window.tinymce.get(id);
+    const elTextarea = document.getElementById(id);
+    const elQuestionEditMain = elTextarea.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+    const questionId = elQuestionEditMain.dataset.questionId;
+    editor.settings.force_p_newlines = false;
+    editor.settings.forced_root_block = '';
+    editor.settings.force_br_newlines = true;
+
+    // Config use absolute url
+    editor.settings.relative_urls = false;
+    editor.settings.remove_script_host = false;
+    editor.settings.convert_urls = true;
+    editor.settings.document_base_url = lpData.site_url;
+    // End config use absolute url
+
+    // Events focus in TinyMCE editor
+    editor.on('change', e => {
+      // Auto save if it has class lp-auto-save
+      elTextarea.value = editor.getContent();
+      this.autoUpdateQuestion({
+        e,
+        target: elTextarea
+      });
+    });
+    editor.on('keyup', e => {
+      // Auto save if it has class lp-auto-save
+      elTextarea.value = editor.getContent();
+      this.autoUpdateQuestion({
+        e,
+        target: elTextarea
+      });
+    });
+    editor.on('blur', e => {
+      //console.log( 'Editor blurred:', e.target.id );
+    });
+    editor.on('focusin', e => {});
+    editor.on('init', () => {
+      // Add style
+      editor.dom.addStyle(`
+				body {
+					line-height: 2.2 !important;
+				}
+				.${EditQuestion.selectors.elQuestionFibInput} {
+					border: 1px dashed rebeccapurple;
+					padding: 5px;
+				}
+			`);
+    });
+    editor.on('setcontent', e => {
+      const uniquid = this.randomString();
+      const elementg = editor.dom.select(`.${EditQuestion.selectors.elQuestionFibInput}[data-id="${uniquid}"]`);
+      if (elementg[0]) {
+        elementg[0].focus();
+      }
+      editor.dom.bind(elementg[0], 'input', function (e) {
+        //console.log( 'Input changed:', e.target.value );
+      });
+    });
+    editor.on('selectionchange', e => {
+      fibSelection = editor.selection;
+
+      // Check selection is blank, check empty blank content
+      if (fibSelection.getNode().classList.contains(`${EditQuestion.selectors.elQuestionFibInput}`)) {
+        const blankId = fibSelection.getNode().dataset.id;
+        const textBlank = fibSelection.getNode().textContent.trim();
+        if (textBlank.length === 0) {
+          const editorId = editor.id;
+          const questionId = editorId.replace(`${EditQuestion.selectors.elQuestionFibInput}-`, '');
+          const elQuestionEditMain = document.querySelector(`${EditQuestion.selectors.elQuestionEditMain}[data-question-id="${questionId}"]`);
+          const elQuestionBlankOptions = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elFibBlankOptions}`);
+          const elFibBlankOptionItem = elQuestionBlankOptions.querySelector(`${EditQuestion.selectors.elFibBlankOptionItem}[data-id="${blankId}"]`);
+          if (elFibBlankOptionItem) {
+            lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elFibBlankOptionItem, 0);
+          }
+        } else {
+          const elTextarea = document.getElementById(id);
+          const elAnswersConfig = elTextarea.closest(`${EditQuestion.selectors.elAnswersConfig}`);
+          const elFibBlankOptionItem = elAnswersConfig.querySelector(`${EditQuestion.selectors.elFibBlankOptionItem}[data-id="${blankId}"]`);
+          if (elFibBlankOptionItem) {
+            const elFibOptionTitleInput = elFibBlankOptionItem.querySelector(`${EditQuestion.selectors.elFibOptionTitleInput}`);
+            if (elFibOptionTitleInput) {
+              elFibOptionTitleInput.value = textBlank;
+            }
           }
         }
       }
-    }
-  });
-  editor.on('Undo', function (e) {
-    const contentUndo = editor.getContent();
-    const selection = editor.selection;
-    const nodeUndo = selection.getNode();
-    if (nodeUndo.classList.contains(`${className.elQuestionFibInput}`)) {
-      const blankId = nodeUndo.dataset.id;
-      const elFibBlankOptionItem = document.querySelector(`${className.elFibBlankOptionItem}[data-id="${blankId}"]`);
-      if (elFibBlankOptionItem) {
-        _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elFibBlankOptionItem, 1);
+    });
+    editor.on('Undo', function (e) {
+      const contentUndo = editor.getContent();
+      const selection = editor.selection;
+      const nodeUndo = selection.getNode();
+      if (nodeUndo.classList.contains(`${EditQuestion.selectors.elQuestionFibInput}`)) {
+        const blankId = nodeUndo.dataset.id;
+        const elFibBlankOptionItem = document.querySelector(`${EditQuestion.selectors.elFibBlankOptionItem}[data-id="${blankId}"]`);
+        if (elFibBlankOptionItem) {
+          lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elFibBlankOptionItem, 1);
+        }
       }
-    }
-  });
-  editor.on('Redo', function (e) {});
-};
-let timeoutAutoUpdateQuestion;
-const autoUpdateQuestion = (e, target, key, value) => {
-  const elAutoSave = target.closest(`${className.elAutoSaveQuestion}`);
-  if (!elAutoSave) {
-    return;
+    });
+    editor.on('Redo', function (e) {});
   }
-  const elQuestionEditMain = elAutoSave.closest(`${className.elQuestionEditMain}`);
-  const questionId = elQuestionEditMain.dataset.questionId;
-  clearTimeout(timeoutAutoUpdateQuestion);
-  timeoutAutoUpdateQuestion = setTimeout(() => {
-    // Call ajax to update question description
+  autoUpdateQuestion(args) {
+    let {
+      e,
+      target,
+      key,
+      value
+    } = args;
+    const elAutoSave = target.closest(`${EditQuestion.selectors.elAutoSaveQuestion}`);
+    if (!elAutoSave) {
+      return;
+    }
+    const elQuestionEditMain = elAutoSave.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+    const questionId = elQuestionEditMain.dataset.questionId;
+    clearTimeout(timeoutAutoUpdateQuestion);
+    timeoutAutoUpdateQuestion = setTimeout(() => {
+      // Call ajax to update question description
+      const callBack = {
+        success: response => {
+          const {
+            message,
+            status
+          } = response;
+          if (status === 'success') {
+            lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(message, status);
+          } else {
+            throw `Error: ${message}`;
+          }
+        },
+        error: error => {
+          lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(error, 'error');
+        },
+        completed: () => {}
+      };
+      const dataSend = {
+        action: 'update_question',
+        question_id: questionId,
+        args: {
+          id_url: idUrlHandle
+        }
+      };
+      if (undefined === key) {
+        key = elAutoSave.dataset.keyAutoSave;
+        if (!key) {
+          if (!elAutoSave.classList.contains('lp-editor-tinymce')) {
+            return;
+          }
+          const textAreaId = elAutoSave.id;
+          key = textAreaId.replace(/lp-/g, '').replace(`-${questionId}`, '').replace(/-/g, '_');
+          if (!key) {
+            return;
+          }
+        }
+        value = elAutoSave.value;
+      }
+      dataSend[key] = value;
+      window.lpAJAXG.fetchAJAX(dataSend, callBack);
+    }, 700);
+  }
+  // Create question type
+  createQuestionType(args) {
+    const {
+      e,
+      target
+    } = args;
+    const elBtnQuestionCreateType = target.closest(`${EditQuestion.selectors.elBtnQuestionCreateType}`);
+    if (!elBtnQuestionCreateType) {
+      return;
+    }
+    const elQuestionEditMain = elBtnQuestionCreateType.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+    if (!elQuestionEditMain) {
+      return;
+    }
+    const questionId = elQuestionEditMain.dataset.questionId;
+    const elQuestionTypeNew = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elQuestionTypeNew}`);
+    if (!elQuestionTypeNew) {
+      return;
+    }
+    const questionType = elQuestionTypeNew.value.trim();
+    if (!questionType) {
+      const message = elQuestionTypeNew.dataset.messEmptyType;
+      lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(message, 'error');
+      return;
+    }
+
+    // Call ajax to create new question type
     const callBack = {
       success: response => {
         const {
           message,
-          status
+          status,
+          data
         } = response;
         if (status === 'success') {
-          showToast(message, status);
+          const {
+            html_option_answers
+          } = data;
+          const elAnswersConfig = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elAnswersConfig}`);
+          elAnswersConfig.outerHTML = html_option_answers;
+          this.initTinyMCE();
+          this.sortAbleQuestionAnswer(elQuestionEditMain);
+          lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(message, status);
         } else {
           throw `Error: ${message}`;
         }
       },
       error: error => {
-        showToast(error, 'error');
+        lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(error, 'error');
       },
       completed: () => {}
     };
     const dataSend = {
       action: 'update_question',
       question_id: questionId,
+      question_type: questionType,
       args: {
         id_url: idUrlHandle
       }
     };
-    if (undefined === key) {
-      key = elAutoSave.dataset.keyAutoSave;
-      if (!key) {
-        if (!elAutoSave.classList.contains('lp-editor-tinymce')) {
-          return;
-        }
-        const textAreaId = elAutoSave.id;
-        key = textAreaId.replace(/lp-/g, '').replace(`-${questionId}`, '').replace(/-/g, '_');
-        if (!key) {
-          return;
-        }
-      }
-      value = elAutoSave.value;
-    }
-    dataSend[key] = value;
     window.lpAJAXG.fetchAJAX(dataSend, callBack);
-  }, 700);
-};
-// Create question type
-const createQuestionType = (e, target) => {
-  const elBtnQuestionCreateType = target.closest(`${className.elBtnQuestionCreateType}`);
-  if (!elBtnQuestionCreateType) {
-    return;
   }
-  const elQuestionEditMain = elBtnQuestionCreateType.closest(`${className.elQuestionEditMain}`);
-  if (!elQuestionEditMain) {
-    return;
-  }
-  const questionId = elQuestionEditMain.dataset.questionId;
-  const elQuestionTypeNew = elQuestionEditMain.querySelector(`${className.elQuestionTypeNew}`);
-  if (!elQuestionTypeNew) {
-    return;
-  }
-  const questionType = elQuestionTypeNew.value.trim();
-  if (!questionType) {
-    const message = elQuestionTypeNew.dataset.messEmptyType;
-    showToast(message, 'error');
-    return;
-  }
-
-  // Call ajax to create new question type
-  const callBack = {
-    success: response => {
-      const {
-        message,
-        status,
-        data
-      } = response;
-      if (status === 'success') {
-        const {
-          html_option_answers
-        } = data;
-        const elAnswersConfig = elQuestionEditMain.querySelector(`${className.elAnswersConfig}`);
-        elAnswersConfig.outerHTML = html_option_answers;
-        initTinyMCE();
-        sortAbleQuestionAnswer(elQuestionEditMain);
-        showToast(message, status);
-      } else {
-        throw `Error: ${message}`;
-      }
-    },
-    error: error => {
-      showToast(error, 'error');
-    },
-    completed: () => {}
-  };
-  const dataSend = {
-    action: 'update_question',
-    question_id: questionId,
-    question_type: questionType,
-    args: {
-      id_url: idUrlHandle
+  addQuestionAnswer(args) {
+    const {
+      e,
+      target
+    } = args;
+    const elQuestionAnswerItemAddNew = target.closest(`${EditQuestion.selectors.elQuestionAnswerItemAddNew}`);
+    if (!elQuestionAnswerItemAddNew) {
+      return;
     }
-  };
-  window.lpAJAXG.fetchAJAX(dataSend, callBack);
-};
-const addQuestionAnswer = (e, target) => {
-  const elBtnAddAnswer = target.closest(`${className.elBtnAddAnswer}`);
-  if (!elBtnAddAnswer) {
-    return;
-  }
-  const elQuestionAnswerItemAddNew = elBtnAddAnswer.closest(`${className.elQuestionAnswerItemAddNew}`);
-  const elQuestionAnswerTitleNewInput = elQuestionAnswerItemAddNew.querySelector(`${className.elQuestionAnswerTitleNewInput}`);
-  if (!elQuestionAnswerTitleNewInput.value.trim()) {
-    const message = elQuestionAnswerTitleNewInput.dataset.messEmptyTitle;
-    showToast(message, 'error');
-    return;
-  }
-  const elQuestionEditMain = elBtnAddAnswer.closest(`${className.elQuestionEditMain}`);
-  const elQuestionAnswerClone = elQuestionEditMain.querySelector(`${className.elQuestionAnswerItem}.clone`);
-  const elQuestionAnswerNew = elQuestionAnswerClone.cloneNode(true);
-  const elQuestionAnswerTitleInputNew = elQuestionAnswerNew.querySelector(`${className.elQuestionAnswerTitleInput}`);
-  elQuestionAnswerNew.classList.remove('clone');
-  _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elQuestionAnswerNew, 1);
-  _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elQuestionAnswerNew, 1);
-  elQuestionAnswerClone.insertAdjacentElement('beforebegin', elQuestionAnswerNew);
-  const answerTitle = elQuestionAnswerTitleNewInput.value.trim();
-  elQuestionAnswerTitleInputNew.value = answerTitle;
-  elQuestionAnswerTitleNewInput.value = '';
-  const questionId = elQuestionEditMain.dataset.questionId;
-
-  // Call ajax to add new question answer
-  const callBack = {
-    success: response => {
-      const {
-        message,
-        status,
-        data
-      } = response;
-      if (status === 'success') {
-        const {
-          question_answer
-        } = data;
-        elQuestionAnswerNew.dataset.answerId = question_answer.question_answer_id;
-        _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elQuestionAnswerNew, 0);
-
-        // Set data lp-answers-config
-        const dataAnswers = getDataAnswersConfig(elQuestionEditMain);
-        dataAnswers.push(question_answer);
-        setDataAnswersConfig(elQuestionEditMain, dataAnswers);
-      } else {
-        throw `Error: ${message}`;
-      }
-      showToast(message, status);
-    },
-    error: error => {
-      elQuestionAnswerNew.remove();
-      showToast(error, 'error');
-    },
-    completed: () => {
-      checkCanAddAnswer(null, elQuestionAnswerTitleNewInput);
+    e.preventDefault();
+    const elQuestionAnswerTitleNewInput = elQuestionAnswerItemAddNew.querySelector(`${EditQuestion.selectors.elQuestionAnswerTitleNewInput}`);
+    if (!elQuestionAnswerTitleNewInput.value.trim()) {
+      const message = elQuestionAnswerTitleNewInput.dataset.messEmptyTitle;
+      lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(message, 'error');
+      return;
     }
-  };
-  const dataSend = {
-    action: 'add_question_answer',
-    question_id: questionId,
-    answer_title: answerTitle,
-    args: {
-      id_url: idUrlHandle
-    }
-  };
-  window.lpAJAXG.fetchAJAX(dataSend, callBack);
-};
-
-// Check to enable or disable add new question button
-const checkCanAddAnswer = (e, target) => {
-  const elTrigger = target.closest(className.elQuestionAnswerTitleNewInput);
-  if (!elTrigger) {
-    return;
-  }
-  const elQuestionAnswerItemAddNew = elTrigger.closest(`${className.elQuestionAnswerItemAddNew}`);
-  if (!elQuestionAnswerItemAddNew) {
-    return;
-  }
-  const elBtnAddAnswer = elQuestionAnswerItemAddNew.querySelector(`${className.elBtnAddAnswer}`);
-  if (!elBtnAddAnswer) {
-    return;
-  }
-  const titleValue = elTrigger.value.trim();
-  if (titleValue) {
-    elBtnAddAnswer.classList.add('active');
-  } else {
-    elBtnAddAnswer.classList.remove('active');
-  }
-};
-
-// Auto update question answer
-let timeoutAutoUpdateAnswer;
-const autoUpdateAnswer = (e, target) => {
-  const elAutoSaveAnswer = target.closest(`${className.elAutoSaveAnswer}`);
-  if (!elAutoSaveAnswer) {
-    return;
-  }
-  const elQuestionAnswerItem = elAutoSaveAnswer.closest(`${className.elQuestionAnswerItem}`);
-  clearTimeout(timeoutAutoUpdateAnswer);
-  timeoutAutoUpdateAnswer = setTimeout(() => {
-    const elQuestionEditMain = elAutoSaveAnswer.closest(`${className.elQuestionEditMain}`);
+    const elQuestionEditMain = target.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+    const elQuestionAnswerClone = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elQuestionAnswerItem}.clone`);
+    const elQuestionAnswerNew = elQuestionAnswerClone.cloneNode(true);
+    const elQuestionAnswerTitleInputNew = elQuestionAnswerNew.querySelector(`${EditQuestion.selectors.elQuestionAnswerTitleInput}`);
+    elQuestionAnswerNew.classList.remove('clone');
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elQuestionAnswerNew, 1);
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elQuestionAnswerNew, 1);
+    elQuestionAnswerClone.insertAdjacentElement('beforebegin', elQuestionAnswerNew);
+    const answerTitle = elQuestionAnswerTitleNewInput.value.trim();
+    elQuestionAnswerTitleInputNew.value = answerTitle;
+    elQuestionAnswerTitleNewInput.value = '';
     const questionId = elQuestionEditMain.dataset.questionId;
-    const dataAnswers = getDataAnswersConfig(elQuestionEditMain);
-    const elAnswersConfig = elQuestionEditMain.querySelector(`${className.elAnswersConfig}`);
 
-    // For both radio and checkbox.
-    const dataAnswersOld = structuredClone(dataAnswers);
+    // Call ajax to add new question answer
+    const callBack = {
+      success: response => {
+        const {
+          message,
+          status,
+          data
+        } = response;
+        if (status === 'success') {
+          const {
+            question_answer
+          } = data;
+          elQuestionAnswerNew.dataset.answerId = question_answer.question_answer_id;
+          lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elQuestionAnswerNew, 0);
 
-    // Get position of answers
-    const elQuestionAnswerItems = elAnswersConfig.querySelectorAll(`${className.elQuestionAnswerItem}:not(.clone)`);
-    const answersPosition = {};
-    elQuestionAnswerItems.forEach((elQuestionAnswerItem, index) => {
-      answersPosition[elQuestionAnswerItem.dataset.answerId] = index + 1; // Start from 1
-    });
-
-    //console.log( 'answersPosition', answersPosition );
-
-    dataAnswers.map((answer, k) => {
-      const elQuestionAnswerItem = elQuestionEditMain.querySelector(`${className.elQuestionAnswerItem}[data-answer-id="${answer.question_answer_id}"]`);
-      const elInputAnswerSetTrue = elQuestionAnswerItem.querySelector(`${className.elInputAnswerSetTrue}`);
-      const elInputAnswerTitle = elQuestionAnswerItem.querySelector(`${className.elQuestionAnswerTitleInput}`);
-
-      // Set title
-      if (elInputAnswerTitle) {
-        answer.title = elInputAnswerTitle.value.trim();
-      }
-
-      // Set true answer
-      if (elInputAnswerSetTrue) {
-        if (elInputAnswerSetTrue.checked) {
-          answer.is_true = 'yes';
+          // Set data lp-answers-config
+          const dataAnswers = this.getDataAnswersConfig(elQuestionEditMain);
+          dataAnswers.push(question_answer);
+          this.setDataAnswersConfig(elQuestionEditMain, dataAnswers);
         } else {
-          answer.is_true = '';
+          throw `Error: ${message}`;
         }
+        lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(message, status);
+      },
+      error: error => {
+        elQuestionAnswerNew.remove();
+        lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(error, 'error');
+      },
+      completed: () => {
+        this.checkCanAddAnswer(null, elQuestionAnswerTitleNewInput);
       }
+    };
+    const dataSend = {
+      action: 'add_question_answer',
+      question_id: questionId,
+      answer_title: answerTitle,
+      args: {
+        id_url: idUrlHandle
+      }
+    };
+    window.lpAJAXG.fetchAJAX(dataSend, callBack);
+  }
 
-      // Set position
-      if (answersPosition[answer.question_answer_id]) {
-        answer.order = answersPosition[answer.question_answer_id];
-      }
-      return answer;
+  // Check to enable or disable add new question button
+  checkCanAddAnswer(args) {
+    const {
+      e,
+      target
+    } = args;
+    const elTrigger = target.closest(EditQuestion.selectors.elQuestionAnswerTitleNewInput);
+    if (!elTrigger) {
+      return;
+    }
+    const elQuestionAnswerItemAddNew = elTrigger.closest(`${EditQuestion.selectors.elQuestionAnswerItemAddNew}`);
+    if (!elQuestionAnswerItemAddNew) {
+      return;
+    }
+    const elBtnAddAnswer = elQuestionAnswerItemAddNew.querySelector(`${EditQuestion.selectors.elBtnAddAnswer}`);
+    if (!elBtnAddAnswer) {
+      return;
+    }
+    const titleValue = elTrigger.value.trim();
+    if (titleValue) {
+      elBtnAddAnswer.classList.add('active');
+    } else {
+      elBtnAddAnswer.classList.remove('active');
+    }
+  }
+
+  // Auto update question answer
+  autoUpdateAnswer(args) {
+    const {
+      e,
+      target
+    } = args;
+    const elAutoSaveAnswer = target.closest(`${EditQuestion.selectors.elAutoSaveAnswer}`);
+    if (!elAutoSaveAnswer) {
+      return;
+    }
+    const elQuestionAnswerItem = elAutoSaveAnswer.closest(`${EditQuestion.selectors.elQuestionAnswerItem}`);
+    clearTimeout(timeoutAutoUpdateAnswer);
+    timeoutAutoUpdateAnswer = setTimeout(() => {
+      const elQuestionEditMain = elAutoSaveAnswer.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+      const questionId = elQuestionEditMain.dataset.questionId;
+      const dataAnswers = this.getDataAnswersConfig(elQuestionEditMain);
+      const elAnswersConfig = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elAnswersConfig}`);
+
+      // For both radio and checkbox.
+      const dataAnswersOld = structuredClone(dataAnswers);
+
+      // Get position of answers
+      const elQuestionAnswerItems = elAnswersConfig.querySelectorAll(`${EditQuestion.selectors.elQuestionAnswerItem}:not(.clone)`);
+      const answersPosition = {};
+      elQuestionAnswerItems.forEach((elQuestionAnswerItem, index) => {
+        answersPosition[elQuestionAnswerItem.dataset.answerId] = index + 1; // Start from 1
+      });
+
+      //console.log( 'answersPosition', answersPosition );
+
+      dataAnswers.map((answer, k) => {
+        const elQuestionAnswerItem = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elQuestionAnswerItem}[data-answer-id="${answer.question_answer_id}"]`);
+        const elInputAnswerSetTrue = elQuestionAnswerItem.querySelector(`${EditQuestion.selectors.elInputAnswerSetTrue}`);
+        const elInputAnswerTitle = elQuestionAnswerItem.querySelector(`${EditQuestion.selectors.elQuestionAnswerTitleInput}`);
+
+        // Set title
+        if (elInputAnswerTitle) {
+          answer.title = elInputAnswerTitle.value.trim();
+        }
+
+        // Set true answer
+        if (elInputAnswerSetTrue) {
+          if (elInputAnswerSetTrue.checked) {
+            answer.is_true = 'yes';
+          } else {
+            answer.is_true = '';
+          }
+        }
+
+        // Set position
+        if (answersPosition[answer.question_answer_id]) {
+          answer.order = answersPosition[answer.question_answer_id];
+        }
+        return answer;
+      });
+
+      //console.log( dataAnswers );
+
+      lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elQuestionAnswerItem, 1);
+
+      // Call ajax to update answers config
+      const callBack = {
+        success: response => {
+          const {
+            message,
+            status
+          } = response;
+          if (status === 'success') {} else {
+            throw `Error: ${message}`;
+          }
+          lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(message, status);
+        },
+        error: error => {
+          // rollback changes to old data
+          dataAnswersOld.forEach(answer => {
+            const elAnswerItem = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elQuestionAnswerItem}[data-answer-id="${answer.question_answer_id}"]`);
+            const inputAnswerSetTrue = elAnswerItem.querySelector(`${EditQuestion.selectors.elInputAnswerSetTrue}`);
+            if (answer.is_true === 'yes') {
+              inputAnswerSetTrue.checked = true;
+            }
+            return answer;
+          });
+          lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(error, 'error');
+        },
+        completed: () => {
+          lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elQuestionAnswerItem, 0);
+        }
+      };
+      const dataSend = {
+        action: 'update_question_answers_config',
+        question_id: questionId,
+        answers: dataAnswers,
+        args: {
+          id_url: idUrlHandle
+        }
+      };
+      window.lpAJAXG.fetchAJAX(dataSend, callBack);
+    }, 700);
+  }
+
+  // Sortable answers's question
+  sortAbleQuestionAnswer(elQuestionEditMain) {
+    let isUpdateSectionPosition = 0;
+    let timeout;
+    const elQuestionAnswers = elQuestionEditMain.querySelectorAll(`${EditQuestion.selectors.elAnswersConfig}`);
+    elQuestionAnswers.forEach(elAnswersConfig => {
+      new sortablejs__WEBPACK_IMPORTED_MODULE_3__["default"](elAnswersConfig, {
+        handle: '.drag',
+        animation: 150,
+        onEnd: evt => {
+          const elQuestionAnswerItem = evt.item;
+          if (!isUpdateSectionPosition) {
+            // No change in section position, do nothing
+            return;
+          }
+          clearTimeout(timeout);
+          timeout = setTimeout(() => {
+            const elAutoSaveAnswer = elQuestionAnswerItem.querySelector(`${EditQuestion.selectors.elAutoSaveAnswer}`);
+            this.autoUpdateAnswer({
+              e: null,
+              target: elAutoSaveAnswer
+            });
+          }, 1000);
+        },
+        onMove: evt => {
+          clearTimeout(timeout);
+        },
+        onUpdate: evt => {
+          isUpdateSectionPosition = 1;
+        }
+      });
     });
+  }
 
-    //console.log( dataAnswers );
+  // Delete question answer
+  deleteQuestionAnswer(args) {
+    const {
+      e,
+      target
+    } = args;
+    const elBtnDeleteAnswer = target.closest(`${EditQuestion.selectors.elBtnDeleteAnswer}`);
+    if (!elBtnDeleteAnswer) {
+      return;
+    }
+    const elQuestionAnswerItem = elBtnDeleteAnswer.closest(`${EditQuestion.selectors.elQuestionAnswerItem}`);
+    if (!elQuestionAnswerItem) {
+      return;
+    }
+    const elQuestionEditMain = elBtnDeleteAnswer.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+    const questionId = elQuestionEditMain.dataset.questionId;
+    const questionAnswerId = elQuestionAnswerItem.dataset.answerId;
+    if (!questionId || !questionAnswerId) {
+      return;
+    }
+    sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
+      title: elBtnDeleteAnswer.dataset.title || 'Are you sure?',
+      text: elBtnDeleteAnswer.dataset.content || 'Do you want to delete this answer?',
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: true,
+      cancelButtonText: lpData.i18n.cancel,
+      confirmButtonText: lpData.i18n.yes,
+      reverseButtons: true
+    }).then(result => {
+      if (result.isConfirmed) {
+        lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elQuestionAnswerItem, 1);
 
-    _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elQuestionAnswerItem, 1);
+        // Call ajax to delete item from section
+        const callBack = {
+          success: response => {
+            const {
+              message,
+              status
+            } = response;
+            lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(message, status);
+            if (status === 'success') {
+              const elQuestionAnswerId = parseInt(elQuestionAnswerItem.dataset.answerId);
+              elQuestionAnswerItem.remove();
+              const dataAnswers = this.getDataAnswersConfig(elQuestionEditMain);
+              if (dataAnswers) {
+                const updatedAnswers = dataAnswers.filter(answer => parseInt(answer.question_answer_id) !== elQuestionAnswerId);
+                this.setDataAnswersConfig(elQuestionEditMain, updatedAnswers);
+              }
+            }
+          },
+          error: error => {
+            lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(error, 'error');
+          },
+          completed: () => {
+            lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elQuestionAnswerItem, 0);
+          }
+        };
+        const dataSend = {
+          action: 'delete_question_answer',
+          question_id: questionId,
+          question_answer_id: questionAnswerId,
+          args: {
+            id_url: idUrlHandle
+          }
+        };
+        window.lpAJAXG.fetchAJAX(dataSend, callBack);
+      }
+    });
+  }
+
+  // Get data answers config
+  getDataAnswersConfig(elQuestionEditMain) {
+    const elAnswersConfig = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elAnswersConfig}`);
+    if (!elAnswersConfig) {
+      return null;
+    }
+    let dataAnswers = elAnswersConfig.dataset.answers || '[]';
+    try {
+      dataAnswers = JSON.parse(dataAnswers);
+    } catch (e) {
+      dataAnswers = [];
+    }
+    if (!dataAnswers.meta_data) {
+      dataAnswers.meta_data = {};
+    }
+    return dataAnswers;
+  }
+
+  // Set data answers config
+  setDataAnswersConfig(elQuestionEditMain, dataAnswers) {
+    const elAnswersConfig = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elAnswersConfig}`);
+    if (!elAnswersConfig) {
+      return;
+    }
+    if (!dataAnswers || typeof dataAnswers !== 'object') {
+      dataAnswers = {};
+    }
+    elAnswersConfig.dataset.answers = JSON.stringify(dataAnswers);
+  }
+
+  /***** Fill in the blank question type *****/
+  // For FIB question type
+  fibInsertBlank = args => {
+    const {
+      e,
+      target
+    } = args;
+    const elBtnFibInsertBlank = target.closest(EditQuestion.selectors.elBtnFibInsertBlank);
+    if (!elBtnFibInsertBlank) {
+      return;
+    }
+    const textPlaceholder = elBtnFibInsertBlank.dataset.defaultText;
+    const elQuestionEditMain = elBtnFibInsertBlank.closest(EditQuestion.selectors.elQuestionEditMain);
+    const questionId = elQuestionEditMain.dataset.questionId;
+    const messErrInserted = elBtnFibInsertBlank.dataset.messInserted;
+    const messErrRequireSelectText = elBtnFibInsertBlank.dataset.messRequireSelectText;
+    const idEditor = `${EditQuestion.selectors.elQuestionFibInput}-${questionId}`;
+    const uniquid = this.randomString();
+    let selectedText;
+    if (fibSelection) {
+      const elNode = fibSelection.getNode();
+      if (!elNode) {
+        lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show('Event insert blank has error, please try again', 'error');
+        return;
+      }
+      const findParent = elNode.closest(`body[data-id="${idEditor}"]`);
+      if (!findParent) {
+        lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(messErrRequireSelectText, 'error');
+        return;
+      }
+      if (elNode.classList.contains(`${EditQuestion.selectors.elQuestionFibInput}`)) {
+        lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(messErrInserted, 'error');
+        return;
+      }
+      selectedText = fibSelection.getContent();
+      if (selectedText.length === 0) {
+        selectedText = textPlaceholder;
+      }
+      const elInputNew = `<span class="${EditQuestion.selectors.elQuestionFibInput}" data-id="${uniquid}">${selectedText}</span>`;
+      fibSelection.setContent(elInputNew);
+    } else {
+      lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(messErrRequireSelectText, 'error');
+      return;
+    }
+    const dataAnswers = this.getDataAnswersConfig(elQuestionEditMain);
+    dataAnswers.meta_data = dataAnswers.meta_data || {};
+    // Convert array to object
+    if (Object.keys(dataAnswers.meta_data).length === 0) {
+      dataAnswers.meta_data = {};
+    }
+    dataAnswers.meta_data[uniquid] = {
+      id: uniquid,
+      match_case: 0,
+      comparison: 'equal',
+      fill: selectedText,
+      index: 1,
+      open: false
+    };
+    this.setDataAnswersConfig(elQuestionEditMain, dataAnswers);
+
+    // Clone blank options
+    const elFibBlankOptions = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elFibBlankOptions}`);
+    const elFibBlankOptionItemClone = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elFibBlankOptionItemClone}`);
+    const elFibBlankOptionItemNew = elFibBlankOptionItemClone.cloneNode(true);
+    const countOptions = elFibBlankOptions.querySelectorAll(`${EditQuestion.selectors.elFibBlankOptionItem}:not(.clone)`).length;
+    const elFibBlankOptionIndex = elFibBlankOptionItemNew.querySelector(`${EditQuestion.selectors.elFibBlankOptionIndex}`);
+    const elFibOptionTitleInput = elFibBlankOptionItemNew.querySelector(`${EditQuestion.selectors.elFibOptionTitleInput}`);
+    const elFibOptionMatchCaseInput = elFibBlankOptionItemNew.querySelector(`${EditQuestion.selectors.elFibOptionMatchCaseInput}`);
+    const elFibOptionComparisonInput = elFibBlankOptionItemNew.querySelectorAll(`${EditQuestion.selectors.elFibOptionComparisonInput}`);
+    elFibBlankOptionItemNew.dataset.id = uniquid;
+    elFibOptionTitleInput.name = `${EditQuestion.selectors.elFibOptionTitleInput}-${uniquid}`;
+    elFibOptionTitleInput.value = this.decodeHtml(selectedText);
+    elFibBlankOptionIndex.textContent = countOptions + 1 + '.';
+    elFibOptionMatchCaseInput.name = `${EditQuestion.selectors.elFibOptionMatchCaseInput}-${uniquid}`.replace(/\./g, '');
+    elFibOptionComparisonInput.forEach(elInput => {
+      elInput.name = `${EditQuestion.selectors.elFibOptionComparisonInput}-${uniquid}`.replace(/\./g, '');
+      if (elInput.value === 'equal') {
+        elInput.checked = true;
+      }
+    });
+    elFibBlankOptionItemClone.insertAdjacentElement('beforebegin', elFibBlankOptionItemNew);
+    elFibBlankOptionItemNew.classList.remove('clone');
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elFibBlankOptionItemNew, 1);
+    // End clone blank options
+
+    const elBtnFibSaveContent = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elBtnFibSaveContent}`);
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibInsertBlank, 1);
+    this.fibSaveContent({
+      e: null,
+      target: elBtnFibSaveContent,
+      callBackCompleted: () => {
+        lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibInsertBlank, 0);
+      }
+    });
+  };
+
+  // Delete all blanks
+  fibDeleteAllBlanks(args) {
+    const {
+      e,
+      target
+    } = args;
+    const elBtnFibDeleteAllBlanks = target.closest(`${EditQuestion.selectors.elBtnFibDeleteAllBlanks}`);
+    if (!elBtnFibDeleteAllBlanks) {
+      return;
+    }
+    const elQuestionEditMain = elBtnFibDeleteAllBlanks.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+    if (!elQuestionEditMain) {
+      return;
+    }
+    const questionId = elQuestionEditMain.dataset.questionId;
+    const dataAnswers = this.getDataAnswersConfig(elQuestionEditMain);
+    sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
+      title: elBtnFibDeleteAllBlanks.dataset.title,
+      text: elBtnFibDeleteAllBlanks.dataset.content,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: true,
+      cancelButtonText: lpData.i18n.cancel,
+      confirmButtonText: lpData.i18n.yes,
+      reverseButtons: true
+    }).then(result => {
+      if (result.isConfirmed) {
+        const editor = window.tinymce.get(`${EditQuestion.selectors.elQuestionFibInput}-${questionId}`);
+        const elBlanks = editor.dom.select(`.${EditQuestion.selectors.elQuestionFibInput}`);
+        elBlanks.forEach(elBlank => {
+          editor.dom.remove(elBlank, true);
+        });
+        dataAnswers.meta_data = {};
+        this.setDataAnswersConfig(elQuestionEditMain, dataAnswers);
+        const elFibBlankOptions = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elFibBlankOptions}`);
+        const elFibBlankOptionItems = elFibBlankOptions.querySelectorAll(`${EditQuestion.selectors.elFibBlankOptionItem}:not(.clone)`);
+        elFibBlankOptionItems.forEach(elFibBlankOptionItem => {
+          elFibBlankOptionItem.remove();
+        });
+        const elBtnFibSaveContent = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elBtnFibSaveContent}`);
+        lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibDeleteAllBlanks, 1);
+        this.fibSaveContent({
+          e: null,
+          target: elBtnFibSaveContent,
+          callBackCompleted: () => {
+            lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibDeleteAllBlanks, 0);
+          }
+        });
+      }
+    });
+  }
+  // Clear content FIB question
+  fibClearContent(args) {
+    const {
+      e,
+      target
+    } = args;
+    const elBtnFibClearAllContent = target.closest(`${EditQuestion.selectors.elBtnFibClearAllContent}`);
+    if (!elBtnFibClearAllContent) {
+      return;
+    }
+    const elQuestionEditMain = elBtnFibClearAllContent.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+    if (!elQuestionEditMain) {
+      return;
+    }
+    const questionId = elQuestionEditMain.dataset.questionId;
+    const dataAnswers = this.getDataAnswersConfig(elQuestionEditMain);
+    sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
+      title: elBtnFibClearAllContent.dataset.title,
+      text: elBtnFibClearAllContent.dataset.content,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: true,
+      cancelButtonText: lpData.i18n.cancel,
+      confirmButtonText: lpData.i18n.yes,
+      reverseButtons: true
+    }).then(result => {
+      if (result.isConfirmed) {
+        const editor = window.tinymce.get(`lp-question-fib-input-${questionId}`);
+        editor.setContent('');
+        dataAnswers.meta_data = {};
+        this.setDataAnswersConfig(elQuestionEditMain, dataAnswers);
+        const elFibBlankOptions = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elFibBlankOptions}`);
+        const elFibBlankOptionItems = elFibBlankOptions.querySelectorAll(`${EditQuestion.selectors.elFibBlankOptionItem}:not(.clone)`);
+        elFibBlankOptionItems.forEach(elFibBlankOptionItem => {
+          elFibBlankOptionItem.remove();
+        });
+        const elBtnFibSaveContent = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elBtnFibSaveContent}`);
+        lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibClearAllContent, 1);
+        this.fibSaveContent({
+          e: null,
+          target: elBtnFibSaveContent,
+          callBackCompleted: () => {
+            lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibClearAllContent, 0);
+          }
+        });
+      }
+    });
+  }
+
+  // Remove blank
+  fibDeleteBlank(args) {
+    const {
+      e,
+      target
+    } = args;
+    const elBtnFibOptionDelete = target.closest(`${EditQuestion.selectors.elBtnFibOptionDelete}`);
+    if (!elBtnFibOptionDelete) {
+      return;
+    }
+    const elQuestionEditMain = elBtnFibOptionDelete.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+    if (!elQuestionEditMain) {
+      return;
+    }
+    const questionId = elQuestionEditMain.dataset.questionId;
+    const elAnswersConfig = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elAnswersConfig}`);
+    const dataAnswers = this.getDataAnswersConfig(elQuestionEditMain);
+    const elFibBlankOptionItem = elBtnFibOptionDelete.closest(`${EditQuestion.selectors.elFibBlankOptionItem}`);
+    const blankId = elFibBlankOptionItem.dataset.id;
+    sweetalert2__WEBPACK_IMPORTED_MODULE_2___default().fire({
+      title: elBtnFibOptionDelete.dataset.title,
+      text: elBtnFibOptionDelete.dataset.content,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: true,
+      cancelButtonText: lpData.i18n.cancel,
+      confirmButtonText: lpData.i18n.yes,
+      reverseButtons: true
+    }).then(result => {
+      if (result.isConfirmed) {
+        // Find span with id on editor and remove it
+        const editor = window.tinymce.get(`${EditQuestion.selectors.elQuestionFibInput}-${questionId}`);
+        const elBlank = editor.dom.select(`.${EditQuestion.selectors.elQuestionFibInput}[data-id="${blankId}"]`);
+        if (elBlank[0]) {
+          // Remove tag html but keep content
+          editor.dom.remove(elBlank[0], true);
+        }
+        elFibBlankOptionItem.remove();
+        dataAnswers.meta_data = dataAnswers.meta_data || {};
+        if (dataAnswers.meta_data[blankId]) {
+          delete dataAnswers.meta_data[blankId];
+        }
+        this.setDataAnswersConfig(elQuestionEditMain, dataAnswers);
+        const elBtnFibSaveContent = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elBtnFibSaveContent}`);
+        lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elFibBlankOptionItem, 1);
+        this.fibSaveContent({
+          e: null,
+          target: elBtnFibSaveContent,
+          callBackCompleted: () => {
+            lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elFibBlankOptionItem, 0);
+          }
+        });
+      }
+    });
+  }
+
+  // Change title of blank option
+  fibOptionTitleInputChange(args) {
+    const {
+      e,
+      target
+    } = args;
+    const elFibOptionTitleInput = target.closest(`${EditQuestion.selectors.elFibOptionTitleInput}`);
+    if (!elFibOptionTitleInput) {
+      return;
+    }
+    const elQuestionFibOptionItem = elFibOptionTitleInput.closest(`${EditQuestion.selectors.elFibBlankOptionItem}`);
+    if (!elQuestionFibOptionItem) {
+      return;
+    }
+    const elQuestionEditMain = elFibOptionTitleInput.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+    if (!elQuestionEditMain) {
+      return;
+    }
+    const value = elFibOptionTitleInput.value.trim();
+    const blankId = elQuestionFibOptionItem.dataset.id;
+    const questionId = elQuestionEditMain.dataset.questionId;
+    const editor = window.tinymce.get(`lp-question-fib-input-${questionId}`);
+    const elBlank = editor.dom.select(`.lp-question-fib-input[data-id="${blankId}"]`);
+    if (elBlank[0]) {
+      // Update content of blank
+      elBlank[0].textContent = value;
+    }
+    clearTimeout(timeoutAutoUpdateFib);
+    timeoutAutoUpdateFib = setTimeout(() => {
+      // Call ajax to update question description
+      const elBtnFibSaveContent = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elBtnFibSaveContent}`);
+      this.fibSaveContent({
+        e: null,
+        target: elBtnFibSaveContent
+      });
+    }, 700);
+  }
+
+  // Save content FIB question
+  fibSaveContent(args) {
+    const {
+      e,
+      target,
+      callBackCompleted = null
+    } = args;
+    const elBtnFibSaveContent = target.closest(`${EditQuestion.selectors.elBtnFibSaveContent}`);
+    if (!elBtnFibSaveContent) {
+      return;
+    }
+    const elQuestionEditMain = elBtnFibSaveContent.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+    const questionId = elQuestionEditMain.dataset.questionId;
+    const dataAnswers = this.getDataAnswersConfig(elQuestionEditMain);
+    if (!dataAnswers) {
+      return;
+    }
+    const editor = window.tinymce.get(`${EditQuestion.selectors.elQuestionFibInput}-${questionId}`);
+    dataAnswers.title = editor.getContent();
+    const elFibBlankOptionItems = elQuestionEditMain.querySelectorAll(`${EditQuestion.selectors.elFibBlankOptionItem}:not(.clone)`);
+    if (elFibBlankOptionItems) {
+      elFibBlankOptionItems.forEach(elFibBlankOptionItem => {
+        const blankId = elFibBlankOptionItem.dataset.id;
+        const elFibOptionMatchCaseInput = elFibBlankOptionItem.querySelector(`${EditQuestion.selectors.elFibOptionMatchCaseInput}`);
+        const elFibOptionComparisonInput = elFibBlankOptionItem.querySelector(`${EditQuestion.selectors.elFibOptionComparisonInput}:checked`);
+        dataAnswers.meta_data[blankId].match_case = elFibOptionMatchCaseInput.checked ? 1 : 0;
+        dataAnswers.meta_data[blankId].comparison = elFibOptionComparisonInput.value;
+      });
+    }
+
+    //console.log( 'dataAnswers', dataAnswers );
+
+    if (!callBackCompleted) {
+      lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibSaveContent, 1);
+    }
 
     // Call ajax to update answers config
     const callBack = {
@@ -9864,27 +10597,27 @@ const autoUpdateAnswer = (e, target) => {
           message,
           status
         } = response;
-        if (status === 'success') {} else {
+        if (status === 'success') {
+          this.setDataAnswersConfig(elQuestionEditMain, dataAnswers);
+        } else {
           throw `Error: ${message}`;
         }
-        showToast(message, status);
+        lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(message, status);
       },
       error: error => {
-        // rollback changes to old data
-        dataAnswersOld.forEach(answer => {
-          const elAnswerItem = elQuestionEditMain.querySelector(`${className.elQuestionAnswerItem}[data-answer-id="${answer.question_answer_id}"]`);
-          const inputAnswerSetTrue = elAnswerItem.querySelector(`${className.elInputAnswerSetTrue}`);
-          if (answer.is_true === 'yes') {
-            inputAnswerSetTrue.checked = true;
-          }
-          return answer;
-        });
-        showToast(error, 'error');
+        lpAssetsJsPath_lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(error, 'error');
       },
       completed: () => {
-        _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elQuestionAnswerItem, 0);
+        if (callBackCompleted && typeof callBackCompleted === 'function') {
+          callBackCompleted();
+        } else {
+          lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibSaveContent, 0);
+        }
       }
     };
+
+    //console.log( 'dataAnswers', dataAnswers );
+
     const dataSend = {
       action: 'update_question_answers_config',
       question_id: questionId,
@@ -9894,597 +10627,57 @@ const autoUpdateAnswer = (e, target) => {
       }
     };
     window.lpAJAXG.fetchAJAX(dataSend, callBack);
-  }, 700);
-};
-
-// Sortable answers's question
-const sortAbleQuestionAnswer = elQuestionEditMain => {
-  let isUpdateSectionPosition = 0;
-  let timeout;
-  const elQuestionAnswers = elQuestionEditMain.querySelectorAll(`${className.elAnswersConfig}`);
-  elQuestionAnswers.forEach(elAnswersConfig => {
-    new sortablejs__WEBPACK_IMPORTED_MODULE_4__["default"](elAnswersConfig, {
-      handle: '.drag',
-      animation: 150,
-      onEnd: evt => {
-        const elQuestionAnswerItem = evt.item;
-        if (!isUpdateSectionPosition) {
-          // No change in section position, do nothing
-          return;
-        }
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          const elAutoSaveAnswer = elQuestionAnswerItem.querySelector(`${className.elAutoSaveAnswer}`);
-          autoUpdateAnswer(null, elAutoSaveAnswer);
-        }, 1000);
-      },
-      onMove: evt => {
-        clearTimeout(timeout);
-      },
-      onUpdate: evt => {
-        isUpdateSectionPosition = 1;
-      }
-    });
-  });
-};
-
-// Delete question answer
-const deleteQuestionAnswer = (e, target) => {
-  const elBtnDeleteAnswer = target.closest(`${className.elBtnDeleteAnswer}`);
-  if (!elBtnDeleteAnswer) {
-    return;
   }
-  const elQuestionAnswerItem = elBtnDeleteAnswer.closest(`${className.elQuestionAnswerItem}`);
-  if (!elQuestionAnswerItem) {
-    return;
-  }
-  const elQuestionEditMain = elBtnDeleteAnswer.closest(`${className.elQuestionEditMain}`);
-  const questionId = elQuestionEditMain.dataset.questionId;
-  const questionAnswerId = elQuestionAnswerItem.dataset.answerId;
-  if (!questionId || !questionAnswerId) {
-    return;
-  }
-  sweetalert2__WEBPACK_IMPORTED_MODULE_3___default().fire({
-    title: elBtnDeleteAnswer.dataset.title || 'Are you sure?',
-    text: elBtnDeleteAnswer.dataset.content || 'Do you want to delete this answer?',
-    icon: 'warning',
-    showCloseButton: true,
-    showCancelButton: true,
-    cancelButtonText: lpDataAdmin.i18n.cancel,
-    confirmButtonText: lpDataAdmin.i18n.yes,
-    reverseButtons: true
-  }).then(result => {
-    if (result.isConfirmed) {
-      _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elQuestionAnswerItem, 1);
-
-      // Call ajax to delete item from section
-      const callBack = {
-        success: response => {
-          const {
-            message,
-            status
-          } = response;
-          showToast(message, status);
-          if (status === 'success') {
-            const elQuestionAnswerId = parseInt(elQuestionAnswerItem.dataset.answerId);
-            elQuestionAnswerItem.remove();
-            const dataAnswers = getDataAnswersConfig(elQuestionEditMain);
-            if (dataAnswers) {
-              const updatedAnswers = dataAnswers.filter(answer => parseInt(answer.question_answer_id) !== elQuestionAnswerId);
-              setDataAnswersConfig(elQuestionEditMain, updatedAnswers);
-            }
-          }
-        },
-        error: error => {
-          showToast(error, 'error');
-        },
-        completed: () => {
-          _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elQuestionAnswerItem, 0);
-        }
-      };
-      const dataSend = {
-        action: 'delete_question_answer',
-        question_id: questionId,
-        question_answer_id: questionAnswerId,
-        args: {
-          id_url: idUrlHandle
-        }
-      };
-      window.lpAJAXG.fetchAJAX(dataSend, callBack);
-    }
-  });
-};
-
-// Get data answers config
-const getDataAnswersConfig = elQuestionEditMain => {
-  const elAnswersConfig = elQuestionEditMain.querySelector(`${className.elAnswersConfig}`);
-  if (!elAnswersConfig) {
-    return null;
-  }
-  let dataAnswers = elAnswersConfig.dataset.answers || '[]';
-  try {
-    dataAnswers = JSON.parse(dataAnswers);
-  } catch (e) {
-    dataAnswers = [];
-  }
-  if (!dataAnswers.meta_data) {
-    dataAnswers.meta_data = {};
-  }
-  return dataAnswers;
-};
-
-// Set data answers config
-const setDataAnswersConfig = (elQuestionEditMain, dataAnswers) => {
-  const elAnswersConfig = elQuestionEditMain.querySelector(`${className.elAnswersConfig}`);
-  if (!elAnswersConfig) {
-    return;
-  }
-  if (!dataAnswers || typeof dataAnswers !== 'object') {
-    dataAnswers = {};
-  }
-  elAnswersConfig.dataset.answers = JSON.stringify(dataAnswers);
-};
-
-/***** Fill in the blank question type *****/
-// For FIB question type
-const fibInsertBlank = (e, target) => {
-  const elBtnFibInsertBlank = target.closest(`${className.elBtnFibInsertBlank}`);
-  if (!elBtnFibInsertBlank) {
-    return;
-  }
-  const textPlaceholder = elBtnFibInsertBlank.dataset.defaultText;
-  const elQuestionEditMain = elBtnFibInsertBlank.closest(`${className.elQuestionEditMain}`);
-  const questionId = elQuestionEditMain.dataset.questionId;
-  const messErrInserted = elBtnFibInsertBlank.dataset.messInserted;
-  const messErrRequireSelectText = elBtnFibInsertBlank.dataset.messRequireSelectText;
-  const idEditor = `${className.elQuestionFibInput}-${questionId}`;
-  const uniquid = randomString();
-  let selectedText;
-  if (fibSelection) {
-    const elNode = fibSelection.getNode();
-    if (!elNode) {
-      showToast('Event insert blank has error, please try again', 'error');
+  // Show/hide match case option
+  fibShowHideMatchCaseOption(args) {
+    const {
+      e,
+      target
+    } = args;
+    const elFibOptionMatchCaseInput = target.closest(`${EditQuestion.selectors.elFibOptionMatchCaseInput}`);
+    if (!elFibOptionMatchCaseInput) {
       return;
     }
-    const findParent = elNode.closest(`body[data-id="${idEditor}"]`);
-    if (!findParent) {
-      showToast(messErrRequireSelectText, 'error');
+    const elQuestionFibOptionDetail = elFibOptionMatchCaseInput.closest(`${EditQuestion.selectors.elQuestionFibOptionDetail}`);
+    const elFibOptionMatchCaseWrap = elQuestionFibOptionDetail.querySelector(`${EditQuestion.selectors.elFibOptionMatchCaseWrap}`);
+    if (!elQuestionFibOptionDetail || !elFibOptionMatchCaseWrap) {
       return;
     }
-    if (elNode.classList.contains(`${className.elQuestionFibInput}`)) {
-      showToast(messErrInserted, 'error');
-      return;
+    if (elFibOptionMatchCaseInput.checked) {
+      lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elFibOptionMatchCaseWrap, 1);
+    } else {
+      lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elFibOptionMatchCaseWrap, 0);
     }
-    selectedText = fibSelection.getContent();
-    if (selectedText.length === 0) {
-      selectedText = textPlaceholder;
-    }
-    const elInputNew = `<span class="${className.elQuestionFibInput}" data-id="${uniquid}">${selectedText}</span>`;
-    fibSelection.setContent(elInputNew);
-  } else {
-    showToast(messErrRequireSelectText, 'error');
-    return;
+    const elQuestionEditMain = elFibOptionMatchCaseInput.closest(`${EditQuestion.selectors.elQuestionEditMain}`);
+    const elBtnFibSaveContent = elQuestionEditMain.querySelector(`${EditQuestion.selectors.elBtnFibSaveContent}`);
+    elBtnFibSaveContent.click();
   }
-  const dataAnswers = getDataAnswersConfig(elQuestionEditMain);
-  dataAnswers.meta_data = dataAnswers.meta_data || {};
-  // Convert array to object
-  if (Object.keys(dataAnswers.meta_data).length === 0) {
-    dataAnswers.meta_data = {};
-  }
-  dataAnswers.meta_data[uniquid] = {
-    id: uniquid,
-    match_case: 0,
-    comparison: 'equal',
-    fill: selectedText,
-    index: 1,
-    open: false
-  };
-  setDataAnswersConfig(elQuestionEditMain, dataAnswers);
+  /***** End Fill in the blank question type *****/
 
-  // Clone blank options
-  const elFibBlankOptions = elQuestionEditMain.querySelector(`${className.elFibBlankOptions}`);
-  const elFibBlankOptionItemClone = elQuestionEditMain.querySelector(`${className.elFibBlankOptionItemClone}`);
-  const elFibBlankOptionItemNew = elFibBlankOptionItemClone.cloneNode(true);
-  const countOptions = elFibBlankOptions.querySelectorAll(`${className.elFibBlankOptionItem}:not(.clone)`).length;
-  const elFibBlankOptionIndex = elFibBlankOptionItemNew.querySelector(`${className.elFibBlankOptionIndex}`);
-  const elFibOptionTitleInput = elFibBlankOptionItemNew.querySelector(`${className.elFibOptionTitleInput}`);
-  const elFibOptionMatchCaseInput = elFibBlankOptionItemNew.querySelector(`${className.elFibOptionMatchCaseInput}`);
-  const elFibOptionComparisonInput = elFibBlankOptionItemNew.querySelectorAll(`${className.elFibOptionComparisonInput}`);
-  elFibBlankOptionItemNew.dataset.id = uniquid;
-  elFibOptionTitleInput.name = `${className.elFibOptionTitleInput}-${uniquid}`;
-  elFibOptionTitleInput.value = decodeHtml(selectedText);
-  elFibBlankOptionIndex.textContent = countOptions + 1 + '.';
-  elFibOptionMatchCaseInput.name = `${className.elFibOptionMatchCaseInput}-${uniquid}`.replace(/\./g, '');
-  elFibOptionComparisonInput.forEach(elInput => {
-    elInput.name = `${className.elFibOptionComparisonInput}-${uniquid}`.replace(/\./g, '');
-    if (elInput.value === 'equal') {
-      elInput.checked = true;
+  // Generate a random string of specified length, for set unique id
+  randomString(length = 10) {
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-  });
-  elFibBlankOptionItemClone.insertAdjacentElement('beforebegin', elFibBlankOptionItemNew);
-  elFibBlankOptionItemNew.classList.remove('clone');
-  _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elFibBlankOptionItemNew, 1);
-  // End clone blank options
-
-  const elBtnFibSaveContent = elQuestionEditMain.querySelector(`${className.elBtnFibSaveContent}`);
-  _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibInsertBlank, 1);
-  fibSaveContent(null, elBtnFibSaveContent, () => {
-    _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibInsertBlank, 0);
-  });
-};
-// Delete all blanks
-const fibDeleteAllBlanks = (e, target) => {
-  const elBtnFibDeleteAllBlanks = target.closest(`${className.elBtnFibDeleteAllBlanks}`);
-  if (!elBtnFibDeleteAllBlanks) {
-    return;
+    return result;
   }
-  const elQuestionEditMain = elBtnFibDeleteAllBlanks.closest(`${className.elQuestionEditMain}`);
-  if (!elQuestionEditMain) {
-    return;
+  // Decode HTML entities
+  decodeHtml(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
   }
-  const questionId = elQuestionEditMain.dataset.questionId;
-  const dataAnswers = getDataAnswersConfig(elQuestionEditMain);
-  sweetalert2__WEBPACK_IMPORTED_MODULE_3___default().fire({
-    title: elBtnFibDeleteAllBlanks.dataset.title,
-    text: elBtnFibDeleteAllBlanks.dataset.content,
-    icon: 'warning',
-    showCloseButton: true,
-    showCancelButton: true,
-    cancelButtonText: lpSettings.i18n.cancel,
-    confirmButtonText: lpSettings.i18n.yes,
-    reverseButtons: true
-  }).then(result => {
-    if (result.isConfirmed) {
-      const editor = window.tinymce.get(`${className.elQuestionFibInput}-${questionId}`);
-      const elBlanks = editor.dom.select(`.${className.elQuestionFibInput}`);
-      elBlanks.forEach(elBlank => {
-        editor.dom.remove(elBlank, true);
-      });
-      dataAnswers.meta_data = {};
-      setDataAnswersConfig(elQuestionEditMain, dataAnswers);
-      const elFibBlankOptions = elQuestionEditMain.querySelector(`${className.elFibBlankOptions}`);
-      const elFibBlankOptionItems = elFibBlankOptions.querySelectorAll(`${className.elFibBlankOptionItem}:not(.clone)`);
-      elFibBlankOptionItems.forEach(elFibBlankOptionItem => {
-        elFibBlankOptionItem.remove();
-      });
-      const elBtnFibSaveContent = elQuestionEditMain.querySelector(`${className.elBtnFibSaveContent}`);
-      _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibDeleteAllBlanks, 1);
-      fibSaveContent(null, elBtnFibSaveContent, () => {
-        _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibDeleteAllBlanks, 0);
-      });
-    }
-  });
-};
-// Clear content FIB question
-const fibClearContent = (e, target) => {
-  const elBtnFibClearAllContent = target.closest(`${className.elBtnFibClearAllContent}`);
-  if (!elBtnFibClearAllContent) {
-    return;
-  }
-  const elQuestionEditMain = elBtnFibClearAllContent.closest(`${className.elQuestionEditMain}`);
-  if (!elQuestionEditMain) {
-    return;
-  }
-  const questionId = elQuestionEditMain.dataset.questionId;
-  const dataAnswers = getDataAnswersConfig(elQuestionEditMain);
-  sweetalert2__WEBPACK_IMPORTED_MODULE_3___default().fire({
-    title: elBtnFibClearAllContent.dataset.title,
-    text: elBtnFibClearAllContent.dataset.content,
-    icon: 'warning',
-    showCloseButton: true,
-    showCancelButton: true,
-    cancelButtonText: lpSettings.i18n.cancel,
-    confirmButtonText: lpSettings.i18n.yes,
-    reverseButtons: true
-  }).then(result => {
-    if (result.isConfirmed) {
-      const editor = window.tinymce.get(`lp-question-fib-input-${questionId}`);
-      editor.setContent('');
-      dataAnswers.meta_data = {};
-      setDataAnswersConfig(elQuestionEditMain, dataAnswers);
-      const elFibBlankOptions = elQuestionEditMain.querySelector(`${className.elFibBlankOptions}`);
-      const elFibBlankOptionItems = elFibBlankOptions.querySelectorAll(`${className.elFibBlankOptionItem}:not(.clone)`);
-      elFibBlankOptionItems.forEach(elFibBlankOptionItem => {
-        elFibBlankOptionItem.remove();
-      });
-      const elBtnFibSaveContent = elQuestionEditMain.querySelector(`${className.elBtnFibSaveContent}`);
-      _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibClearAllContent, 1);
-      fibSaveContent(null, elBtnFibSaveContent, () => {
-        _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibClearAllContent, 0);
-      });
-    }
-  });
-};
-// Remove blank
-const fibDeleteBlank = (e, target) => {
-  const elBtnFibOptionDelete = target.closest(`${className.elBtnFibOptionDelete}`);
-  if (!elBtnFibOptionDelete) {
-    return;
-  }
-  const elQuestionEditMain = elBtnFibOptionDelete.closest(`${className.elQuestionEditMain}`);
-  if (!elQuestionEditMain) {
-    return;
-  }
-  const questionId = elQuestionEditMain.dataset.questionId;
-  const elAnswersConfig = elQuestionEditMain.querySelector(`${className.elAnswersConfig}`);
-  const dataAnswers = getDataAnswersConfig(elQuestionEditMain);
-  const elFibBlankOptionItem = elBtnFibOptionDelete.closest(`${className.elFibBlankOptionItem}`);
-  const blankId = elFibBlankOptionItem.dataset.id;
-  sweetalert2__WEBPACK_IMPORTED_MODULE_3___default().fire({
-    title: elBtnFibOptionDelete.dataset.title,
-    text: elBtnFibOptionDelete.dataset.content,
-    icon: 'warning',
-    showCloseButton: true,
-    showCancelButton: true,
-    cancelButtonText: lpSettings.i18n.cancel,
-    confirmButtonText: lpSettings.i18n.yes,
-    reverseButtons: true
-  }).then(result => {
-    if (result.isConfirmed) {
-      // Find span with id on editor and remove it
-      const editor = window.tinymce.get(`${className.elQuestionFibInput}-${questionId}`);
-      const elBlank = editor.dom.select(`.${className.elQuestionFibInput}[data-id="${blankId}"]`);
-      if (elBlank[0]) {
-        // Remove tag html but keep content
-        editor.dom.remove(elBlank[0], true);
-      }
-      elFibBlankOptionItem.remove();
-      dataAnswers.meta_data = dataAnswers.meta_data || {};
-      if (dataAnswers.meta_data[blankId]) {
-        delete dataAnswers.meta_data[blankId];
-      }
-      setDataAnswersConfig(elQuestionEditMain, dataAnswers);
-      const elBtnFibSaveContent = elQuestionEditMain.querySelector(`${className.elBtnFibSaveContent}`);
-      _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elFibBlankOptionItem, 1);
-      fibSaveContent(null, elBtnFibSaveContent, () => {});
-    }
-  });
-};
-// Change title of blank option
-let timeoutAutoUpdateFib;
-const fibOptionTitleInputChange = (e, target) => {
-  const elFibOptionTitleInput = target.closest(`${className.elFibOptionTitleInput}`);
-  if (!elFibOptionTitleInput) {
-    return;
-  }
-  const elQuestionFibOptionItem = elFibOptionTitleInput.closest(`${className.elFibBlankOptionItem}`);
-  if (!elQuestionFibOptionItem) {
-    return;
-  }
-  const elQuestionEditMain = elFibOptionTitleInput.closest(`${className.elQuestionEditMain}`);
-  if (!elQuestionEditMain) {
-    return;
-  }
-  const value = elFibOptionTitleInput.value.trim();
-  const blankId = elQuestionFibOptionItem.dataset.id;
-  const questionId = elQuestionEditMain.dataset.questionId;
-  const editor = window.tinymce.get(`lp-question-fib-input-${questionId}`);
-  const elBlank = editor.dom.select(`.lp-question-fib-input[data-id="${blankId}"]`);
-  if (elBlank[0]) {
-    // Update content of blank
-    elBlank[0].textContent = value;
-  }
-  clearTimeout(timeoutAutoUpdateFib);
-  timeoutAutoUpdateFib = setTimeout(() => {
-    // Call ajax to update question description
-    const elBtnFibSaveContent = elQuestionEditMain.querySelector(`${className.elBtnFibSaveContent}`);
-    fibSaveContent(null, elBtnFibSaveContent);
-  }, 700);
-};
-// Save content FIB question
-const fibSaveContent = (e, target, callBackCompleted) => {
-  const elBtnFibSaveContent = target.closest(`${className.elBtnFibSaveContent}`);
-  if (!elBtnFibSaveContent) {
-    return;
-  }
-  const elQuestionEditMain = elBtnFibSaveContent.closest(`${className.elQuestionEditMain}`);
-  const questionId = elQuestionEditMain.dataset.questionId;
-  const dataAnswers = getDataAnswersConfig(elQuestionEditMain);
-  if (!dataAnswers) {
-    return;
-  }
-  const editor = window.tinymce.get(`${className.elQuestionFibInput}-${questionId}`);
-  dataAnswers.title = editor.getContent();
-  const elFibBlankOptionItems = elQuestionEditMain.querySelectorAll(`${className.elFibBlankOptionItem}:not(.clone)`);
-  if (elFibBlankOptionItems) {
-    elFibBlankOptionItems.forEach(elFibBlankOptionItem => {
-      const blankId = elFibBlankOptionItem.dataset.id;
-      const elFibOptionMatchCaseInput = elFibBlankOptionItem.querySelector(`${className.elFibOptionMatchCaseInput}`);
-      const elFibOptionComparisonInput = elFibBlankOptionItem.querySelector(`${className.elFibOptionComparisonInput}:checked`);
-      dataAnswers.meta_data[blankId].match_case = elFibOptionMatchCaseInput.checked ? 1 : 0;
-      dataAnswers.meta_data[blankId].comparison = elFibOptionComparisonInput.value;
-    });
-  }
-
-  //console.log( 'dataAnswers', dataAnswers );
-
-  if (!callBackCompleted) {
-    _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibSaveContent, 1);
-  }
-
-  // Call ajax to update answers config
-  const callBack = {
-    success: response => {
-      const {
-        message,
-        status
-      } = response;
-      if (status === 'success') {
-        setDataAnswersConfig(elQuestionEditMain, dataAnswers);
-      } else {
-        throw `Error: ${message}`;
-      }
-      showToast(message, status);
-    },
-    error: error => {
-      showToast(error, 'error');
-    },
-    completed: () => {
-      if (callBackCompleted && typeof callBackCompleted === 'function') {
-        callBackCompleted();
-      } else {
-        _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpSetLoadingEl(elBtnFibSaveContent, 0);
-      }
-    }
-  };
-
-  //console.log( 'dataAnswers', dataAnswers );
-
-  const dataSend = {
-    action: 'update_question_answers_config',
-    question_id: questionId,
-    answers: dataAnswers,
-    args: {
-      id_url: idUrlHandle
-    }
-  };
-  window.lpAJAXG.fetchAJAX(dataSend, callBack);
-};
-// Show/hide match case option
-const fibShowHideMatchCaseOption = (e, target) => {
-  const elFibOptionMatchCaseInput = target.closest(`${className.elFibOptionMatchCaseInput}`);
-  if (!elFibOptionMatchCaseInput) {
-    return;
-  }
-  const elQuestionFibOptionDetail = elFibOptionMatchCaseInput.closest(`${className.elQuestionFibOptionDetail}`);
-  const elFibOptionMatchCaseWrap = elQuestionFibOptionDetail.querySelector(`${className.elFibOptionMatchCaseWrap}`);
-  if (!elQuestionFibOptionDetail || !elFibOptionMatchCaseWrap) {
-    return;
-  }
-  if (elFibOptionMatchCaseInput.checked) {
-    _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elFibOptionMatchCaseWrap, 1);
-  } else {
-    _utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elFibOptionMatchCaseWrap, 0);
-  }
-};
-/***** End Fill in the blank question type *****/
-
-/**
- * Toggle section
- *
- * @param e
- * @param target
- * @param el_trigger  is class name or id name, to find of element to trigger toggle
- * @param els_exclude
- */
-const toggleSection = (e, target, el_trigger = '', els_exclude = []) => {
-  if (!el_trigger) {
-    el_trigger = className.elTriggerToggle;
-  }
-  if (els_exclude && els_exclude.length > 0) {
-    for (const elExclude of els_exclude) {
-      if (target.closest(elExclude)) {
-        return;
-      }
-    }
-  }
-  const elTinymceHeader = target.closest(el_trigger);
-  if (!elTinymceHeader) {
-    return;
-  }
-  const elSectionToggle = elTinymceHeader.closest(`${className.elSectionToggle}`);
-  if (!elSectionToggle) {
-    return;
-  }
-  elSectionToggle.classList.toggle(`${className.elCollapse}`);
-};
-
-// Generate a random string of specified length, for set unique id
-const randomString = (length = 10) => {
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
-};
-// Decode HTML entities
-const decodeHtml = html => {
-  const txt = document.createElement('textarea');
-  txt.innerHTML = html;
-  return txt.value;
-};
-// Show toast notification
-const argsToastify = {
-  text: '',
-  gravity: lpSettings.toast.gravity,
-  // `top` or `bottom`
-  position: lpSettings.toast.position,
-  // `left`, `center` or `right`
-  className: `${lpSettings.toast.classPrefix}`,
-  close: lpSettings.toast.close == 1,
-  stopOnFocus: lpSettings.toast.stopOnFocus == 1,
-  duration: lpSettings.toast.duration
-};
-const showToast = (message, status = 'success') => {
-  const toastify = new (toastify_js__WEBPACK_IMPORTED_MODULE_1___default())({
-    ...argsToastify,
-    text: message,
-    className: `${lpSettings.toast.classPrefix} ${status}`
-  });
-  toastify.showToast();
-};
-const events = () => {
-  // Event click
-  document.addEventListener('click', e => {
-    const target = e.target;
-    deleteQuestionAnswer(e, target);
-    addQuestionAnswer(e, target);
-    createQuestionType(e, target);
-    fibInsertBlank(e, target);
-    fibDeleteAllBlanks(e, target);
-    fibClearContent(e, target);
-    fibDeleteBlank(e, target);
-    fibSaveContent(e, target);
-    fibShowHideMatchCaseOption(e, target);
-    if (target.closest(`${className.elFibOptionMatchCaseInput}`) || target.closest(`${className.elFibOptionComparisonInput}`)) {
-      const elQuestionEditMain = target.closest(`${className.elQuestionEditMain}`);
-      const elSaveButton = elQuestionEditMain.querySelector(`${className.elBtnFibSaveContent}`);
-      fibSaveContent(e, elSaveButton);
-    }
-    _utils_js__WEBPACK_IMPORTED_MODULE_0__.toggleCollapse(e, target);
-  });
-  // Event change
-  document.addEventListener('change', e => {
-    const target = e.target;
-    autoUpdateQuestion(e, target);
-    autoUpdateAnswer(e, target);
-  });
-  // Event keyup
-  document.addEventListener('keyup', e => {
-    const target = e.target;
-    autoUpdateAnswer(e, target);
-    fibOptionTitleInputChange(e, target);
-    checkCanAddAnswer(e, target);
-  });
-  // Event keydown
-  document.addEventListener('keydown', e => {
-    const target = e.target;
-    // Event enter
-    if (e.key === 'Enter') {
-      if (target.closest(`${className.elQuestionAnswerTitleNewInput}`)) {
-        const elQuestionAnswerItemAddNew = target.closest(`${className.elQuestionAnswerItemAddNew}`);
-        const elBtnAddAnswer = elQuestionAnswerItemAddNew.querySelector(`${className.elBtnAddAnswer}`);
-        addQuestionAnswer(e, elBtnAddAnswer);
-        e.preventDefault();
-      } else if (target.closest(`${className.elQuestionAnswerTitleInput}`) || target.closest('.lp-question-point-input') || target.closest(`${className.elFibOptionTitleInput}`)) {
-        e.preventDefault();
-      }
-    }
-  });
-};
-
-// Element root ready.
-_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpOnElementReady(`${className.elEditQuestionWrap}`, elEditQuestionWrap => {
-  const findClass = className.elQuestionEditMain.replace('.', '');
+}
+const editQuestion = new EditQuestion();
+lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpOnElementReady(EditQuestion.selectors.elEditQuestionWrap, elEditQuestionWrap => {
+  const findClass = EditQuestion.selectors.elQuestionEditMain.replace('.', '');
   if (!elEditQuestionWrap.classList.contains(findClass)) {
     return;
   }
-  events();
-  initTinyMCE();
-  sortAbleQuestionAnswer(elEditQuestionWrap);
+  editQuestion.init();
 });
-
 })();
 
 /******/ })()

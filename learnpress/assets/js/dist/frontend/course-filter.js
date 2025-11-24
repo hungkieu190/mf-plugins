@@ -41,6 +41,7 @@ if ('undefined' !== typeof lpData) {
     apiWidgets: lp_rest_url + 'lp/v1/widgets/api',
     apiCourses: lp_rest_url + 'lp/v1/courses/archive-course',
     apiAJAX: lp_rest_url + 'lp/v1/load_content_via_ajax/',
+    // Deprecated since 4.3.0
     apiProfileCoverImage: lp_rest_url + 'lp/v1/profile/cover-image'
   };
 }
@@ -59,6 +60,7 @@ if (lp_rest_url) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   eventHandlers: () => (/* binding */ eventHandlers),
 /* harmony export */   getDataOfForm: () => (/* binding */ getDataOfForm),
 /* harmony export */   getFieldKeysOfForm: () => (/* binding */ getFieldKeysOfForm),
 /* harmony export */   listenElementCreated: () => (/* binding */ listenElementCreated),
@@ -81,7 +83,7 @@ __webpack_require__.r(__webpack_exports__);
  * @param data
  * @param functions
  * @since 4.2.5.1
- * @version 1.0.4
+ * @version 1.0.5
  */
 const lpClassName = {
   hidden: 'lp-hidden',
@@ -285,7 +287,8 @@ const getDataOfForm = form => {
     const key = pair[0];
     const value = formData.getAll(key);
     if (!dataSend.hasOwnProperty(key)) {
-      dataSend[key] = value;
+      // Convert value array to string.
+      dataSend[key] = value.join(',');
     }
   }
   return dataSend;
@@ -321,6 +324,57 @@ const mergeDataWithDatForm = (elForm, dataHandle) => {
     ...dataForm
   };
   return dataHandle;
+};
+
+/**
+ * Event trigger
+ * For each list of event handlers, listen event on document.
+ *
+ * eventName: 'click', 'change', ...
+ * eventHandlers = [ { selector: '.lp-button', callBack: function(){}, class: object } ]
+ *
+ * @param eventName
+ * @param eventHandlers
+ */
+const eventHandlers = (eventName, eventHandlers) => {
+  document.addEventListener(eventName, e => {
+    const target = e.target;
+    let args = {
+      e,
+      target
+    };
+    eventHandlers.forEach(eventHandler => {
+      args = {
+        ...args,
+        ...eventHandler
+      };
+
+      //console.log( args );
+
+      // Check condition before call back
+      if (eventHandler.conditionBeforeCallBack) {
+        if (eventHandler.conditionBeforeCallBack(args) !== true) {
+          return;
+        }
+      }
+
+      // Special check for keydown event with checkIsEventEnter = true
+      if (eventName === 'keydown' && eventHandler.checkIsEventEnter) {
+        if (e.key !== 'Enter') {
+          return;
+        }
+      }
+      if (target.closest(eventHandler.selector)) {
+        if (eventHandler.class) {
+          // Call method of class, function callBack will understand exactly {this} is class object.
+          eventHandler.class[eventHandler.callBack](args);
+        } else {
+          // For send args is objected, {this} is eventHandler object, not class object.
+          eventHandler.callBack(args);
+        }
+      }
+    });
+  });
 };
 
 /***/ })
@@ -539,11 +593,7 @@ window.lpCourseFilter = {
       const key = pair[0];
       const value = formData.getAll(key);
       if (!filterCourses.hasOwnProperty(key)) {
-        let value_convert = value;
-        if ('object' === typeof value) {
-          value_convert = value.join(',');
-        }
-        filterCourses[key] = value_convert;
+        filterCourses[key] = value.join(',');
       }
     }
     if ('undefined' !== typeof lpData.urlParams.page_term_id_current) {
@@ -611,7 +661,6 @@ window.lpCourseFilter = {
     (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpFetchAPI)(url, paramsFetch, callBack);
   },
   submit: form => {
-    let urlFetch = _api__WEBPACK_IMPORTED_MODULE_0__["default"].frontend.apiAJAX;
     const formData = new FormData(form); // Create a FormData object from the form
     const elListCourse = document.querySelector('.learn-press-courses');
     const elOptionWidget = form.closest('div[data-widget]');
@@ -648,14 +697,8 @@ window.lpCourseFilter = {
     // Send lang to API if exist for multiple lang.
     if (lpData.urlParams.hasOwnProperty('lang')) {
       filterCourses.lang = lpData.urlParams.lang;
-      urlFetch = (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpAddQueryArgs)(urlFetch, {
-        lang: lpData.urlParams.lang
-      });
     } else if (lpData.urlParams.hasOwnProperty('pll-current-lang')) {
       filterCourses['pll-current-lang'] = lpData.urlParams['pll-current-lang'];
-      urlFetch = (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpAddQueryArgs)(urlFetch, {
-        lang: lpData.urlParams['pll-current-lang']
-      });
     }
     if ('undefined' !== typeof lpSettingCourses &&
     // Old version.

@@ -973,7 +973,9 @@ class Questions extends _wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Componen
       }
     }
     if (Object.values(changedProps).length) {
-      state.self.needToTop = true;
+      if (props.questionsPerPage === 1) {
+        state.self.needToTop = true;
+      }
       return changedProps;
     }
     return null;
@@ -1779,10 +1781,11 @@ const Timer = () => {
   const {
     submitQuiz
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.dispatch)('learnpress/quiz');
-  const totalTime = getData('totalTime');
+  let totalTime = getData('totalTime');
   const durationTime = getData('duration');
+  const timeSpendG = getData('timeSpend');
   const [seconds, setSeconds] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(totalTime);
-  let [timeSpend, setTimeSpend] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(0);
+  let [timeSpend, setTimeSpend] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(timeSpendG);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     const myInterval = setInterval(() => {
       if (durationTime > 0) {
@@ -1809,6 +1812,9 @@ const Timer = () => {
   const formatTime = (separator = ':') => {
     const t = [];
     let m;
+    if (timeSpendG) {
+      totalTime = timeSpendG;
+    }
     if (totalTime < 3600) {
       t.push((seconds - seconds % 60) / 60);
       t.push(seconds % 60);

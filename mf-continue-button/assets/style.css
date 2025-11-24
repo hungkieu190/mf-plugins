@@ -1,0 +1,17 @@
+/* MF Continue Button basic styles (comments in English) */
+.mf-continue-btn{
+  display:inline-block;
+  background:#0073aa;
+  color:#fff;
+  padding:8px 14px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:600;
+  line-height:1;
+  transition:background .2s ease, transform .05s ease;
+}
+.mf-continue-btn:hover{ background:#005f8d; }
+.mf-continue-btn:active{ transform: translateY(1px); }
+
+.mf-cb-dashboard { margin: 10px 0 16px; }
+.mf-cb-heading { margin: 0 0 8px; font-size: 1rem; font-weight: 700; }

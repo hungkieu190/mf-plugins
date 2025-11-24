@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '1c7a73209faf318af18459c08d1f173bfc014969',
+        'reference' => '1801715f307ce0db70ae7221aeeac3e334289264',
         'name' => 'learnpress/learnpress',
         'dev' => false,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '1c7a73209faf318af18459c08d1f173bfc014969',
+            'reference' => '1801715f307ce0db70ae7221aeeac3e334289264',
             'dev_requirement' => false,
         ),
         'symfony/css-selector' => array(

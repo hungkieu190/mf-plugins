@@ -1,0 +1,38 @@
+.lp-uppc-preview-ui-dialog .ui-dialog-titlebar {
+	background: #23282d;
+	color: #fff;
+	border: none;
+}
+
+.lp-uppc-preview-ui-dialog .ui-dialog-titlebar-close {
+	color: #fff;
+	opacity: 0.8;
+}
+
+.lp-uppc-preview-ui-dialog .ui-dialog-titlebar-close:hover {
+	opacity: 1;
+}
+
+.lp-uppc-preview-content {
+	max-height: 65vh;
+	overflow-y: auto;
+}
+
+.lp-uppc-preview-loading {
+	font-style: italic;
+	margin: 0;
+}
+
+.lp-uppc-preview-wrapper {
+	line-height: 1.6;
+}
+
+.lp-uppc-preview-subject {
+	margin: 0 0 12px;
+}
+
+.lp-uppc-preview-message {
+	border: 1px solid #e3e6e8;
+	background: #fff;
+	padding: 16px;
+}

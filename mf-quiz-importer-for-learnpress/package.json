@@ -1,0 +1,29 @@
+{
+  "name": "mf-quiz-importer-for-learnpress",
+  "version": "1.0.0",
+  "description": "Import quizzes from CSV, Excel, or JSON files into LearnPress LMS",
+  "main": "index.js",
+  "scripts": {
+    "lint:js": "eslint 'assets/js/**/*.js'",
+    "format": "prettier --write 'assets/**/*.{js,css}'",
+    "release": "node scripts/release.js"
+  },
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "learnpress",
+    "quiz",
+    "import",
+    "lms"
+  ],
+  "author": "MamFlow",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "archiver": "^6.0.1",
+    "clean-css-cli": "^5.6.3",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.10"
+  },
+  "homepage": "https://mamflow.com"
+}

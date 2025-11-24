@@ -918,7 +918,7 @@ p:last-child {
   cursor: pointer;
 }
 .lp-checkout-form a:hover {
-  color: #ffb606;
+  color: var(--lp-primary-color, #ffb606);
 }
 .lp-checkout-form #checkout-account-guest {
   width: 100%;

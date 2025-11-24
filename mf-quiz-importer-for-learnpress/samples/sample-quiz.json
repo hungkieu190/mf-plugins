@@ -1,0 +1,242 @@
+[
+  {
+    "title": "Introduction to WordPress",
+    "description": "Learn the basics of WordPress CMS",
+    "duration": 30,
+    "passing_grade": 70,
+    "retake_count": 0,
+    "questions": [
+      {
+        "title": "What is WordPress?",
+        "content": "Choose the correct answer",
+        "type": "single_choice",
+        "answers": [
+          {
+            "text": "A content management system",
+            "correct": true
+          },
+          {
+            "text": "A programming language",
+            "correct": false
+          },
+          {
+            "text": "A database",
+            "correct": false
+          },
+          {
+            "text": "An operating system",
+            "correct": false
+          }
+        ],
+        "explanation": "WordPress is a free and open-source content management system (CMS) written in PHP"
+      },
+      {
+        "title": "WordPress is open source",
+        "content": "True or False?",
+        "type": "true_or_false",
+        "answers": [
+          {
+            "text": "True",
+            "correct": true
+          },
+          {
+            "text": "False",
+            "correct": false
+          }
+        ],
+        "explanation": "WordPress is released under the GPL license, making it open source software"
+      },
+      {
+        "title": "Which language is WordPress written in?",
+        "content": "Select the correct answer",
+        "type": "single_choice",
+        "answers": [
+          {
+            "text": "Python",
+            "correct": false
+          },
+          {
+            "text": "PHP",
+            "correct": true
+          },
+          {
+            "text": "Ruby",
+            "correct": false
+          },
+          {
+            "text": "Java",
+            "correct": false
+          }
+        ],
+        "explanation": "WordPress is primarily written in PHP, along with HTML, CSS, and JavaScript"
+      },
+      {
+        "title": "Select all features of WordPress",
+        "content": "Choose all that apply (Multiple Choice)",
+        "type": "multiple_choice",
+        "answers": [
+          {
+            "text": "Plugin system",
+            "correct": true
+          },
+          {
+            "text": "Theme support",
+            "correct": true
+          },
+          {
+            "text": "Built-in compiler",
+            "correct": false
+          },
+          {
+            "text": "User management",
+            "correct": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Advanced PHP Programming",
+    "description": "Master advanced PHP concepts and techniques",
+    "duration": 60,
+    "passing_grade": 80,
+    "retake_count": 2,
+    "questions": [
+      {
+        "title": "What is a namespace in PHP?",
+        "content": "Choose the best answer",
+        "type": "single_choice",
+        "answers": [
+          {
+            "text": "A way to organize code and avoid naming conflicts",
+            "correct": true
+          },
+          {
+            "text": "A type of variable",
+            "correct": false
+          },
+          {
+            "text": "A database table",
+            "correct": false
+          },
+          {
+            "text": "A function parameter",
+            "correct": false
+          }
+        ]
+      },
+      {
+        "title": "PHP supports multiple inheritance",
+        "content": "True or False?",
+        "type": "true_or_false",
+        "answers": [
+          {
+            "text": "True",
+            "correct": false
+          },
+          {
+            "text": "False",
+            "correct": true
+          }
+        ]
+      },
+      {
+        "title": "Which of these are valid PHP data types?",
+        "content": "Select all correct answers",
+        "type": "multiple_choice",
+        "answers": [
+          {
+            "text": "String",
+            "correct": true
+          },
+          {
+            "text": "Integer",
+            "correct": true
+          },
+          {
+            "text": "Character",
+            "correct": false
+          },
+          {
+            "text": "Array",
+            "correct": true
+          },
+          {
+            "text": "Boolean",
+            "correct": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "JavaScript Fundamentals",
+    "description": "Learn the core concepts of JavaScript",
+    "duration": 45,
+    "passing_grade": 75,
+    "retake_count": 1,
+    "questions": [
+      {
+        "title": "JavaScript is a compiled language",
+        "content": "True or False?",
+        "type": "true_or_false",
+        "answers": [
+          {
+            "text": "True",
+            "correct": false
+          },
+          {
+            "text": "False",
+            "correct": true
+          }
+        ]
+      },
+      {
+        "title": "Which keyword is used to declare a constant in JavaScript?",
+        "content": "Select the correct answer",
+        "type": "single_choice",
+        "answers": [
+          {
+            "text": "var",
+            "correct": false
+          },
+          {
+            "text": "let",
+            "correct": false
+          },
+          {
+            "text": "const",
+            "correct": true
+          },
+          {
+            "text": "constant",
+            "correct": false
+          }
+        ]
+      },
+      {
+        "title": "What does DOM stand for?",
+        "content": "Choose the correct answer",
+        "type": "single_choice",
+        "answers": [
+          {
+            "text": "Document Object Model",
+            "correct": true
+          },
+          {
+            "text": "Data Object Model",
+            "correct": false
+          },
+          {
+            "text": "Digital Object Management",
+            "correct": false
+          },
+          {
+            "text": "Document Oriented Markup",
+            "correct": false
+          }
+        ]
+      }
+    ]
+  }
+]

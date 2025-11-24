@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build & Release
+release/
+dist/
+build/
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor Files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Temporary Files
+*.log
+*.tmp
+*.bak
+*~
+*.swp
+*.swo
+
+# WordPress
+wp-config.php
+.htaccess
+
+# Source files (LearnPress source for reference)
+source_lp/
+
+# Package managers
+package-lock.json
+composer.lock
+yarn.lock
+
+# Environment
+.env
+.env.local

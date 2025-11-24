@@ -47,7 +47,20 @@
 
 /**
 * Style for the popup alert, confirm
+* @link https://sweetalert2.github.io/
+* @since 4.2.9
+* @version 1.0.0
 */
+.swal2-container {
+  z-index: 99999;
+}
+
+.swal2-popup .content-title {
+  margin: 0 0 20px 0;
+  padding: 0;
+  text-align: center;
+  font-size: 1.5em;
+}
 .swal2-popup .swal2-actions {
   width: 100%;
   padding: 0 30px;
@@ -86,6 +99,10 @@
 }
 .swal2-popup .swal2-html-container {
   font-size: 1em;
+}
+.swal2-popup .lp-tom-select.ts-wrapper .ts-dropdown {
+  max-height: 200px;
+  overflow: hidden;
 }
 
 .lp-icon-spinner {
@@ -205,6 +222,13 @@
 .lp-question-answer-item .lp-btn-delete-question-answer {
   display: none;
   cursor: pointer;
+}
+.lp-question-answer-item .lp-icon-drag {
+  cursor: grab;
+  line-height: 1;
+}
+.lp-question-answer-item .lp-icon-drag:active {
+  cursor: grabbing;
 }
 
 .lp-question-answer-item-add-new {
@@ -448,7 +472,6 @@
   cursor: pointer;
 }
 .lp-popup-items-to-select .pagination li .page-numbers {
-  width: 30px;
   height: 30px;
   display: flex;
   align-items: center;

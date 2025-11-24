@@ -343,6 +343,7 @@ if ('undefined' !== typeof lpData) {
     apiWidgets: lp_rest_url + 'lp/v1/widgets/api',
     apiCourses: lp_rest_url + 'lp/v1/courses/archive-course',
     apiAJAX: lp_rest_url + 'lp/v1/load_content_via_ajax/',
+    // Deprecated since 4.3.0
     apiProfileCoverImage: lp_rest_url + 'lp/v1/profile/cover-image'
   };
 }

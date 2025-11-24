@@ -1,0 +1,6 @@
+title,description,duration,passing_grade,retake_count
+"Introduction to WordPress","Basic WordPress concepts and features",30,70,0
+"Advanced PHP Programming","Learn advanced PHP techniques",60,80,2
+"JavaScript Fundamentals","Master the basics of JavaScript",45,75,1
+"Database Design","Learn how to design efficient databases",90,70,0
+"Web Security Basics","Introduction to web application security",40,85,1
