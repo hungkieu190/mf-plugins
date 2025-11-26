@@ -1,0 +1,15 @@
+{
+  "name": "Sticky Notes Add-on for LearnPress",
+  "version": "1.0.1",
+  "slug": "lp-sticky-notes",
+  "buildDate": "2025-11-26T06:19:22.370Z",
+  "files": {
+    "zip": "lp-sticky-notes-1.0.1.zip",
+    "directory": "lp-sticky-notes"
+  },
+  "requirements": {
+    "wordpress": "6.0+",
+    "php": "7.4+",
+    "learnpress": "4.2.0+"
+  }
+}
