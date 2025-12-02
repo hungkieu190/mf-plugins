@@ -36,22 +36,27 @@ class LP_UPPC_Service
 
 	public function handle_user_progress_event(int $item_id, int $course_id, int $user_id): void
 	{
+		LP_UPPC_Helper::debug_log('Event: user-completed-lesson | Item: ' . $item_id . ' | Course: ' . $course_id . ' | User: ' . $user_id);
 		$this->maybe_handle_progress($course_id, $user_id);
 	}
 
 	public function handle_course_completed(int $course_id, int $user_id, $user_item_id): void
 	{
+		LP_UPPC_Helper::debug_log('Event: user-course-finished | Course: ' . $course_id . ' | User: ' . $user_id . ' | Item: ' . $user_item_id);
 		$this->maybe_handle_progress($course_id, $user_id, true);
 	}
 
 	public function handle_course_object_finished($user_course_model): void
 	{
 		if (!$user_course_model || !method_exists($user_course_model, 'get_course_id')) {
+			LP_UPPC_Helper::debug_log('Event: user-course/finished | Invalid user_course_model');
 			return;
 		}
 
 		$course_id = (int) $user_course_model->get_course_id();
 		$user_id = (int) $user_course_model->get_user_id();
+
+		LP_UPPC_Helper::debug_log('Event: user-course/finished | Course: ' . $course_id . ' | User: ' . $user_id);
 
 		if ($course_id && $user_id) {
 			$this->maybe_handle_progress($course_id, $user_id, true);
@@ -60,49 +65,66 @@ class LP_UPPC_Service
 
 	private function maybe_handle_progress(int $course_id, int $user_id, bool $force_completed = false): void
 	{
+		LP_UPPC_Helper::debug_log('maybe_handle_progress | Course: ' . $course_id . ' | User: ' . $user_id . ' | Force completed: ' . ($force_completed ? 'yes' : 'no'));
+
 		if (!$this->is_addon_enabled()) {
+			LP_UPPC_Helper::debug_log('❌ Plugin is disabled in settings');
 			return;
 		}
 
-		if ('yes' !== get_post_meta($course_id, '_lp_uppc_enable_course', true)) {
+		$course_enabled = get_post_meta($course_id, '_lp_uppc_enable_course', true);
+		if ('yes' !== $course_enabled) {
+			LP_UPPC_Helper::debug_log('❌ Course ' . $course_id . ' has coupon disabled (value: ' . $course_enabled . ')');
 			return;
 		}
 
 		$rules = get_post_meta($course_id, '_lp_uppc_rules', true);
 		if (empty($rules) || !is_array($rules)) {
+			LP_UPPC_Helper::debug_log('❌ No rules found for course ' . $course_id);
 			return;
 		}
 
+		LP_UPPC_Helper::debug_log('✓ Found ' . count($rules) . ' rule(s) for course ' . $course_id);
+
 		$user = learn_press_get_user($user_id);
 		if (!$user) {
+			LP_UPPC_Helper::debug_log('❌ Cannot get user object for user ' . $user_id);
 			return;
 		}
 
 		$course_data = $user->get_course_data($course_id);
 		if (!$course_data) {
+			LP_UPPC_Helper::debug_log('❌ Cannot get course data for user ' . $user_id . ' and course ' . $course_id);
 			return;
 		}
 
 		$progress = $force_completed ? 100 : $this->round_progress($course_data->get_percent_completed_items());
+		LP_UPPC_Helper::debug_log('✓ Current progress: ' . $progress . '%');
 
 		$cache_key = $course_id . '|' . $user_id;
 		if (isset($this->triggered[$cache_key]) && $this->triggered[$cache_key] >= $progress) {
+			LP_UPPC_Helper::debug_log('⏭️  Skipping - already triggered at ' . $this->triggered[$cache_key] . '% (current: ' . $progress . '%)');
 			return;
 		}
 
 		$sorted_rules = $this->sort_rules($rules);
-		foreach ($sorted_rules as $rule) {
+		foreach ($sorted_rules as $index => $rule) {
 			$threshold = (int) ($rule['progress'] ?? 0);
+			LP_UPPC_Helper::debug_log('Checking rule #' . ($index + 1) . ' | Threshold: ' . $threshold . '%');
+
 			if ($progress < $threshold) {
+				LP_UPPC_Helper::debug_log('⏭️  Progress (' . $progress . '%) < threshold (' . $threshold . '%) - stopping');
 				break;
 			}
 
 			if (!$this->should_trigger_rule($course_id, $user_id, $threshold)) {
+				LP_UPPC_Helper::debug_log('⏭️  Rule already triggered or retake not allowed - skipping');
 				continue;
 			}
 
 			$this->triggered[$cache_key] = $progress;
 
+			LP_UPPC_Helper::debug_log('✅ Processing rule at ' . $threshold . '%');
 			$this->process_rule($course_id, $user_id, $threshold, $rule);
 		}
 	}
@@ -164,10 +186,14 @@ class LP_UPPC_Service
 
 	private function process_rule(int $course_id, int $user_id, int $threshold, array $rule): void
 	{
+		LP_UPPC_Helper::debug_log('🎫 Generating coupon...');
 		$coupon = $this->generate_coupon($course_id, $user_id, $threshold, $rule);
 		if (!$coupon) {
+			LP_UPPC_Helper::debug_log('❌ Failed to generate coupon');
 			return;
 		}
+
+		LP_UPPC_Helper::debug_log('✓ Coupon created: ' . $coupon->get_code() . ' (ID: ' . $coupon->get_id() . ')');
 
 		$meta_key = $this->get_coupon_sent_key($course_id, $threshold);
 		$meta = array(
@@ -176,10 +202,13 @@ class LP_UPPC_Service
 			'timestamp' => time(),
 		);
 		update_user_meta($user_id, $meta_key, $meta);
+		LP_UPPC_Helper::debug_log('✓ Saved user meta: ' . $meta_key);
 
 		$this->log_coupon_event($course_id, $user_id, $threshold, $coupon);
 
+		LP_UPPC_Helper::debug_log('📧 Queueing email...');
 		LP_UPPC_Email::instance()->queue_coupon_email($coupon, $course_id, $user_id, $threshold, $rule);
+		LP_UPPC_Helper::debug_log('✅ Email queued successfully');
 	}
 
 	private function generate_coupon(int $course_id, int $user_id, int $threshold, array $rule)

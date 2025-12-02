@@ -103,6 +103,13 @@ class LP_UPPC_Settings extends LP_Abstract_Settings_Page
 				'default' => 'yes',
 				'desc' => esc_html__('Store coupon delivery history for auditing.', 'lp-upsell-progress-coupon'),
 			],
+			[
+				'id' => 'lp_uppc_enable_debug_log',
+				'title' => esc_html__('Enable debug logging', 'lp-upsell-progress-coupon'),
+				'type' => 'checkbox',
+				'default' => 'no',
+				'desc' => esc_html__('Enable detailed debug logs for troubleshooting. Logs will be written to wp-content/debug.log with [LP_UPPC_DEBUG] prefix.', 'lp-upsell-progress-coupon'),
+			],
 			['type' => 'sectionend'],
 		];
 	}
