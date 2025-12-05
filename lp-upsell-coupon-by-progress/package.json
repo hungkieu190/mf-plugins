@@ -1,0 +1,15 @@
+{
+    "name": "lp-upsell-coupon-by-progress",
+    "version": "1.0.0",
+    "description": "Automatically reward learners with WooCommerce coupons once they reach configurable progress milestones in their current LearnPress course.",
+    "scripts": {
+        "release": "gulp release"
+    },
+    "author": "Mamflow",
+    "license": "GPL-2.0-or-later",
+    "devDependencies": {
+        "gulp": "^4.0.2",
+        "gulp-zip": "^5.1.0",
+        "del": "^6.1.1"
+    }
+}
