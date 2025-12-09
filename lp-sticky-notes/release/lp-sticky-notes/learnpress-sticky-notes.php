@@ -4,7 +4,7 @@
  * Plugin URI: https://mamflow.com/product/learnpress-notes-addon-lp-sticky-notes/
  * Description: Allow students to take notes and highlight content for each lesson in LearnPress courses
  * Author: Mamflow
- * Version: 1.0.1
+ * Version: 1.0.3
  * Author URI: https://mamflow.com/
  * Requires at least: 6.0
  * Requires PHP: 7.4
@@ -18,7 +18,7 @@
 defined('ABSPATH') || exit();
 
 // Define constants
-define('LP_STICKY_NOTES_VERSION', '1.0.0');
+define('LP_STICKY_NOTES_VERSION', '1.0.3');
 define('LP_STICKY_NOTES_FILE', __FILE__);
 define('LP_STICKY_NOTES_PATH', plugin_dir_path(__FILE__));
 define('LP_STICKY_NOTES_URL', plugin_dir_url(__FILE__));
@@ -54,6 +54,8 @@ class LP_Sticky_Notes
 		require_once LP_STICKY_NOTES_PATH . 'inc/class-lp-sticky-notes-ajax.php';
 		require_once LP_STICKY_NOTES_PATH . 'inc/class-lp-sticky-notes-hooks.php';
 		require_once LP_STICKY_NOTES_PATH . 'inc/class-lp-sticky-notes-profile.php';
+		require_once LP_STICKY_NOTES_PATH . 'inc/class-lp-sticky-notes-admin.php';
+		require_once LP_STICKY_NOTES_PATH . 'inc/class-lp-sticky-notes-settings.php';
 	}
 
 	/**
@@ -98,6 +100,8 @@ class LP_Sticky_Notes
 		LP_Sticky_Notes_Ajax::instance();
 		LP_Sticky_Notes_Hooks::instance();
 		LP_Sticky_Notes_Profile::instance();
+		LP_Sticky_Notes_Admin::instance();
+		LP_Sticky_Notes_Settings::instance();
 	}
 
 	/**

@@ -301,8 +301,19 @@ class LP_Sticky_Notes_Ajax
 			return true;
 		}
 
-		// Check if user is enrolled
-		return $user->has_enrolled_course($course_id);
+		// Allow access if user has enrolled (includes finished courses)
+		// This ensures users can still view their notes even after completing the course
+		if ($user->has_enrolled_course($course_id)) {
+			return true;
+		}
+
+		// Check if user has finished the course (can still read notes)
+		$course_data = $user->get_course_data($course_id);
+		if ($course_data && $course_data->get_status() === 'finished') {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

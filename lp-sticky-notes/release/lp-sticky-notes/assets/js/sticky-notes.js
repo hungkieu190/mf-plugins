@@ -188,6 +188,11 @@
 		},
 
 		initTextSelection: function () {
+			// Check if highlighting is enabled
+			if (lpStickyNotes.highlightEnable !== 'yes') {
+				return;
+			}
+
 			var self = this;
 			var selectionTimeout;
 

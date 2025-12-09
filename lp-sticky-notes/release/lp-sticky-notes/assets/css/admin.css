@@ -1,0 +1,226 @@
+/**
+ * Admin styles for Student Notes page
+ *
+ * @package LP_Sticky_Notes
+ */
+
+.lp-sticky-notes-admin {
+    max-width: 1400px;
+}
+
+/* Filters */
+.lp-admin-filters {
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.filter-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 200px;
+}
+
+.filter-group label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1d2327;
+}
+
+.filter-group select {
+    min-width: 250px;
+    height: 36px;
+}
+
+.filter-group button,
+.filter-group .button {
+    height: 36px;
+    margin-top: 22px;
+}
+
+/* Stats */
+.lp-notes-stats {
+    margin: 15px 0;
+    padding: 10px 15px;
+    background: #f0f0f1;
+    border-left: 4px solid #2271b1;
+    border-radius: 2px;
+}
+
+.lp-notes-stats p {
+    margin: 0;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+/* No notes */
+.lp-no-notes-admin {
+    background: #fff;
+    padding: 40px;
+    text-align: center;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    margin: 20px 0;
+}
+
+.lp-no-notes-admin p {
+    color: #787c82;
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Table */
+.lp-notes-table {
+    margin-top: 20px;
+}
+
+.lp-notes-table th {
+    font-weight: 600;
+}
+
+.lp-notes-table td {
+    vertical-align: top;
+    padding: 12px 10px;
+}
+
+.lp-notes-table td small {
+    color: #787c82;
+    font-size: 12px;
+}
+
+/* Note type badge */
+.note-type-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.note-type-badge.note-type-text {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.note-type-badge.note-type-highlight {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* Content preview */
+.highlight-preview {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #fef3c7;
+    border-left: 3px solid #f59e0b;
+    border-radius: 4px;
+}
+
+.highlight-preview strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #92400e;
+}
+
+.highlight-text {
+    font-style: italic;
+    font-size: 13px;
+    color: #78350f;
+}
+
+.note-content-preview {
+    margin-bottom: 10px;
+    color: #50575e;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.view-full-note {
+    margin-top: 5px;
+}
+
+/* Full note content */
+.full-note-content td {
+    background: #f6f7f7;
+    padding: 20px;
+}
+
+.note-full-detail {
+    max-width: 900px;
+}
+
+.note-highlight-full,
+.note-content-full {
+    margin-bottom: 20px;
+}
+
+.note-highlight-full strong,
+.note-content-full strong {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #1d2327;
+}
+
+.highlight-text-full {
+    background: #fef3c7;
+    padding: 15px;
+    border-left: 3px solid #f59e0b;
+    border-radius: 4px;
+    font-style: italic;
+    color: #78350f;
+    line-height: 1.6;
+}
+
+.note-content-full {
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    line-height: 1.8;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+    .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group {
+        min-width: auto;
+    }
+
+    .filter-group select {
+        min-width: 100%;
+    }
+
+    .filter-group button,
+    .filter-group .button {
+        margin-top: 0;
+        width: 100%;
+    }
+
+    .lp-notes-table {
+        font-size: 13px;
+    }
+
+    .lp-notes-table td,
+    .lp-notes-table th {
+        padding: 8px 5px;
+    }
+}
