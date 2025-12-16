@@ -61,6 +61,12 @@ class LP_Sticky_Notes_Hooks
 			return;
 		}
 
+		// Check license
+		$license_handler = LP_Sticky_Notes::instance()->get_license_handler();
+		if (!$license_handler->is_feature_enabled()) {
+			return; // License not active - feature locked
+		}
+
 		// Check if sticky notes are enabled
 		$enable = LP_Sticky_Notes_Settings::get_setting('lp_sticky_notes_enable', 'yes');
 		if ($enable !== 'yes') {
@@ -152,6 +158,12 @@ class LP_Sticky_Notes_Hooks
 			return;
 		}
 
+		// Check license
+		$license_handler = LP_Sticky_Notes::instance()->get_license_handler();
+		if (!$license_handler->is_feature_enabled()) {
+			return; // License not active - feature locked
+		}
+
 		// Check if sticky notes are enabled
 		$enable = LP_Sticky_Notes_Settings::get_setting('lp_sticky_notes_enable', 'yes');
 		if ($enable !== 'yes') {
@@ -202,6 +214,21 @@ class LP_Sticky_Notes_Hooks
 	 */
 	public function render_shortcode($atts)
 	{
+		// Check license first
+		$license_handler = LP_Sticky_Notes::instance()->get_license_handler();
+		if (!$license_handler->is_feature_enabled()) {
+			return '<div style="padding: 20px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; margin: 20px 0;">' .
+				'<p style="margin: 0;"><strong>' . esc_html__('License Required', 'lp-sticky-notes') . '</strong></p>' .
+				'<p style="margin: 10px 0 0 0;">' .
+				sprintf(
+					esc_html__('This feature requires an active license. %sPurchase a license%s to unlock sticky notes.', 'lp-sticky-notes'),
+					'<a href="https://mamflow.com/product/learnpress-notes-addon-lp-sticky-notes/" target="_blank">',
+					'</a>'
+				) .
+				'</p>' .
+				'</div>';
+		}
+
 		$atts = shortcode_atts(
 			array(
 				'user_id' => get_current_user_id(),

@@ -24,6 +24,9 @@ define('LP_STICKY_NOTES_PATH', plugin_dir_path(__FILE__));
 define('LP_STICKY_NOTES_URL', plugin_dir_url(__FILE__));
 define('LP_STICKY_NOTES_BASENAME', plugin_basename(__FILE__));
 
+// License Product ID on mamflow.com
+define('LP_STICKY_NOTES_PRODUCT_ID', 47130);
+
 /**
  * Class LP_Sticky_Notes
  */
@@ -37,11 +40,19 @@ class LP_Sticky_Notes
 	protected static $instance = null;
 
 	/**
+	 * License handler instance
+	 *
+	 * @var Mamflow_License_Handler
+	 */
+	private $license_handler;
+
+	/**
 	 * LP_Sticky_Notes constructor.
 	 */
 	protected function __construct()
 	{
 		$this->includes();
+		$this->load_license_system();
 		$this->hooks();
 	}
 
@@ -50,6 +61,11 @@ class LP_Sticky_Notes
 	 */
 	private function includes()
 	{
+		require_once LP_STICKY_NOTES_PATH . 'inc/license/class-license-handler.php';
+		require_once LP_STICKY_NOTES_PATH . 'inc/license/shared-license-page.php';
+		require_once LP_STICKY_NOTES_PATH . 'inc/license/admin-license-page.php';
+		require_once LP_STICKY_NOTES_PATH . 'inc/license/cron-scheduler.php';
+
 		require_once LP_STICKY_NOTES_PATH . 'inc/class-lp-sticky-notes-database.php';
 		require_once LP_STICKY_NOTES_PATH . 'inc/class-lp-sticky-notes-ajax.php';
 		require_once LP_STICKY_NOTES_PATH . 'inc/class-lp-sticky-notes-hooks.php';
@@ -66,9 +82,102 @@ class LP_Sticky_Notes
 		add_action('plugins_loaded', array($this, 'check_learnpress'));
 		add_action('init', array($this, 'load_textdomain'));
 
+		// License admin menu
+		if (is_admin()) {
+			add_action('admin_menu', array($this, 'add_license_menu'), 100);
+			add_action('admin_notices', array($this, 'license_notice'));
+		}
+
 		// Activation/Deactivation hooks
 		register_activation_hook(LP_STICKY_NOTES_FILE, array($this, 'activate'));
 		register_deactivation_hook(LP_STICKY_NOTES_FILE, array($this, 'deactivate'));
+	}
+
+	/**
+	 * Load and initialize license system
+	 */
+	private function load_license_system()
+	{
+		// Initialize license handler
+		$this->license_handler = new Mamflow_License_Handler([
+			'product_id' => LP_STICKY_NOTES_PRODUCT_ID,
+			'product_name' => 'Sticky Notes Add-on for LearnPress',
+			'api_url' => 'https://mamflow.com/wp-json/mamflow/v1',
+			'option_key' => 'lp_sticky_notes_license'
+		]);
+	}
+
+	/**
+	 * Add license menu to LearnPress admin
+	 */
+	public function add_license_menu()
+	{
+		if (!class_exists('LearnPress')) {
+			return;
+		}
+
+		// Register unified Mamflow license page
+		mamflow_register_license_menu();
+
+		// Register this plugin's tab
+		add_filter('mamflow_license_tabs', array($this, 'register_license_tab'));
+	}
+
+	/**
+	 * Register Sticky Notes tab in unified license page
+	 */
+	public function register_license_tab($tabs)
+	{
+		$tabs['sticky-notes'] = array(
+			'title' => esc_html__('Sticky Notes', 'lp-sticky-notes'),
+			'callback' => 'lp_sticky_notes_render_license_tab',
+			'priority' => 10
+		);
+		return $tabs;
+	}
+
+	/**
+	 * Show admin notice if license not activated
+	 */
+	public function license_notice()
+	{
+		// Only show if LearnPress is active
+		if (!class_exists('LearnPress')) {
+			return;
+		}
+
+		// Don't show on license page
+		if (isset($_GET['page']) && $_GET['page'] === 'mamflow-license') {
+			return;
+		}
+
+		// Check if license is active
+		if (!$this->license_handler->is_feature_enabled()) {
+			?>
+			<div class="notice notice-warning">
+				<p>
+					<strong><?php esc_html_e('Sticky Notes Add-on for LearnPress:', 'lp-sticky-notes'); ?></strong>
+					<?php
+					printf(
+						esc_html__('Please %sactivate your license%s to unlock all features.', 'lp-sticky-notes'),
+						'<a href="' . esc_url(admin_url('admin.php?page=mamflow-license&tab=sticky-notes')) . '">',
+						'</a>'
+					);
+					?>
+				</p>
+			</div>
+			<?php
+		}
+	}
+
+	/**
+	 * Get license handler instance
+	 *
+	 * @return Mamflow_License_Handler
+	 */
+	public function get_license_handler()
+	{
+		return $this->license_handler;
 	}
 
 	/**
@@ -143,6 +252,10 @@ class LP_Sticky_Notes
 		}
 
 		LP_Sticky_Notes_Database::create_tables();
+
+		// Schedule license check
+		LP_Sticky_Notes_Cron::schedule_license_check();
+
 		flush_rewrite_rules();
 	}
 
@@ -151,6 +264,9 @@ class LP_Sticky_Notes
 	 */
 	public function deactivate()
 	{
+		// Clear license cron
+		LP_Sticky_Notes_Cron::clear_license_check();
+
 		flush_rewrite_rules();
 	}
 

@@ -71,6 +71,18 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
      */
     public function get_sections()
     {
+        // Check license status
+        $license_handler = LP_Sticky_Notes::instance()->get_license_handler();
+        $is_licensed = $license_handler->is_feature_enabled();
+
+        // If no license, show notice in general tab
+        if (!$is_licensed) {
+            return array(
+                'general' => esc_html__('General', 'lp-sticky-notes'),
+            );
+        }
+
+        // If licensed, show all tabs
         return array(
             'general' => esc_html__('General', 'lp-sticky-notes'),
             'appearance' => esc_html__('Appearance', 'lp-sticky-notes'),
@@ -87,8 +99,23 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
      */
     public function get_settings($section = '', $tab = '')
     {
+        // Check license status
+        $license_handler = LP_Sticky_Notes::instance()->get_license_handler();
+        $is_licensed = $license_handler->is_feature_enabled();
+
+        // Default section
         if ('' === $section) {
             $section = 'general';
+        }
+
+        // If not licensed, only show general with notice
+        if (!$is_licensed && $section === 'general') {
+            return $this->license_required_notice();
+        }
+
+        // Other tabs require license
+        if (!$is_licensed) {
+            return array();
         }
 
         if ('general' === $section) {
@@ -104,6 +131,33 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
         }
 
         return array();
+    }
+
+    /**
+     * License required notice
+     *
+     * @return array
+     */
+    private function license_required_notice()
+    {
+        return array(
+            array(
+                'type' => 'title',
+                'title' => esc_html__('License Required', 'lp-sticky-notes'),
+                'desc' => sprintf(
+                    '<div class="notice notice-warning inline" style="margin: 20px 0; padding: 15px;"><p><strong>%s</strong><br>%s</p><p><a href="%s" class="button button-primary">%s</a> <a href="%s" class="button" target="_blank">%s</a></p></div>',
+                    esc_html__('⚠ License Activation Required', 'lp-sticky-notes'),
+                    esc_html__('Please activate your license to access all plugin settings and features.', 'lp-sticky-notes'),
+                    esc_url(admin_url('admin.php?page=lp-sticky-notes-license')),
+                    esc_html__('Activate License', 'lp-sticky-notes'),
+                    'https://mamflow.com/product/learnpress-notes-addon-lp-sticky-notes/',
+                    esc_html__('Purchase License', 'lp-sticky-notes')
+                ),
+            ),
+            array(
+                'type' => 'sectionend',
+            ),
+        );
     }
 
     /**
@@ -290,6 +344,159 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
                         <strong>' . esc_html__('Note:', 'lp-sticky-notes') . '</strong> ' . esc_html__('The shortcode displays notes in a responsive grid layout. Empty state will show when no notes are found.', 'lp-sticky-notes') . '
                     </p>
                 ',
+            ),
+            array(
+                'type' => 'sectionend',
+            ),
+        );
+    }
+
+    /**
+     * License settings
+     *
+     * @return array
+     */
+    private function license_settings()
+    {
+        $license_handler = LP_Sticky_Notes::instance()->get_license_handler();
+
+        // Handle form submissions
+        $message = '';
+        $message_type = '';
+
+        if (isset($_POST['mamflow_license_action'])) {
+            // Verify nonce
+            if (
+                !isset($_POST['mamflow_license_nonce']) ||
+                !wp_verify_nonce($_POST['mamflow_license_nonce'], 'mamflow_license_action')
+            ) {
+                $message = 'Security check failed. Please try again.';
+                $message_type = 'error';
+            } else {
+                $action = sanitize_text_field($_POST['mamflow_license_action']);
+
+                if ($action === 'activate') {
+                    $license_key = sanitize_text_field($_POST['license_key']);
+                    $result = $license_handler->activate_license($license_key);
+
+                    $message = $result['message'];
+                    $message_type = $result['success'] ? 'success' : 'error';
+
+                } elseif ($action === 'deactivate') {
+                    $result = $license_handler->deactivate_license();
+
+                    $message = $result['message'];
+                    $message_type = $result['success'] ? 'success' : 'error';
+                }
+            }
+        }
+
+        // Get current license data
+        $license_data = $license_handler->get_license_data();
+        $is_active = $license_handler->is_feature_enabled();
+
+        // Build license HTML
+        ob_start();
+        ?>
+
+        <?php if ($message): ?>
+            <div class="notice notice-<?php echo esc_attr($message_type); ?> inline" style="margin: 20px 0;">
+                <p><?php echo esc_html($message); ?></p>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($is_active): ?>
+            <div class="notice notice-success inline" style="margin: 20px 0;">
+                <p>
+                    <strong><?php echo esc_html__('✓ License Active', 'lp-sticky-notes'); ?></strong><br>
+                    <?php
+                    $days_remaining = $license_handler->get_days_until_expiration();
+                    if ($days_remaining !== null) {
+                        if ($days_remaining > 0) {
+                            printf(
+                                esc_html__('Your license will expire in %s days.', 'lp-sticky-notes'),
+                                $days_remaining
+                            );
+                        } else {
+                            echo esc_html__('Your license has expired. Please renew to continue receiving updates.', 'lp-sticky-notes');
+                        }
+                    }
+                    ?>
+                </p>
+            </div>
+
+            <form method="post" action="">
+                <?php wp_nonce_field('mamflow_license_action', 'mamflow_license_nonce'); ?>
+                <input type="hidden" name="mamflow_license_action" value="deactivate">
+                <p>
+                    <button type="submit" class="button button-secondary"
+                        onclick="return confirm('Are you sure you want to deactivate this license?');">
+                        <?php echo esc_html__('Deactivate License', 'lp-sticky-notes'); ?>
+                    </button>
+                </p>
+            </form>
+
+        <?php else: ?>
+            <div class="notice notice-warning inline" style="margin: 20px 0;">
+                <p>
+                    <strong><?php echo esc_html__('⚠ No Active License', 'lp-sticky-notes'); ?></strong><br>
+                    <?php echo esc_html__('Please enter your license key to activate this plugin and unlock all features.', 'lp-sticky-notes'); ?>
+                </p>
+            </div>
+
+            <form method="post" action="">
+                <?php wp_nonce_field('mamflow_license_action', 'mamflow_license_nonce'); ?>
+                <input type="hidden" name="mamflow_license_action" value="activate">
+
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="license_key"><?php echo esc_html__('License Key', 'lp-sticky-notes'); ?></label>
+                        </th>
+                        <td>
+                            <input type="text" id="license_key" name="license_key" class="regular-text"
+                                placeholder="XXXX-XXXX-XXXX-XXXX" required>
+                            <p class="description">
+                                <?php echo esc_html__('Enter your license key from your purchase confirmation email.', 'lp-sticky-notes'); ?>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <p class="submit">
+                    <button type="submit" class="button button-primary">
+                        <?php echo esc_html__('Activate License', 'lp-sticky-notes'); ?>
+                    </button>
+                </p>
+            </form>
+        <?php endif; ?>
+
+        <hr style="margin: 30px 0;">
+
+        <h3><?php echo esc_html__('Need Help?', 'lp-sticky-notes'); ?></h3>
+        <p>
+            <?php echo esc_html__('If you don\'t have a license key yet, you can purchase one from:', 'lp-sticky-notes'); ?>
+            <a href="https://mamflow.com/product/learnpress-notes-addon-lp-sticky-notes/" target="_blank">
+                <?php echo esc_html__('Mamflow Store', 'lp-sticky-notes'); ?>
+            </a>
+        </p>
+        <p>
+            <?php echo esc_html__('For support or license issues, please contact:', 'lp-sticky-notes'); ?>
+            <a href="mailto:support@mamflow.com">support@mamflow.com</a>
+        </p>
+
+        <?php
+        $license_html = ob_get_clean();
+
+        return array(
+            array(
+                'type' => 'title',
+                'title' => esc_html__('License Activation', 'lp-sticky-notes'),
+                'desc' => '',
+            ),
+            array(
+                'type' => 'html',
+                'desc' => $license_html,
             ),
             array(
                 'type' => 'sectionend',

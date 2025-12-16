@@ -92,6 +92,33 @@ class LP_Sticky_Notes_Admin
             wp_die(__('You do not have permission to access this page.', 'lp-sticky-notes'));
         }
 
+        // Check license
+        $license_handler = LP_Sticky_Notes::instance()->get_license_handler();
+        if (!$license_handler->is_feature_enabled()) {
+            // Show license required message
+            ?>
+            <div class="wrap">
+                <h1><?php esc_html_e('Student Notes', 'lp-sticky-notes'); ?></h1>
+                <div class="notice notice-warning" style="padding: 20px; margin: 20px 0;">
+                    <h2 style="margin-top: 0;"><?php esc_html_e('License Required', 'lp-sticky-notes'); ?></h2>
+                    <p><?php esc_html_e('This feature requires an active license to access student notes.', 'lp-sticky-notes'); ?>
+                    </p>
+                    <p>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=learn-press-settings&tab=sticky-notes&section=license')); ?>"
+                            class="button button-primary">
+                            <?php esc_html_e('Activate License', 'lp-sticky-notes'); ?>
+                        </a>
+                        <a href="https://mamflow.com/product/learnpress-notes-addon-lp-sticky-notes/" class="button"
+                            target="_blank">
+                            <?php esc_html_e('Purchase License', 'lp-sticky-notes'); ?>
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <?php
+            return;
+        }
+
         // Get filters from URL
         $student_id = isset($_GET['student_id']) ? absint($_GET['student_id']) : 0;
         $course_id = isset($_GET['course_id']) ? absint($_GET['course_id']) : 0;
