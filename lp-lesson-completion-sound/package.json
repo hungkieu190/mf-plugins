@@ -1,0 +1,23 @@
+{
+    "name": "lp-lesson-completion-sound",
+    "version": "1.0.0",
+    "description": "Lesson Completion Sound Add-on for LearnPress - Play celebration sounds and confetti effects when students complete lessons",
+    "scripts": {
+        "release": "bash release.sh"
+    },
+    "keywords": [
+        "wordpress",
+        "learnpress",
+        "lms",
+        "gamification",
+        "celebration",
+        "sound",
+        "confetti"
+    ],
+    "author": "Mamflow",
+    "license": "Proprietary",
+    "repository": {
+        "type": "git",
+        "url": "https://mamflow.com/product/learnpress-lesson-completion-sound/"
+    }
+}

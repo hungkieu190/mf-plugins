@@ -1,0 +1,192 @@
+/**
+ * Profile Settings Styles
+ * 
+ * @package LP_Lesson_Completion_Sound
+ */
+
+.lp-lcs-settings-section {
+    max-width: 800px;
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.lp-lcs-settings-section h3 {
+    margin: 0 0 25px 0;
+    padding: 0 0 15px 0;
+    border-bottom: 2px solid #f0f0f0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #23282d;
+}
+
+/* Success Message */
+.lp-lcs-success-message {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-left: 4px solid #28a745;
+    color: #155724;
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* Setting Rows */
+.lp-lcs-setting-row {
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.lp-lcs-setting-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.lp-lcs-setting-row label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    color: #23282d;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.lp-lcs-setting-row label input[type="checkbox"] {
+    margin-right: 8px;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.lp-lcs-setting-row select {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background: #fff;
+    transition: border-color 0.2s;
+}
+
+.lp-lcs-setting-row select:focus {
+    outline: none;
+    border-color: #0073aa;
+    box-shadow: 0 0 0 1px #0073aa;
+}
+
+.lp-lcs-setting-row .description {
+    margin: 8px 0 0 0;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* Premium Badge */
+.lp-lcs-premium-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+/* Disabled State */
+.lp-lcs-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.lp-lcs-disabled label {
+    color: #999;
+}
+
+.lp-lcs-disabled input[type="file"] {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px 12px;
+    border: 1px dashed #ddd;
+    border-radius: 4px;
+    background: #f9f9f9;
+    cursor: not-allowed;
+}
+
+/* Save Button */
+.lp-lcs-save-button {
+    background: #0073aa;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 115, 170, 0.2);
+}
+
+.lp-lcs-save-button:hover {
+    background: #005a87;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 115, 170, 0.3);
+}
+
+.lp-lcs-save-button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 115, 170, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .lp-lcs-settings-section {
+        padding: 20px;
+        margin: 10px 0;
+    }
+
+    .lp-lcs-setting-row select,
+    .lp-lcs-disabled input[type="file"] {
+        max-width: 100%;
+    }
+}
+
+/* License Notice */
+.lp-lcs-license-notice {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-left: 4px solid #ffc107;
+    padding: 20px;
+    border-radius: 4px;
+    margin: 20px 0;
+}
+
+.lp-lcs-license-notice h3 {
+    margin: 0 0 10px 0;
+    color: #856404;
+    font-size: 18px;
+}
+
+.lp-lcs-license-notice p {
+    margin: 0;
+    color: #856404;
+}
+
+.lp-lcs-license-notice a {
+    color: #0073aa;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.lp-lcs-license-notice a:hover {
+    text-decoration: underline;
+}

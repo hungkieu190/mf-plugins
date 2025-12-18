@@ -1,0 +1,145 @@
+/**
+ * LP Lesson Completion Sound - Styles
+ *
+ * @package LP_Lesson_Completion_Sound
+ */
+
+/* Ensure confetti appears above all content */
+.lp-lcs-confetti-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	z-index: 9999;
+}
+
+/* Optional: Add a subtle flash effect when celebration triggers */
+@keyframes lp-lcs-flash {
+	0% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 0.3;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+.lp-lcs-celebration-flash {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+	pointer-events: none;
+	z-index: 9998;
+	animation: lp-lcs-flash 0.5s ease-out;
+}
+
+/* Profile settings styles */
+.lp-lcs-settings-section {
+	max-width: 600px;
+	margin: 20px 0;
+}
+
+.lp-lcs-settings-section h3 {
+	margin-bottom: 20px;
+	font-size: 1.5em;
+	color: #333;
+}
+
+.lp-lcs-setting-row {
+	margin-bottom: 20px;
+	padding: 15px;
+	background: #f9f9f9;
+	border-radius: 5px;
+}
+
+.lp-lcs-setting-row label {
+	display: block;
+	margin-bottom: 8px;
+	font-weight: 600;
+	color: #555;
+}
+
+.lp-lcs-setting-row input[type="checkbox"] {
+	margin-right: 8px;
+}
+
+.lp-lcs-setting-row select {
+	width: 100%;
+	padding: 8px 12px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+.lp-lcs-setting-row .description {
+	margin-top: 5px;
+	font-size: 13px;
+	color: #666;
+	font-style: italic;
+}
+
+.lp-lcs-premium-badge {
+	display: inline-block;
+	margin-left: 8px;
+	padding: 2px 8px;
+	background: #ffd700;
+	color: #333;
+	font-size: 11px;
+	font-weight: bold;
+	border-radius: 3px;
+	text-transform: uppercase;
+}
+
+.lp-lcs-disabled {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.lp-lcs-save-button {
+	padding: 10px 20px;
+	background: #0073aa;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	font-size: 14px;
+	cursor: pointer;
+	transition: background 0.3s;
+}
+
+.lp-lcs-save-button:hover {
+	background: #005a87;
+}
+
+.lp-lcs-success-message {
+	padding: 10px 15px;
+	margin-bottom: 20px;
+	background: #d4edda;
+	border: 1px solid #c3e6cb;
+	border-radius: 4px;
+	color: #155724;
+}
+
+.lp-lcs-license-notice {
+	padding: 20px;
+	background: #fff3cd;
+	border: 1px solid #ffc107;
+	border-radius: 5px;
+	margin: 20px 0;
+}
+
+.lp-lcs-license-notice h3 {
+	margin-top: 0;
+	color: #856404;
+}
+
+.lp-lcs-license-notice a {
+	color: #0073aa;
+	text-decoration: underline;
+}
