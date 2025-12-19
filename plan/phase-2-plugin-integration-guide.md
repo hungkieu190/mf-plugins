@@ -387,6 +387,9 @@ Chi tiết payload xem trong `class-license-handler.php`
 4. ✅ Deploy to staging
 5. ✅ Get first customer to test real activation
 
-**Lưu ý:** Backup plugin trước khi integrate! 🚨
+## Cần đặc biệt chú ý
+Lưu ý cực kỳ quan trọng vì nhiều plugin đề sử dụng các active này, nên phải đổi tên class theo từng sản phẩm để tránh lỗi 
+PHP Fatal error:  Cannot declare class Mamflow_License_Handler
+
 
 Good luck! 🚀

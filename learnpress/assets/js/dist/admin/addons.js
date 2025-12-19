@@ -25,7 +25,6 @@ if ('undefined' !== typeof lpDataAdmin) {
   lp_rest_url = lpDataAdmin.lp_rest_url;
   lplistAPI.admin = {
     apiAdminNotice: lp_rest_url + 'lp/v1/admin/tools/admin-notices',
-    apiAdminOrderStatic: lp_rest_url + 'lp/v1/orders/statistic',
     apiAddons: lp_rest_url + 'lp/v1/addon/all',
     apiAddonAction: lp_rest_url + 'lp/v1/addon/action-n',
     apiAddonsPurchase: lp_rest_url + 'lp/v1/addon/info-addons-purchase',
@@ -245,7 +244,7 @@ const setGridItems = totalItems => {
 };
 // Check element loaded and data API returned.
 const loadElData = setInterval(() => {
-  if (!elAddonsPage && !elNotifyActionWrapper) {
+  if (!elAddonsPage || !elNotifyActionWrapper) {
     elAddonsPage = document.querySelector('.lp-addons-page');
     elNotifyActionWrapper = document.querySelector('.lp-notify-action-wrapper');
   } else if (dataHtml && elAddonsPage && elNotifyActionWrapper) {
@@ -269,7 +268,7 @@ document.addEventListener('DOMContentLoaded', e => {});
 
 /*** Events ***/
 document.addEventListener('click', e => {
-  const el = e.target;
+  let el = e.target;
   const tagName = el.tagName.toLowerCase();
   if (tagName === 'span') {
     e.preventDefault();
@@ -282,7 +281,8 @@ document.addEventListener('click', e => {
   // Events actions: activate, deactivate.
   /*if ( el.classList.contains( 'lp-toggle-switch-label' ) ) {
   	//e.preventDefault();
-  		const elAddonItem = el.closest( '.lp-addon-item' );
+  
+  	const elAddonItem = el.closest( '.lp-addon-item' );
   	const idLabel = el.getAttribute( 'for' );
   	const elInput = document.querySelector( `#${ idLabel }` );
   	const action = elInput.getAttribute( 'data-action' );
@@ -310,7 +310,8 @@ document.addEventListener('click', e => {
   				label.style.display = 'inline-flex';
   			}
   		}
-  			if ( status === 'success' ) {
+  
+  		if ( status === 'success' ) {
   			if ( action === 'deactivate' ) {
   				elAddonItem.classList.remove( 'activated' );
   			}
@@ -322,7 +323,8 @@ document.addEventListener('click', e => {
   }*/
 
   // Events actions: install, update, delete.
-  if (el.classList.contains('btn-addon-action')) {
+  if (el.closest('.btn-addon-action')) {
+    el = el.closest('.btn-addon-action');
     e.preventDefault();
     el.classList.add('handling');
     let purchaseCode = '';

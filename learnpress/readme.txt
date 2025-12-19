@@ -3,7 +3,7 @@ Contributors: thimpress, tungnx89, nhamdv, nguyenlammanh, tunnhn, phonglq.foobla
 Donate link:
 Tags: elearning, education, course, lms, learning management system
 Tested up to: 6.8
-Stable tag: 4.3.1
+Stable tag: 4.3.2.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -35,6 +35,12 @@ Take a look at **[Premium Online LMS & Education WordPress Themes](https://1.env
 
 - [Create a WordPress Udemy with Eduma](https://eduma.thimpress.com/demo-udemy/?utm_source=WPORG&utm_medium=LP&utm_campaign=Content)
 - [Create a WordPress Coursera with Eduma](https://eduma.thimpress.com/demo-coursera/?utm_source=WPORG&utm_medium=LP&utm_campaign=Content)
+
+### SMART COURSE CREATION WITH LEARNPRESS AI ###
+**LearnPress enhances course creation with built-in AI assistance designed to support instructors at every stage of the process.**
+Instead of starting from a blank page, you can use LearnPress AI to generate a structured course outline, lesson ideas, quizzes, and supporting content in seconds - all based on your topic and teaching goals.
+LearnPress AI also includes an AI Image Generator to help you create course thumbnails and visual assets that match your content. Every AI-generated result is fully editable, giving you complete control over what you publish.
+By handling the repetitive and time-consuming parts of course planning, LearnPress AI helps you work more efficiently - so you can focus on teaching, refining your content, and supporting your learners.
 
 ### Exciting News: LearnPress Officially Integrates with Gutenberg! ###
 Get ready to revolutionize your online course creation experience! We are thrilled to announce the official LearnPress [Gutenberg integration](https://learnpresslms.com/blog/learnpress-gutenberg-integration/). This powerful combination brings the flexibility and intuitive nature of WordPress’s block editor to your favorite WordPress LMS plugin, [LearnPress](https://learnpresslms.com/). Now, crafting beautiful and engaging course layouts is easier and more dynamic than ever before.
@@ -265,6 +271,25 @@ https://translate.wordpress.org/projects/wp-plugins/learnpress/
 13. Add-ons: Unlock endless possibilities with our add-ons from additional payment gateways to more managing course options. Tailor to your needs and easily scale as your site grow
 
 == Changelog ==
+
+= 4.3.2.2 (2025-12-16) =
+~ Fixed: error with addons Assignment, Course Review.
+~ Fixed: error cache when start Quiz.
+
+= 4.3.2.1 (2025-12-13) =
+~ Fixed: error Class "LP_REST_Orders_Controller" not found, deleted file but missing delete declare REST route.
+
+= 4.3.2 (2025-12-12) =
+~ Fixed: security.
+~ Fixed: break style TomSelect for case choose courses on product of Woo.
+~ Tweak: edit course with openAI, added more models: gpt-5.2, gpt-5-mini, gpt-5-nano.
+~ Tweak: query list orders.
+~ Tweak: question tinymce editor sometime error save.
+~ Tweak: display list items of order by pagination.
+~ Tweak: material.
+~ Tweak: adjust lesson completion logic, redirect to the next incomplete item,
+if all items after the current one are already completed,
+search previous lessons to redirect to, if all items completed will not redirect.
 
 = 4.3.1 (2025-11-21) =
 ~ Fixed: condition check enable AI.

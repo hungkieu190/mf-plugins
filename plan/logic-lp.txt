@@ -1,0 +1,3 @@
+ LearnPress dùng AJAX để complete lesson và redirect ngay trong response. Vấn đề là popup cần show TRƯỚC KHI redirect.
+
+Giải pháp đúng: Intercept AJAX complete và show popup trước khi cho redirect:

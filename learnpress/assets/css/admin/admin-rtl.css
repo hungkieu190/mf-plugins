@@ -184,6 +184,9 @@
   content: "";
   border: none;
 }
+.lp-tom-select .dropdown-input-wrap {
+  display: flex;
+}
 
 /*.search-box {
 	.ts-wrapper {
@@ -678,7 +681,7 @@ ul .clearfix {
 
 @font-face {
   font-family: "lp-icon";
-  src: url("../../src/css/vendor/fonts/lp-icon/lp-icon.woff2?v=126") format("woff2");
+  src: url("../../src/css/vendor/fonts/lp-icon/lp-icon.woff2?v=165") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -3280,6 +3283,14 @@ input[name=_lp_course_result]:checked ~ #passing-condition-quiz-result {
 #lp-addons button.btn-addon-action.handling span.dashicons {
   display: inline-flex;
 }
+#lp-addons button.btn-addon-action[data-action=cancel] {
+  position: absolute;
+  left: 0;
+  background: transparent;
+  color: rgba(255, 0, 0, 0.89);
+  top: 0;
+  padding: 7px 10px;
+}
 #lp-addons button.btn-addon-action span.dashicons {
   align-items: center;
   display: none;
@@ -3303,6 +3314,9 @@ input[name=_lp_course_result]:checked ~ #passing-condition-quiz-result {
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+}
+#lp-addons .lp-addon-item input {
+  margin: 0 !important;
 }
 #lp-addons .lp-addon-item.hide, #lp-addons .lp-addon-item.search-not-found {
   display: none;
@@ -4637,6 +4651,20 @@ input[name=_lp_course_result]:checked ~ #passing-condition-quiz-result {
   display: inline-flex !important;
   align-items: center;
   font-size: 1rem;
+}
+.post-type-lp_order .lp-order-items-wrapper .learn-press-pagination {
+  text-align: right;
+}
+.post-type-lp_order .lp-order-items-wrapper .learn-press-pagination li {
+  border: 1px solid #2271b1;
+  background: #f6f7f7;
+}
+.post-type-lp_order .lp-order-items-wrapper .learn-press-pagination li .page-numbers {
+  padding: 0 6px;
+}
+.post-type-lp_order .lp-order-items-wrapper .learn-press-pagination li .current {
+  background: #2271b1;
+  color: #fff !important;
 }
 
 #learn-press-toggle-settings-js-css {
@@ -6925,6 +6953,22 @@ body.lp-item-moving {
   animation: rotating4 2s linear infinite;
 }
 
+#learn-press-assign-course .description {
+  margin-bottom: 10px;
+}
+#learn-press-assign-course label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#learn-press-unassigned-course .description {
+  margin-bottom: 10px;
+}
+#learn-press-unassigned-course label {
+  display: block;
+  margin-bottom: 5px;
+}
+
 .learn-press-tip {
   display: none;
   margin: 0 5px;
@@ -7370,7 +7414,9 @@ table.lp-material--table tr:nth-child(even) {
 }
 .learnpress-block-pagination .page-numbers,
 .learn-press-pagination .page-numbers {
-  display: inline-block;
+  display: inline-flex;
+  gap: 5px;
+  flex-wrap: wrap;
   margin: 0;
   padding: 0;
   border: 0;
@@ -9499,7 +9545,7 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   display: flex !important;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 10px;
   background-color: #FFFFFF;
   height: 90vh;
   z-index: 10000000 !important;
@@ -9546,8 +9592,8 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
 .create-course-modal .input-section .ts-wrapper .ts-control:focus,
 .create-course-modal .input-section .ts-wrapper .ts-control:focus-within {
   outline: none;
-  border-color: #6B46E9;
-  box-shadow: 0 0 0 1px #6B46E9;
+  border-color: #7E6CE2;
+  box-shadow: 0 0 0 1px #7E6CE2;
   background-color: #FFFFFF;
 }
 .create-course-modal .input-section textarea {
@@ -9629,7 +9675,7 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   min-height: 80px;
 }
 .create-course-modal .output-section .output-item.output-suggestion textarea {
-  border-color: #c6b8f7;
+  border-color: #dbd6f7;
   min-height: 80px;
 }
 .create-course-modal .output-section .output-item p.prompt {
@@ -9639,7 +9685,7 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   margin-bottom: 4px;
 }
 .create-course-modal .output-section .output-item .generate-button {
-  background-color: #6B46E9;
+  background-color: #7E6CE2;
   color: #fff;
   border: none;
   padding: 12px 20px;
@@ -9666,8 +9712,8 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
 }
 .create-course-modal .output-section .output-item textarea:focus {
   outline: none;
-  border-color: #6B46E9;
-  box-shadow: 0 0 0 1px #6B46E9;
+  border-color: #7E6CE2;
+  box-shadow: 0 0 0 1px #7E6CE2;
 }
 .create-course-modal .output-section .output-item .output-actions {
   position: absolute;
@@ -9693,8 +9739,8 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   border-color: #c8ccd5;
 }
 .create-course-modal .output-section .output-item .output-actions .action-button.apply-button {
-  background-color: #6B46E9;
-  border-color: #6B46E9;
+  background-color: #7E6CE2;
+  border-color: #7E6CE2;
   color: #fff;
 }
 .create-course-modal .output-section .output-item .output-actions .action-button.apply-button:hover {
@@ -9737,9 +9783,9 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   cursor: pointer;
 }
 .create-course-modal .output-section #lp-ai-output-suggestion .output-placeholder .output-actions .apply-button {
-  background-color: #6B46E9;
+  background-color: #7E6CE2;
   color: #fff;
-  border-color: #6B46E9;
+  border-color: #7E6CE2;
 }
 .create-course-modal .ts-wrapper .ts-control .item {
   background-color: #F7FAFC;
@@ -9828,11 +9874,15 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   width: 100%;
   max-height: 90%;
 }
+.lp-generate-data-ai-wrap .content-title {
+  color: #111111;
+}
 .lp-generate-data-ai-wrap .step-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
   padding: 0 20px;
+  gap: 10px;
 }
 .lp-generate-data-ai-wrap .step-header .step-item {
   display: flex;
@@ -9841,14 +9891,15 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   color: #1A202C;
   position: relative;
   flex-grow: 1;
+  justify-content: center;
 }
 .lp-generate-data-ai-wrap .step-header .step-item.active .step-number {
-  background-color: #6B46E9;
+  background-color: #7E6CE2;
   color: #fff;
-  border-color: #1A202C;
+  border-color: #7E6CE2;
 }
-.lp-generate-data-ai-wrap .step-header .step-item.active .step-text {
-  color: #1A202C;
+.lp-generate-data-ai-wrap .step-header .step-item .step-text {
+  color: #111111;
   font-weight: 600;
 }
 .lp-generate-data-ai-wrap .step-header .step-item .step-number {
@@ -9864,22 +9915,22 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   background-color: #fff;
 }
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai {
-  border: 1px solid;
-  background-color: #F7FAFC;
-  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   text-align: right;
 }
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .lp-form-fields {
   min-height: 400px;
   max-height: 600px;
   overflow: auto;
+  padding: 0 2px;
 }
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .step-title {
-  font-size: 1.1em;
-  font-weight: 700;
+  font-size: 1.2em;
+  font-weight: 600;
   margin-bottom: 10px;
+  color: #111111;
 }
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .step-content {
   display: none;
@@ -9912,37 +9963,41 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group label {
   display: block;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 8px;
+  color: #111111;
+}
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group .lp-tom-select.ts-wrapper {
+  width: 100%;
 }
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group input,
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group .ts-wrapper .ts-control,
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group textarea {
   width: 100%;
   padding: 8px 16px;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid #E5E7EB;
-  background-color: #F7FAFC;
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 1.5;
   box-sizing: border-box;
   transition: border-color 0.2s, box-shadow 0.2s;
   margin: 0;
+  background-color: transparent;
 }
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group input:focus,
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group .ts-wrapper .ts-control:focus,
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group textarea:focus {
   outline: none;
   border-color: #1A202C;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
 }
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group input .item,
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group .ts-wrapper .ts-control .item,
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group textarea .item {
-  background-color: #F7FAFC;
   border: 1px solid #E5E7EB;
   color: #4A5568;
-  border-radius: 20px;
+  border-radius: 6px;
   padding: 4px 10px;
+  background-color: transparent;
 }
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group input .ts-input::placeholder,
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group .ts-wrapper .ts-control .ts-input::placeholder,
@@ -9952,6 +10007,19 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group textarea {
   min-height: 86px;
   resize: vertical;
+}
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group .field-description {
+  color: #898989;
+  margin-top: 8px;
+}
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group .title-refer,
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .form-group .description-refer {
+  padding: 0;
+  border: none;
+  font-size: 16px;
+  min-height: unset;
+  box-shadow: none;
+  border-radius: 0;
 }
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai #prompt-preview {
   min-height: 120px;
@@ -9974,7 +10042,8 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
 .lp-generate-data-ai-wrap .lp-form-generate-data-ai .generate-prompt img {
   display: none;
 }
-.lp-generate-data-ai-wrap .lp-form-generate-data-ai .btn {
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .btn,
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .lp-button {
   padding: 10px 20px;
   font-size: 15px;
   font-weight: 600;
@@ -9986,22 +10055,28 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   align-items: center;
   gap: 8px;
 }
-.lp-generate-data-ai-wrap .lp-form-generate-data-ai .btn-primary {
-  background-color: #6B46E9;
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .btn-primary,
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .lp-button-primary {
+  background-color: #7E6CE2;
   color: #fff;
 }
-.lp-generate-data-ai-wrap .lp-form-generate-data-ai .btn-primary:hover {
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .btn-primary:hover,
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .lp-button-primary:hover {
   background-color: #1A202C;
 }
-.lp-generate-data-ai-wrap .lp-form-generate-data-ai .btn-secondary {
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .btn-secondary,
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .lp-button-secondary {
   background-color: #fff;
-  color: #1A202C;
-  border-color: #E5E7EB;
+  color: #7E6CE2;
+  border-color: #7E6CE2;
 }
-.lp-generate-data-ai-wrap .lp-form-generate-data-ai .btn-secondary:hover {
-  background-color: #F9FAFB;
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .btn-secondary:hover,
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .lp-button-secondary:hover {
+  background-color: #7E6CE2;
+  color: #fff;
 }
-.lp-generate-data-ai-wrap .lp-form-generate-data-ai .btn:disabled {
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .btn:disabled,
+.lp-generate-data-ai-wrap .lp-form-generate-data-ai .lp-button:disabled {
   background-color: #E5E7EB;
   color: #1A202C;
   cursor: not-allowed;
@@ -10143,6 +10218,28 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   overflow-y: auto;
   margin-bottom: 20px;
 }
+.lp-generate-data-ai-wrap .lp-btn-close-ai-popup {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #ccc;
+}
+.lp-generate-data-ai-wrap .lp-btn-close-ai-popup:hover {
+  color: #f27474;
+}
+.lp-generate-data-ai-wrap .lp-ai-warning-refer {
+  border: 1px solid #FCD34D;
+  background-color: #FFFBEB;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
 
 .lp-ai-course-data-preview-wrap .course-title {
   font-size: 1.5em;
@@ -10169,13 +10266,13 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
 }
 .lp-ai-course-data-preview-wrap .course-section-item {
   border: 1px solid var(--lp-border-color, #E2E0DB);
-  border-radius: 12px;
+  border-radius: 10px;
   padding: 20px;
   margin: 20px 0;
   background-color: #fff;
 }
 .lp-ai-course-data-preview-wrap .course-section-items {
-  margin: 20px 0;
+  margin: 20px 20px 0 0;
 }
 .lp-ai-course-data-preview-wrap .course-section-items:last-child {
   margin-bottom: 0;
@@ -10244,7 +10341,7 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
 }
 
 .fui-loading-spinner-3 {
-  color: #6B46E9;
+  color: #7E6CE2;
   position: relative;
   width: 100px;
   height: 80px;
@@ -10264,7 +10361,7 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   width: 6px;
   height: 18px;
   border-radius: 20%;
-  background: #6B46E9;
+  background: #7E6CE2;
 }
 .fui-loading-spinner-3 div:nth-child(1) {
   transform: rotate(0deg);
@@ -10333,11 +10430,15 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   z-index: 99999;
 }
 
+.swal2-popup {
+  max-width: 850px;
+}
 .swal2-popup .content-title {
   margin: 0 0 20px 0;
   padding: 0;
   text-align: center;
   font-size: 1.5em;
+  font-weight: bold;
 }
 .swal2-popup .swal2-actions {
   width: 100%;

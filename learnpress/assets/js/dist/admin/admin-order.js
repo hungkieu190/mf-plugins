@@ -13,10 +13,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _utils_admin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils-admin.js */ "./assets/src/js/admin/utils-admin.js");
+/* harmony import */ var lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lpAssetsJsPath/utils.js */ "./assets/src/js/utils.js");
+
 
 const addCoursesToOrder = () => {
   let elModalSearchCourses;
-  let elBtnAddOrderItem, elSearchCoursesResult;
+  let elSearchCoursesResult;
   let elOrderDetails, modalSearchItemsTemplate, modalContainer;
   let elOrderModalFooter, elOrderModalBtnAdd;
   let elListOrderItems;
@@ -29,11 +31,9 @@ const addCoursesToOrder = () => {
     paged: 1
   };
   const courseIdsNewSelected = [];
-  const courseIdsAdded = [];
+  let courseIdsAdded = [];
   const getAllElements = () => {
     elOrderDetails = document.querySelector('#learn-press-order');
-    elListOrderItems = elOrderDetails.querySelector('.list-order-items');
-    elBtnAddOrderItem = elOrderDetails.querySelector('#learn-press-add-order-item');
     modalSearchItemsTemplate = document.querySelector('#learn-press-modal-search-items');
     modalContainer = document.querySelector('#container-modal-search-items');
   };
@@ -95,6 +95,7 @@ const addCoursesToOrder = () => {
    * Get list course ids added.
    */
   const getCoursesAdded = () => {
+    courseIdsAdded = [];
     const orderItems = document.querySelectorAll('#learn-press-order .list-order-items tbody .order-item-row');
     orderItems.forEach(orderItem => {
       const orderItemId = parseInt(orderItem.getAttribute('data-id'));
@@ -114,6 +115,7 @@ const addCoursesToOrder = () => {
     if (!target.closest(idModalSearchItems)) {
       return;
     }
+    elListOrderItems = elOrderDetails.querySelector('.list-order-items');
     e.preventDefault();
     target.disabled = true;
     const dataSend = {
@@ -138,11 +140,11 @@ const addCoursesToOrder = () => {
           order_data
         } = data;
         const elNoItem = elListOrderItems.querySelector('.no-order-items');
-        elNoItem.style.display = 'none';
+        lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpShowHideEl(elNoItem, 0);
         elNoItem.insertAdjacentHTML('beforebegin', item_html);
         elOrderDetails.querySelector('.order-subtotal').innerHTML = order_data.subtotal_html;
         elOrderDetails.querySelector('.order-total').innerHTML = order_data.total_html;
-        courseIdsAdded.push(...courseIdsNewSelected);
+        //courseIdsAdded.push( ...courseIdsNewSelected );
         courseIdsNewSelected.splice(0, courseIdsNewSelected.length);
       },
       error(err) {
@@ -166,7 +168,7 @@ const addCoursesToOrder = () => {
     if (target.tagName !== 'SPAN') {
       return;
     }
-    if (!target.closest(idOrderDetails)) {
+    if (!target.closest('.remove-order-item')) {
       return;
     }
     e.preventDefault();
@@ -208,10 +210,10 @@ const addCoursesToOrder = () => {
         if (item_html.length) {
           elNoItem.insertAdjacentHTML('beforebegin', item_html);
         } else {
-          elNoItem.style.display = 'block';
+          lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpShowHideEl(elNoItem, 1);
         }
         courseIdsNewSelected.splice(courseIdsNewSelected.indexOf(courseId), 1);
-        courseIdsAdded.splice(courseIdsNewSelected.indexOf(courseId), 1);
+        //courseIdsAdded.splice( courseIdsNewSelected.indexOf( courseId ), 1 );
         elOrderDetails.querySelector('.order-subtotal').innerHTML = order_data.subtotal_html;
         elOrderDetails.querySelector('.order-total').innerHTML = order_data.total_html;
       },
@@ -344,6 +346,7 @@ const addCoursesToOrder = () => {
     return html;
   };
   const showPopupSearchCourses = () => {
+    getCoursesAdded();
     modalContainer.style.display = 'block';
     elOrderModalBtnAdd.style.display = 'none';
     elSearchCoursesResult.innerHTML = '';
@@ -354,7 +357,7 @@ const addCoursesToOrder = () => {
   document.addEventListener('click', e => {
     const target = e.target;
     //console.dir( target );
-    if (elBtnAddOrderItem && target.id === elBtnAddOrderItem.id) {
+    if (target.id === 'learn-press-add-order-item') {
       e.preventDefault();
       showPopupSearchCourses();
     }
@@ -393,14 +396,11 @@ const addCoursesToOrder = () => {
     const target = e.target;
     searchCourse(e, target);
   });
-
-  // DOMContentLoaded.
-  document.addEventListener('DOMContentLoaded', () => {
+  lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpOnElementReady('.lp-order-detail-items', el => {
     getAllElements();
-    if (!elOrderDetails || !elBtnAddOrderItem) {
+    if (!elOrderDetails) {
       return;
     }
-    getCoursesAdded();
     modalContainer.innerHTML = modalSearchItemsTemplate.innerHTML;
     elModalSearchCourses = modalContainer.querySelector(idModalSearchItems);
     elSearchCoursesResult = elModalSearchCourses.querySelector('.search-results');
@@ -686,7 +686,6 @@ if ('undefined' !== typeof lpDataAdmin) {
   lp_rest_url = lpDataAdmin.lp_rest_url;
   lplistAPI.admin = {
     apiAdminNotice: lp_rest_url + 'lp/v1/admin/tools/admin-notices',
-    apiAdminOrderStatic: lp_rest_url + 'lp/v1/orders/statistic',
     apiAddons: lp_rest_url + 'lp/v1/addon/all',
     apiAddonAction: lp_rest_url + 'lp/v1/addon/action-n',
     apiAddonsPurchase: lp_rest_url + 'lp/v1/addon/info-addons-purchase',

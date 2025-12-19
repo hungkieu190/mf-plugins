@@ -557,9 +557,10 @@ const lpAJAX = () => {
       elLPTarget.dataset.send = JSON.stringify(dataSend);
 
       // Set url params to reload page.
-      // Todo: need check allow set url params.
-      lpSettings.urlParams.paged = dataSend.args.paged;
-      window.history.pushState({}, '', (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpAddQueryArgs)(urlCurrent, lpSettings.urlParams));
+      if (!dataSend.args.hasOwnProperty('enableUpdateParamsUrl') || dataSend.args.enableUpdateParamsUrl) {
+        lpSettings.urlParams.paged = dataSend.args.paged;
+        window.history.pushState({}, '', (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpAddQueryArgs)(urlCurrent, lpSettings.urlParams));
+      }
       // End.
 
       // Show loading
