@@ -100,6 +100,7 @@ final class LP_Survey
             require_once LP_SURVEY_PATH . 'includes/admin/class-dashboard.php';
             require_once LP_SURVEY_PATH . 'includes/admin/class-course-metabox.php';
             require_once LP_SURVEY_PATH . 'includes/admin/class-lesson-metabox.php';
+            require_once LP_SURVEY_PATH . 'includes/admin/class-survey-manager.php';
         }
 
         // Frontend classes (MUST be always included for AJAX to work!)
@@ -260,6 +261,7 @@ final class LP_Survey
             LP_Survey_Admin::instance();
             LP_Survey_Lesson_Metabox::instance();
             LP_Survey_Course_Metabox::instance();
+            LP_Survey_Manager::instance();
         }
 
         // Initialize frontend (MUST be always initialized for AJAX to work!)

@@ -347,4 +347,178 @@ class LP_Survey_Database
             'average_rating' => $avg_rating ? round($avg_rating, 2) : 0,
         );
     }
+
+    /**
+     * Get all surveys with question counts
+     *
+     * @param string $type Filter by type (lesson|course), empty for all
+     * @return array Surveys
+     */
+    public static function mf_get_all_surveys($type = '')
+    {
+        global $wpdb;
+        $table_surveys = self::get_table_name('surveys');
+        $table_questions = self::get_table_name('survey_questions');
+
+        $where = '';
+        $params = array();
+
+        if (!empty($type)) {
+            $where = 'WHERE s.type = %s';
+            $params[] = $type;
+        }
+
+        $query = "SELECT 
+				s.id,
+				s.type,
+				s.ref_id,
+				s.title,
+				s.status,
+				s.created_at,
+				COUNT(q.id) as question_count
+			FROM {$table_surveys} s
+			LEFT JOIN {$table_questions} q ON s.id = q.survey_id
+			{$where}
+			GROUP BY s.id
+			ORDER BY s.type ASC, s.ref_id ASC";
+
+        if (!empty($params)) {
+            $query = $wpdb->prepare($query, $params);
+        }
+
+        return $wpdb->get_results($query);
+    }
+
+    /**
+     * Get single question by ID
+     *
+     * @param int $question_id Question ID
+     * @return object|null Question object
+     */
+    public static function mf_get_question($question_id)
+    {
+        global $wpdb;
+        $table = self::get_table_name('survey_questions');
+
+        return $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT * FROM {$table} WHERE id = %d",
+                $question_id
+            )
+        );
+    }
+
+    /**
+     * Insert new survey question
+     *
+     * @param int    $survey_id Survey ID
+     * @param string $type Question type (rating|text)
+     * @param string $content Question content
+     * @param int    $order Question order
+     * @return int|false Insert ID or false on failure
+     */
+    public static function mf_insert_question($survey_id, $type, $content, $order = 0)
+    {
+        global $wpdb;
+        $table = self::get_table_name('survey_questions');
+
+        // If order not specified, get the next order number
+        if ($order === 0) {
+            $max_order = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT MAX(question_order) FROM {$table} WHERE survey_id = %d",
+                    $survey_id
+                )
+            );
+            $order = $max_order ? $max_order + 1 : 1;
+        }
+
+        $result = $wpdb->insert(
+            $table,
+            array(
+                'survey_id' => $survey_id,
+                'type' => $type,
+                'content' => $content,
+                'question_order' => $order,
+            ),
+            array('%d', '%s', '%s', '%d')
+        );
+
+        return $result ? $wpdb->insert_id : false;
+    }
+
+    /**
+     * Update existing question
+     *
+     * @param int    $question_id Question ID
+     * @param string $content Question content
+     * @param string $type Question type
+     * @param int    $order Question order
+     * @return bool Success
+     */
+    public static function mf_update_question($question_id, $content, $type, $order)
+    {
+        global $wpdb;
+        $table = self::get_table_name('survey_questions');
+
+        $result = $wpdb->update(
+            $table,
+            array(
+                'content' => $content,
+                'type' => $type,
+                'question_order' => $order,
+            ),
+            array('id' => $question_id),
+            array('%s', '%s', '%d'),
+            array('%d')
+        );
+
+        return $result !== false;
+    }
+
+    /**
+     * Delete question
+     *
+     * @param int $question_id Question ID
+     * @return bool Success
+     */
+    public static function mf_delete_question($question_id)
+    {
+        global $wpdb;
+        $table = self::get_table_name('survey_questions');
+
+        $result = $wpdb->delete(
+            $table,
+            array('id' => $question_id),
+            array('%d')
+        );
+
+        return $result !== false;
+    }
+
+    /**
+     * Reorder questions
+     *
+     * @param array $ordered_ids Array of question IDs in new order
+     * @return bool Success
+     */
+    public static function mf_reorder_questions($ordered_ids)
+    {
+        global $wpdb;
+        $table = self::get_table_name('survey_questions');
+
+        $order = 1;
+        foreach ($ordered_ids as $id) {
+            $wpdb->update(
+                $table,
+                array('question_order' => $order),
+                array('id' => $id),
+                array('%d'),
+                array('%d')
+            );
+            $order++;
+        }
+
+        return true;
+    }
 }

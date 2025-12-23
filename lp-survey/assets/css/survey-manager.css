@@ -1,0 +1,220 @@
+/**
+ * Survey Manager Admin Styles
+ */
+
+/* Survey Manager Page */
+.lp-survey-manager {
+	max-width: 1200px;
+}
+
+.lp-survey-manager h1 {
+	margin-bottom: 20px;
+}
+
+/* Survey Selector */
+.lp-survey-selector {
+	background: #fff;
+	padding: 15px;
+	border: 1px solid #ccd0d4;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.lp-survey-selector label {
+	font-size: 14px;
+}
+
+.lp-survey-selector select {
+	min-width: 300px;
+	height: 32px;
+	vertical-align: middle;
+}
+
+/* Actions */
+.lp-survey-actions {
+	margin: 20px 0;
+}
+
+/* Questions Table */
+.lp-survey-questions {
+	background: #fff;
+	padding: 20px;
+	border: 1px solid #ccd0d4;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	margin-top: 20px;
+}
+
+.lp-survey-questions h2 {
+	margin-top: 0;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.lp-survey-questions .no-questions-msg {
+	color: #666;
+	font-style: italic;
+	padding: 20px;
+	text-align: center;
+	background: #f9f9f9;
+	border: 1px dashed #ddd;
+}
+
+/* Sortable */
+.ui-sortable-helper {
+	background: #fff;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ui-sortable-placeholder {
+	background: #f0f0ff;
+	border: 2px dashed #2271b1;
+	visibility: visible !important;
+}
+
+.drag-handle {
+	cursor: move;
+	color: #999;
+}
+
+.drag-handle:hover {
+	color: #2271b1;
+}
+
+.drag-handle .dashicons {
+	vertical-align: middle;
+}
+
+/* Question Table Cells */
+.question-content {
+	font-weight: 500;
+}
+
+.question-type {
+	color: #666;
+	font-size: 13px;
+}
+
+/* Modal */
+.lp-survey-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 100000;
+}
+
+.lp-survey-modal-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.7);
+}
+
+.lp-survey-modal-content {
+	position: relative;
+	background: #fff;
+	max-width: 600px;
+	margin: 80px auto;
+	border-radius: 4px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+	z-index: 100001;
+}
+
+.lp-survey-modal-header {
+	padding: 20px;
+	border-bottom: 1px solid #ddd;
+	position: relative;
+}
+
+.lp-survey-modal-header h2 {
+	margin: 0;
+	font-size: 20px;
+}
+
+.lp-survey-modal-close {
+	position: absolute;
+	top: 15px;
+	right: 20px;
+	background: none;
+	border: none;
+	font-size: 30px;
+	line-height: 1;
+	color: #666;
+	cursor: pointer;
+	padding: 0;
+}
+
+.lp-survey-modal-close:hover {
+	color: #000;
+}
+
+.lp-survey-modal-body {
+	padding: 20px;
+}
+
+.lp-survey-modal-body form p {
+	margin-bottom: 15px;
+}
+
+.lp-survey-modal-body label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.lp-survey-modal-body .widefat {
+	width: 100%;
+}
+
+.lp-survey-modal-body .submit-actions {
+	margin-top: 20px;
+	padding-top: 15px;
+	border-top: 1px solid #ddd;
+	text-align: right;
+}
+
+.lp-survey-modal-body .submit-actions .button {
+	margin-left: 10px;
+}
+
+/* Notifications */
+.lp-survey-notice {
+	position: fixed;
+	top: 32px;
+	right: 20px;
+	padding: 12px 20px;
+	background: #fff;
+	border-left: 4px solid #00a32a;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+	z-index: 100002;
+	animation: slideIn 0.3s ease-out;
+}
+
+.lp-survey-notice.error {
+	border-left-color: #d63638;
+}
+
+@keyframes slideIn {
+	from {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+	.lp-survey-selector select {
+		width: 100%;
+		margin-top: 10px;
+	}
+
+	.lp-survey-modal-content {
+		margin: 20px;
+		width: calc(100% - 40px);
+	}
+}
