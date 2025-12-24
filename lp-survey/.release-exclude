@@ -1,0 +1,15 @@
+.git
+.gitignore
+.release-exclude
+node_modules
+package.json
+package-lock.json
+*.log
+.DS_Store
+Thumbs.db
+*.md
+!README.md
+release
+*.zip
+.vscode
+.idea

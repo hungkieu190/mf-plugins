@@ -1,0 +1,16 @@
+{
+  "name": "lp-survey",
+  "version": "1.0.0",
+  "description": "LearnPress – Course & Lesson Survey - Collect student feedback immediately after completing lessons or courses",
+  "scripts": {
+    "release": "npm run clean && npm run build-release",
+    "clean": "rm -rf release && mkdir -p release",
+    "build-release": "rsync -av --exclude-from='.release-exclude' . release/lp-survey && cd release && zip -r lp-survey.zip lp-survey"
+  },
+  "author": "MamFlow",
+  "license": "GPL-2.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://mamflow.com"
+  }
+}
