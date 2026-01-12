@@ -4,7 +4,7 @@
  * Plugin URI: https://thimpress.com/learnpress
  * Description: LearnPress is a WordPress complete solution for creating a Learning Management System (LMS). It can help you to create courses, lessons and quizzes.
  * Author: ThimPress
- * Version: 4.3.2.2
+ * Version: 4.3.2.5
  * Author URI: http://thimpress.com
  * Requires at least: 6.0
  * Requires PHP: 7.4
@@ -30,6 +30,7 @@ use LearnPress\Models\CourseModel;
 use LearnPress\Models\UserModel;
 use LearnPress\Shortcodes\Course\FilterCourseShortcode;
 use LearnPress\Shortcodes\CourseButtonShortcode;
+use LearnPress\Shortcodes\Courses\ListCoursesShortcode;
 use LearnPress\Shortcodes\ListInstructorsShortcode;
 use LearnPress\Shortcodes\SingleInstructorShortcode;
 use LearnPress\Shortcodes\CourseMaterialShortcode;
@@ -138,6 +139,8 @@ if ( ! class_exists( 'LearnPress' ) ) {
 		public $thim_core_version_require = '2.0.0';
 
 		public static $time_limit_default_of_sever = 0;
+
+		public static $doc_link = 'https://learnpresslms.com/docs/';
 
 		/**
 		 * LearnPress constructor.
@@ -463,6 +466,7 @@ if ( ! class_exists( 'LearnPress' ) ) {
 			CourseMaterialShortcode::instance();
 			CourseButtonShortcode::instance();
 			FilterCourseShortcode::instance();
+			ListCoursesShortcode::instance();
 			//ListCourseRecentShortcode::instance();
 			include_once 'inc/class-lp-shortcodes.php';
 
@@ -797,7 +801,7 @@ if ( ! class_exists( 'LearnPress' ) ) {
 		 */
 		public function plugin_links( array $links ): array {
 			$links[] = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=learn-press-settings' ), __( 'Settings', 'learnpress' ) );
-			$links[] = sprintf( '<a href="%s" target="_blank">%s</a>', 'https://docs.thimpress.com/learnpress/', __( 'Documentation', 'learnpress' ) );
+			$links[] = sprintf( '<a href="%s" target="_blank">%s</a>', LearnPress::$doc_link, __( 'Documentation', 'learnpress' ) );
 			$links[] = sprintf( '<a href="%s" target="_blank">%s</a>', get_admin_url() . '/admin.php?page=learn-press-addons', __( 'Add-ons', 'learnpress' ) );
 
 			return $links;

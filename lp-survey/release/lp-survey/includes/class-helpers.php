@@ -49,25 +49,7 @@ class LP_Survey_Helpers
         return false;
     }
 
-    /**
-     * Check if lesson survey is enabled
-     *
-     * @return bool
-     */
-    public static function is_lesson_survey_enabled()
-    {
-        return get_option('mf_lp_survey_enable_lesson_survey', 'yes') === 'yes';
-    }
 
-    /**
-     * Check if course survey is enabled
-     *
-     * @return bool
-     */
-    public static function is_course_survey_enabled()
-    {
-        return get_option('mf_lp_survey_enable_course_survey', 'yes') === 'yes';
-    }
 
     /**
      * Get display type

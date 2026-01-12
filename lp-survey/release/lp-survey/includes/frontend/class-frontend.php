@@ -66,8 +66,18 @@ class LP_Survey_Frontend
      */
     public function enqueue_assets()
     {
-        // Only enqueue on LearnPress pages
-        if (!$this->is_learnpress_page()) {
+        // Check for pending survey from transient first
+        $user_id = get_current_user_id();
+        $pending_survey = false;
+        $transient_key = '';
+
+        if ($user_id) {
+            $transient_key = 'lp_survey_show_for_user_' . $user_id;
+            $pending_survey = get_transient($transient_key);
+        }
+
+        // Only enqueue on LearnPress pages, OR if we have a pending survey
+        if (!$this->is_learnpress_page() && !$pending_survey) {
             return;
         }
 
@@ -96,25 +106,12 @@ class LP_Survey_Frontend
             'canSkip' => LP_Survey_Helpers::can_skip_survey(),
         );
 
-        // Check for pending survey from transient
-        $user_id = get_current_user_id();
+        if ($pending_survey) {
+            // Delete transient immediately to prevent double show
+            delete_transient($transient_key);
 
-        if ($user_id) {
-            $transient_key = 'lp_survey_show_for_user_' . $user_id;
-
-            $pending_survey = get_transient($transient_key);
-
-            if ($pending_survey) {
-
-                // Delete transient immediately
-                delete_transient($transient_key);
-
-                // Add to localized data
-                $localize_data['pendingSurvey'] = $pending_survey;
-
-            } else {
-            }
-        } else {
+            // Add to localized data
+            $localize_data['pendingSurvey'] = $pending_survey;
         }
 
 
@@ -187,6 +184,7 @@ class LP_Survey_Frontend
         check_ajax_referer('lp_survey_nonce', 'nonce');
 
         $survey_id = absint($_POST['survey_id'] ?? 0);
+        $ref_id = absint($_POST['ref_id'] ?? 0);
         $answers = $_POST['answers'] ?? array();
         $user_id = get_current_user_id();
 
@@ -217,7 +215,7 @@ class LP_Survey_Frontend
                 continue;
             }
 
-            LP_Survey_Database::save_answer($survey_id, $question_id, $user_id, $answer);
+            LP_Survey_Database::save_answer($survey_id, $question_id, $user_id, $answer, $ref_id);
         }
 
         wp_send_json_success(array('message' => __('Thank you for your feedback!', 'lp-survey')));

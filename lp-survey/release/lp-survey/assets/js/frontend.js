@@ -7,57 +7,93 @@
 
     const LPSurvey = {
         currentSurveyId: 0,
+        currentRefId: 0,
 
         init: function () {
             this.checkTrigger();
+            this.initAjaxInterceptor();
             this.bindEvents();
         },
 
 
 
         checkTrigger: function () {
-            console.log('========================================');
-
-            // First check if there's a pending survey from PHP (transient)
+            // 1. Check if there's a pending survey from PHP (transient)
             if (lpSurvey.pendingSurvey && lpSurvey.pendingSurvey.survey_id) {
 
-                this.currentSurveyId = lpSurvey.pendingSurvey.survey_id;
+                const triggerData = {
+                    survey_id: lpSurvey.pendingSurvey.survey_id,
+                    type: lpSurvey.pendingSurvey.type,
+                    ref_id: lpSurvey.pendingSurvey.ref_id,
+                    timestamp: Date.now()
+                };
 
-                this.loadAndShowSurvey(lpSurvey.pendingSurvey.survey_id);
+                // Store in localStorage as backup for redirects
+                if (typeof (Storage) !== "undefined") {
+                    localStorage.setItem('lp_survey_trigger', JSON.stringify(triggerData));
+                }
+
+                this.currentSurveyId = lpSurvey.pendingSurvey.survey_id;
+                this.currentRefId = lpSurvey.pendingSurvey.ref_id || 0;
+
+                this.loadAndShowSurvey(this.currentSurveyId);
                 return;
-            } else {
             }
 
-            // Fallback: check localStorage (for backwards compatibility)
+            // 2. Fallback: check localStorage (for persistence across redirects)
             if (typeof (Storage) !== "undefined") {
                 const storedTrigger = localStorage.getItem('lp_survey_trigger');
                 if (storedTrigger) {
                     try {
                         const triggerData = JSON.parse(storedTrigger);
 
-                        // Check if trigger is recent (within last 30 seconds)
+                        // Check if trigger is recent (within last 60 seconds)
                         const age = Date.now() - triggerData.timestamp;
 
-                        if (age < 30000 && triggerData.survey_id) {
+                        if (age < 60000 && triggerData.survey_id) {
                             this.currentSurveyId = triggerData.survey_id;
+                            this.currentRefId = triggerData.ref_id || 0;
                             this.loadAndShowSurvey(triggerData.survey_id);
 
                             // Clear localStorage after using
                             localStorage.removeItem('lp_survey_trigger');
                             return;
                         } else {
-                            // Clear expired trigger
                             localStorage.removeItem('lp_survey_trigger');
                         }
                     } catch (e) {
-                        console.error('LP Survey DEBUG: Failed to parse survey trigger:', e);
                         localStorage.removeItem('lp_survey_trigger');
                     }
-                } else {
                 }
             }
+        },
 
-            console.log('========================================');
+        /**
+         * Intercept LearnPress AJAX completions
+         */
+        initAjaxInterceptor: function () {
+            const self = this;
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                // Check if it's a LearnPress completion action
+                if (settings.data && typeof settings.data === 'string') {
+                    if (settings.data.indexOf('lp_course_finish') !== -1 ||
+                        settings.data.indexOf('lp_lesson_complete') !== -1) {
+
+                        // We can't easily see the transient yet, but we can poll for it
+                        // or just rely on the next page load if it redirects.
+                        // However, if it DOES NOT redirect, we want it NOW.
+                        setTimeout(() => {
+                            self.pollForTransient();
+                        }, 500);
+                    }
+                }
+            });
+        },
+
+        pollForTransient: function () {
+            // This is a bit tricky since we need fresh localized data.
+            // But we can check if the server returned any flag in the the result.
+            // For now, the most reliable way during redirect is just the next page load.
         },
 
         bindEvents: function () {
@@ -115,7 +151,7 @@
                     }
                 },
                 error: () => {
-                    console.error('Failed to load survey');
+                    // Fail silently in production
                 }
             });
         },
@@ -179,15 +215,18 @@
             const submitBtn = $('.lp-survey-submit-btn');
             submitBtn.prop('disabled', true).text('Submitting...');
 
+            const payload = {
+                action: 'mf_lp_survey_submit',
+                nonce: lpSurvey.nonce,
+                survey_id: this.currentSurveyId,
+                ref_id: this.currentRefId,
+                answers: answers
+            };
+
             $.ajax({
                 url: lpSurvey.ajaxUrl,
                 type: 'POST',
-                data: {
-                    action: 'mf_lp_survey_submit',
-                    nonce: lpSurvey.nonce,
-                    survey_id: this.currentSurveyId,
-                    answers: answers
-                },
+                data: payload,
                 success: (response) => {
                     if (response.success) {
                         this.showSuccess();

@@ -80,20 +80,7 @@ class LP_Survey_Settings extends LP_Abstract_Settings_Page
                     'title' => __('Survey Settings', 'lp-survey'),
                     'desc' => __('Configure survey display options for lessons and courses.', 'lp-survey'),
                 ),
-                array(
-                    'title' => __('Enable Lesson Survey', 'lp-survey'),
-                    'id' => 'mf_lp_survey_enable_lesson_survey',
-                    'default' => 'yes',
-                    'type' => 'checkbox',
-                    'desc' => __('Show survey popup after students complete a lesson.', 'lp-survey'),
-                ),
-                array(
-                    'title' => __('Enable Course Survey', 'lp-survey'),
-                    'id' => 'mf_lp_survey_enable_course_survey',
-                    'default' => 'yes',
-                    'type' => 'checkbox',
-                    'desc' => __('Show survey popup after students complete a course.', 'lp-survey'),
-                ),
+
                 array(
                     'title' => __('Display Type', 'lp-survey'),
                     'id' => 'mf_lp_survey_display_type',

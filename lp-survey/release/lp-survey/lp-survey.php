@@ -270,6 +270,9 @@ final class LP_Survey
 
         // Initialize LearnPress hooks
         LP_Survey_LearnPress_Hooks::instance();
+
+        // Ensure database tables are up to date (manually trigger once to fix missing columns)
+        LP_Survey_Database::create_tables();
     }
 
     /**
@@ -329,8 +332,6 @@ final class LP_Survey
     private function set_default_options()
     {
         $defaults = array(
-            'enable_lesson_survey' => 'yes',
-            'enable_course_survey' => 'yes',
             'display_type' => 'popup',
             'allow_skip' => 'yes',
             'max_questions' => 5,

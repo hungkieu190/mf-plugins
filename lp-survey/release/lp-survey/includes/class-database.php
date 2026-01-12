@@ -74,18 +74,27 @@ class LP_Survey_Database
 			survey_id bigint(20) unsigned NOT NULL,
 			question_id bigint(20) unsigned NOT NULL,
 			user_id bigint(20) unsigned NOT NULL,
+			ref_id bigint(20) unsigned NOT NULL DEFAULT 0,
 			answer text NOT NULL,
 			created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY (id),
 			KEY survey_id (survey_id),
 			KEY question_id (question_id),
-			KEY user_id (user_id)
+			KEY user_id (user_id),
+			KEY ref_id (ref_id)
 		) {$charset_collate};";
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         dbDelta($sql_surveys);
         dbDelta($sql_questions);
         dbDelta($sql_answers);
+
+        // EXTRA ROBUST: Manual check and fix for ref_id column
+        // dbDelta often fails to add columns to existing tables
+        $has_column = $wpdb->get_results("SHOW COLUMNS FROM `{$table_answers}` LIKE 'ref_id'");
+        if (empty($has_column)) {
+            $wpdb->query("ALTER TABLE `{$table_answers}` ADD COLUMN `ref_id` bigint(20) unsigned NOT NULL DEFAULT 0 AFTER `user_id`, ADD INDEX (`ref_id`) ");
+        }
 
         // Insert default lesson survey if not exists
         self::create_default_surveys();
@@ -293,7 +302,7 @@ class LP_Survey_Database
      * @param string $answer Answer content
      * @return int|false Insert ID or false on failure
      */
-    public static function save_answer($survey_id, $question_id, $user_id, $answer)
+    public static function save_answer($survey_id, $question_id, $user_id, $answer, $ref_id = 0)
     {
         global $wpdb;
         $table = self::get_table_name('survey_answers');
@@ -304,9 +313,10 @@ class LP_Survey_Database
                 'survey_id' => $survey_id,
                 'question_id' => $question_id,
                 'user_id' => $user_id,
+                'ref_id' => $ref_id,
                 'answer' => $answer,
             ),
-            array('%d', '%d', '%d', '%s')
+            array('%d', '%d', '%d', '%d', '%s')
         );
 
         return $result ? $wpdb->insert_id : false;

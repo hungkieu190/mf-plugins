@@ -65,10 +65,6 @@ class LP_Survey_Display
      */
     public function add_course_survey_trigger()
     {
-        if (!LP_Survey_Helpers::is_course_survey_enabled()) {
-            return;
-        }
-
         $course = LP_Global::course();
         if (!$course) {
             return;

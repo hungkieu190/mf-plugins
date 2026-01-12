@@ -1,3 +1,99 @@
  LearnPress dùng AJAX để complete lesson và redirect ngay trong response. Vấn đề là popup cần show TRƯỚC KHI redirect.
 
-Giải pháp đúng: Intercept AJAX complete và show popup trước khi cho redirect:
+Giải pháp đúng: Intercept AJAX complete và show popup trước khi cho redirect:\
+-----
+Cách thêm tab vào LearnPress Course Settings (Metabox settings ở cuối trang edit course):
+
+1. Register tab sử dụng filter 'learnpress/course/metabox/tabs':
+add_filter('learnpress/course/metabox/tabs', function($tabs, $post_id) {
+    $tabs['my_custom_tab'] = array(
+        'label'    => __('Label', 'text-domain'),
+        'target'   => 'my_custom_tab_data', // ID container bên trong
+        'icon'     => 'dashicons-clipboard', // dashicon slug
+        'priority' => 100,
+        'content'  => array(
+            '_my_meta_key' => new LP_Meta_Box_Checkbox_Field(
+                __('Title', 'text-domain'),
+                __('Description', 'text-domain'),
+                '0' // default value
+            ),
+        ),
+    );
+    return $tabs;
+}, 20, 2);
+
+2. Lưu dữ liệu sử dụng action 'learnpress_save_lp_course_metabox':
+add_action('learnpress_save_lp_course_metabox', function($post_id, $post) {
+    if ($post->post_type !== 'lp_course') return;
+    $val = isset($_POST['_my_meta_key']) ? '1' : '0';
+    update_post_meta($post_id, '_my_meta_key', $val);
+}, 20, 2);
+
+Lưu ý: LP hỗ trợ nhiều loại field class như LP_Meta_Box_Checkbox_Field, LP_Meta_Box_Text_Field, LP_Meta_Box_Select_Field... giúp giao diện đồng nhất với LP UI.
+
+-----
+Cách thêm option vào LearnPress Lesson Settings (Metabox settings nằm dưới khung nội dung bài học):
+
+1. Sử dụng filter 'lp/metabox/lesson/lists' để thêm field:
+add_filter('lp/metabox/lesson/lists', function($fields) {
+    $fields['_my_lesson_meta_key'] = new LP_Meta_Box_Checkbox_Field(
+        __('Title', 'text-domain'),
+        __('Description', 'text-domain'),
+        '0'
+    );
+    return $fields;
+});
+
+Lưu ý: Khác với Course (dùng tabs), Lesson dùng một danh sách fields phẳng trong filter 'lp/metabox/lesson/lists'. LP sẽ tự động handle việc hiển thị và lưu (nếu field đặt đúng meta key và dùng class field của LP).
+
+-----
+Cách xử lý Survey Popup sau khi Complete Lesson/Course (Xử lý được cả Redirect):
+
+1. Hooks quan trọng khi hoàn thành:
+- Lesson: 'learn-press/user-completed-lesson' ($lesson_id, $user_id, $course_id)
+- Course: 'learn-press/user-course-finished' ($course_id, $user_id) hoặc 'learn-press/user-course/finished' (nhận $user_course_model)
+
+2. Cơ chế lưu trữ trạng thái chờ hiển thị (Persistence):
+Do LP thường redirect từ Lesson Page sang Course Page sau khi Finish, cần lưu trạng thái vào Server (Transient) và Client (LocalStorage).
+
+- Backend: Khi hook hoàn thành bắn ra, set một transient:
+  set_transient('lp_survey_show_for_user_' . $user_id, array('survey_id' => ..., 'type' => ...), 30);
+
+- Enqueue Script: Cần enqueue script ngay cả khi KHÔNG PHẢI trang LearnPress nếu phát hiện transient đang tồn tại cho user đó (để bắt được popup ở trang đích redirect).
+
+- Frontend (localStorage): Khi nhận được dữ liệu từ transient (qua localize_script), hãy lưu ngay vào localStorage để dự phòng nếu user lỡ reload trang hoặc redirect tiếp theo.
+
+3. Kết hợp AJAX Interceptor:
+Sử dụng $(document).ajaxComplete để bắt các request 'lp_course_finish' hoặc 'lp_lesson_complete'. Nếu request thành công mà trang không redirect, có thể trigger popup ngay lập tức.
+
+logic tổng quát: 
+PHP (Transient) -> Localize (JS) -> LocalStorage (Backup) -> Check & Show Popup.
+
+-----
+Cách thêm Submenu vào LearnPress Admin Menu:
+
+1. Sử dụng 'admin_menu' hook với priority 100 (đảm bảo LearnPress menu đã được đăng ký):
+add_action('admin_menu', 'my_register_menu', 100);
+
+2. Parent slug là 'learn_press' (KHÔNG phải 'learnpress'):
+add_submenu_page(
+    'learn_press',                           // Parent slug
+    __('Menu Title', 'text-domain'),         // Page title
+    __('Menu Label', 'text-domain'),         // Menu label
+    'manage_options',                        // Capability
+    'my-plugin-slug',                        // Menu slug
+    'my_render_callback'                     // Callback
+);
+
+3. Hook name cho enqueue_scripts là 'learnpress_page_{slug}':
+function my_enqueue($hook) {
+    if ($hook !== 'learnpress_page_my-plugin-slug') {
+        return;
+    }
+    // Enqueue CSS/JS here
+}
+
+Lưu ý quan trọng:
+- Parent slug là 'learn_press' (chữ thường, có underscore)
+- Hook name format là 'learnpress_page_{menu-slug}'
+- Priority 100 là cần thiết để đảm bảo LP menu đã tồn tại

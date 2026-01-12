@@ -65,6 +65,27 @@ class LP_Survey_LearnPress_Hooks
         // LP4+ hooks
         add_action('learnpress_update_user_item_field', array($this, 'on_update_user_item_field'), 10, 4);
         add_action('lp_user_completed_lesson', array($this, 'on_action_lesson_complete'), 10, 3);
+
+        // Additional course hooks identified from research
+        add_action('learn-press/user-course-finished', array($this, 'on_action_course_complete'), 50, 2);
+        add_action('learn-press/user-course/finished', array($this, 'on_action_course_object_finished'), 50, 1);
+    }
+
+    /**
+     * Action handler for course object finished
+     */
+    public function on_action_course_object_finished($user_course_model)
+    {
+        if (!$user_course_model || !method_exists($user_course_model, 'get_course_id')) {
+            return;
+        }
+
+        $course_id = (int) $user_course_model->get_course_id();
+        $user_id = (int) $user_course_model->get_user_id();
+
+        if ($course_id && $user_id) {
+            $this->on_course_ajax_complete(array(), $course_id, $user_id);
+        }
     }
 
     /**
@@ -176,6 +197,8 @@ class LP_Survey_LearnPress_Hooks
      */
     public function on_course_ajax_complete($result, $course_id, $user_id)
     {
+        error_log('LP Survey DEBUG: on_course_ajax_complete - Course ID: ' . $course_id . ', User ID: ' . $user_id);
+
         // Check if THIS specific course has survey enabled
         $course_survey_enabled = get_post_meta($course_id, '_lp_survey_enabled', true);
 
@@ -203,7 +226,7 @@ class LP_Survey_LearnPress_Hooks
         }
 
         // Set transient (30 seconds expiry)
-        set_transient(
+        $set = set_transient(
             'lp_survey_show_for_user_' . $user_id,
             array(
                 'survey_id' => $survey->id,
@@ -212,6 +235,8 @@ class LP_Survey_LearnPress_Hooks
             ),
             30
         );
+
+        error_log('LP Survey DEBUG: Transient set for user ' . $user_id . ': ' . ($set ? 'SUCCESS' : 'FAILED'));
 
         return $result; // Don't modify LearnPress response
     }

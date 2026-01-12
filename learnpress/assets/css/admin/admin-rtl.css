@@ -681,7 +681,7 @@ ul .clearfix {
 
 @font-face {
   font-family: "lp-icon";
-  src: url("../../src/css/vendor/fonts/lp-icon/lp-icon.woff2?v=165") format("woff2");
+  src: url("../../src/css/vendor/fonts/lp-icon/lp-icon.woff2?v=100") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -9505,7 +9505,7 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
     transform: rotate(-360deg);
   }
 }
-.lp-btn-generate-course-with-ai, .lp-btn-generate-with-ai, #lp-course-edit-curriculum .lp-btn-generate-with-ai {
+.lp-btn-ai-style {
   background: #f6f7f7;
   border: 1px solid #2271b1;
   color: #2271b1;
@@ -9522,11 +9522,11 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   white-space: nowrap;
   box-sizing: border-box;
 }
-.lp-btn-generate-course-with-ai:active, .lp-btn-generate-with-ai:active, #lp-course-edit-curriculum .lp-btn-generate-with-ai:active {
+.lp-btn-ai-style:active {
   box-shadow: none;
   color: #fff;
 }
-.lp-btn-generate-course-with-ai:hover, .lp-btn-generate-with-ai:hover, #lp-course-edit-curriculum .lp-btn-generate-with-ai:hover {
+.lp-btn-ai-style:hover {
   background: #6B46E9;
   color: #fff;
 }
@@ -9535,7 +9535,7 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   background: #6B46E9;
 }
 
-.lp-btn-generate-course-with-ai {
+.lp-btn-generate-course-with-ai, .lp-btn-warning-enable-ai {
   position: absolute;
   margin: 10px 10px 0 0 !important;
 }
@@ -10338,6 +10338,59 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   width: 40px;
   height: 40px;
   border-width: 5px;
+}
+
+.lp-must-enable-ai-wrap {
+  text-align: right;
+  line-height: 1.6em;
+}
+.lp-must-enable-ai-wrap h2 {
+  margin-bottom: 0;
+}
+.lp-must-enable-ai-wrap h2 i {
+  margin-left: 10px;
+  color: #DC2626;
+}
+.lp-must-enable-ai-wrap .desc {
+  color: #6B7280;
+}
+.lp-must-enable-ai-wrap .p2 {
+  color: #6B7280;
+}
+.lp-must-enable-ai-wrap a {
+  color: #2563EB;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.lp-must-enable-ai-wrap .help-link {
+  padding: 16px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.lp-must-enable-ai-wrap .help-link a {
+  text-decoration: none;
+  margin-top: 10px;
+}
+.lp-must-enable-ai-wrap .help-link i {
+  color: #2A73AB;
+}
+.lp-must-enable-ai-wrap .button-actions {
+  margin-top: 20px;
+  text-align: left;
+}
+.lp-must-enable-ai-wrap .button-actions .lp-btn-close-ai-popup {
+  border: none;
+  color: #4B5563;
+  background: none;
+}
+.lp-must-enable-ai-wrap .button-actions .button-primary {
+  background-color: #7E6CE2;
+  color: #fff;
+  border: none;
+}
+.lp-must-enable-ai-wrap .button-actions .button-primary:hover {
+  opacity: 0.9;
 }
 
 .fui-loading-spinner-3 {
