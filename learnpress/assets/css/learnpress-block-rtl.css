@@ -208,6 +208,8 @@
 
 .social-share-toggle {
   position: relative;
+  display: flex;
+  gap: 20px;
 }
 .social-share-toggle .share-toggle-icon {
   cursor: pointer;

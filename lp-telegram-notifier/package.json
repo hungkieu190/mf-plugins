@@ -1,0 +1,16 @@
+{
+  "name": "lp-telegram-notifier",
+  "version": "1.0.0",
+  "description": "Telegram notifications for LearnPress course enrollments",
+  "scripts": {
+    "release": "bash release.sh"
+  },
+  "keywords": [
+    "wordpress",
+    "learnpress",
+    "telegram",
+    "notifications"
+  ],
+  "author": "MamFlow",
+  "license": "GPL-2.0-or-later"
+}

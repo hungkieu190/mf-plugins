@@ -1,0 +1,18 @@
+# Exclude from git
+/node_modules/
+/build/
+/release/
+*.zip
+*.log
+
+# Development files
+spec.txt
+.DS_Store
+
+# IDE files
+.vscode/
+.idea/
+
+# Backup files
+*.bak
+*~

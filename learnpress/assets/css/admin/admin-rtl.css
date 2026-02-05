@@ -681,7 +681,7 @@ ul .clearfix {
 
 @font-face {
   font-family: "lp-icon";
-  src: url("../../src/css/vendor/fonts/lp-icon/lp-icon.woff2?v=100") format("woff2");
+  src: url("../../src/css/vendor/fonts/lp-icon/lp-icon.woff2?v=165") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -3766,6 +3766,16 @@ input[name=_lp_course_result]:checked ~ #passing-condition-quiz-result {
   float: left;
   height: 24px;
   line-height: 1.375rem;
+}
+
+.is-lp-page {
+  color: #fff;
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  background-color: #9979ff;
+  margin-left: 5px;
+  display: inline-block;
 }
 
 .lp-overlay {
@@ -9527,12 +9537,8 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   color: #fff;
 }
 .lp-btn-ai-style:hover {
-  background: #6B46E9;
-  color: #fff;
-}
-
-#lp-course-edit-curriculum .lp-btn-generate-with-ai:hover {
-  background: #6B46E9;
+  background: #6B46E9 !important;
+  color: #fff !important;
 }
 
 .lp-btn-generate-course-with-ai, .lp-btn-warning-enable-ai {
