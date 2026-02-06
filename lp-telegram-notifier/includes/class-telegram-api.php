@@ -33,7 +33,7 @@ class MF_Telegram_API
     public static function send_message($chat_id, $message, $parse_mode = 'HTML')
     {
         // Get bot token from settings.
-        $bot_token = get_option('mf_lp_tg_bot_token', '');
+        $bot_token = get_option('learn_press_mf_lp_tg_bot_token', '');
 
         if (empty($bot_token) || empty($chat_id) || empty($message)) {
             error_log('LP Telegram Notifier: Missing configuration or message content.');

@@ -27,8 +27,7 @@ class MF_LP_Settings_Telegram extends LP_Abstract_Settings_Page
 
         parent::__construct();
 
-        // Add AJAX handler for test connection.
-        add_action('wp_ajax_mf_test_telegram_connection', array($this, 'mf_ajax_test_connection'));
+
     }
 
     /**
@@ -254,31 +253,7 @@ class MF_LP_Settings_Telegram extends LP_Abstract_Settings_Page
     /**
      * AJAX handler for test connection
      */
-    public function mf_ajax_test_connection()
-    {
-        // Verify nonce.
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'mf_test_telegram')) {
-            wp_send_json_error(array('message' => __('Security check failed.', 'lp-telegram-notifier')));
-        }
 
-        // Check user capability.
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error(array('message' => __('You do not have permission to perform this action.', 'lp-telegram-notifier')));
-        }
-
-        // Get and sanitize input.
-        $bot_token = isset($_POST['bot_token']) ? sanitize_text_field(wp_unslash($_POST['bot_token'])) : '';
-        $chat_id = isset($_POST['chat_id']) ? sanitize_text_field(wp_unslash($_POST['chat_id'])) : '';
-
-        // Test connection.
-        $result = MF_Telegram_API::test_connection($bot_token, $chat_id);
-
-        if ($result['success']) {
-            wp_send_json_success(array('message' => $result['message']));
-        } else {
-            wp_send_json_error(array('message' => $result['message']));
-        }
-    }
 }
 
 return new MF_LP_Settings_Telegram();
