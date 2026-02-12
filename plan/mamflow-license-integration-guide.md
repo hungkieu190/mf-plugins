@@ -1,7 +1,7 @@
 # Mamflow License System Integration Guide
 
 > **Purpose**: Complete step-by-step guide for integrating Mamflow License System into any LearnPress plugin.
-> **Last Updated**: 2026-02-05
+> **Last Updated**: 2026-02-12
 > **Tested On**: LP-Telegram-Notifier (Product ID: 47313)
 
 ---
@@ -39,6 +39,54 @@ class MF_LP_QZ_License_Handler {}      // LP Quiz Extension
 - Get from mamflow.com product page
 - Usually 5-digit number (e.g., 47313)
 - Must exist in WooCommerce before testing
+
+### 3. Settings Page License Gate (MANDATORY RULE)
+
+**⚠️ GENERAL RULE**: All admin settings pages for premium features MUST implement a license gate overlay. Do not allow users to view or modify settings without an active license.
+
+**❌ Forbidden Behaviors:**
+- Displaying settings options to unlicensed users.
+- Relying only on admin notices (they are easily ignored).
+- Providing a "close" button that just hides the popup but stays on the settings page.
+
+**✅ Mandatory Requirements:**
+- **License Check**: Must be the first check in the `render_settings_page()` method.
+- **Visual Gate**: Full-screen overlay with blurred background (`filter: blur(5px)`).
+- **Dashboard Redirect**: Must include a close ("X") button that redirects the user to the WordPress Dashboard (`admin_url('index.php')`).
+- **Call to Action**: Direct link to the specific license activation tab.
+- **Value Proposition**: List the premium features that will be unlocked.
+
+**Reference Implementation**: `lp-live-studio` (Module 10 integration)
+
+**Implementation Pattern**:
+```php
+public function render_settings_page() {
+    // Check license FIRST
+    $license_handler = Your_Plugin::instance()->get_license_handler();
+    $is_licensed     = $license_handler->is_feature_enabled();
+    
+    // If not licensed, show gate overlay
+    if ( ! $is_licensed ) {
+        $this->render_license_gate();
+        return;
+    }
+    
+    // Normal settings page (only if licensed)
+    include PLUGIN_PATH . '/includes/admin/views/settings-page.php';
+}
+
+private function render_license_gate() {
+    // Blurred settings preview + overlay modal
+    // Modal MUST include a close button linking to admin_url('index.php')
+    // See lp-live-studio for complete implementation
+}
+```
+
+**Why This Matters**:
+- Prevents users from configuring features they can't use
+- Clear call-to-action for license activation
+- Professional user experience
+- Consistent across all Mamflow plugins
 
 ---
 

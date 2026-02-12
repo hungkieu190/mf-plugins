@@ -1,0 +1,153 @@
+/**
+ * Admin Settings Styles
+ *
+ * @package lp-live-studio
+ */
+
+.mf-lls-settings-wrap {
+	max-width: 1200px;
+}
+
+.mf-lls-settings-content {
+	background: #fff;
+	padding: 20px;
+	margin-top: 20px;
+	border: 1px solid #ccd0d4;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+/* Info boxes */
+.mf-lls-info-box {
+	background: #f0f6fc;
+	border-left: 4px solid #0073aa;
+	padding: 15px 20px;
+	margin-top: 15px;
+}
+
+.mf-lls-info-box h4 {
+	margin-top: 0;
+	color: #0073aa;
+}
+
+.mf-lls-info-box ol {
+	margin: 10px 0 0 20px;
+}
+
+.mf-lls-info-box code {
+	background: #fff;
+	padding: 2px 6px;
+	border-radius: 3px;
+	font-size: 12px;
+}
+
+/* Status badges */
+.mf-lls-status-badge {
+	display: inline-block;
+	padding: 4px 12px;
+	border-radius: 3px;
+	font-weight: 600;
+	font-size: 12px;
+	text-transform: uppercase;
+	margin-right: 10px;
+}
+
+.mf-lls-status-connected {
+	background: #d4edda;
+	color: #155724;
+}
+
+.mf-lls-status-disconnected {
+	background: #f8d7da;
+	color: #721c24;
+}
+
+/* Connection status */
+.mf-lls-connection-status {
+	margin-left: 10px;
+	font-weight: 600;
+}
+
+.mf-lls-connection-status.success {
+	color: #46b450;
+}
+
+.mf-lls-connection-status.error {
+	color: #dc3232;
+}
+
+.mf-lls-connection-status.loading::after {
+	content: '...';
+	animation: mf-lls-dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes mf-lls-dots {
+	0%, 20% {
+		content: '.';
+	}
+	40% {
+		content: '..';
+	}
+	60%, 100% {
+		content: '...';
+	}
+}
+
+/* Form table improvements */
+.form-table th {
+	width: 200px;
+	padding: 20px 10px 20px 0;
+}
+
+.form-table td {
+	padding: 20px 10px;
+}
+
+.form-table input[type="text"],
+.form-table input[type="password"],
+.form-table input[type="number"],
+.form-table select,
+.form-table textarea {
+	font-size: 14px;
+}
+
+.form-table .description {
+	margin-top: 8px;
+	font-size: 13px;
+	color: #646970;
+}
+
+.form-table .description code {
+	background: #f0f0f1;
+	padding: 2px 5px;
+	border-radius: 2px;
+	font-size: 12px;
+}
+
+/* Buttons */
+.mf-lls-test-connection,
+.mf-lls-connect-google,
+.mf-lls-disconnect-google,
+.mf-lls-send-test-email {
+	position: relative;
+}
+
+.mf-lls-test-connection.loading,
+.mf-lls-connect-google.loading,
+.mf-lls-send-test-email.loading {
+	pointer-events: none;
+	opacity: 0.6;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+	.form-table th,
+	.form-table td {
+		display: block;
+		width: 100%;
+		padding: 10px 0;
+	}
+
+	.form-table th {
+		padding-bottom: 5px;
+	}
+}
