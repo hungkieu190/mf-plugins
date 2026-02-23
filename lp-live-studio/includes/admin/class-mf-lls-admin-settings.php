@@ -48,6 +48,10 @@ class MF_LLS_Admin_Settings
         add_action('admin_menu', array($this, 'add_menu'), 100);
         add_action('admin_init', array($this, 'save_settings'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
+
+        // AJAX handlers
+        add_action('wp_ajax_mf_lls_test_connection', array($this, 'ajax_test_connection'));
+        add_action('wp_ajax_mf_lls_send_test_email', array($this, 'ajax_send_test_email'));
     }
 
     /**
@@ -413,9 +417,15 @@ class MF_LLS_Admin_Settings
      */
     private function save_zoom_settings()
     {
+        $auth_type = sanitize_text_field($_POST['mf_lls_zoom_auth_type'] ?? 'oauth');
+        if (!in_array($auth_type, array('oauth', 'jwt'), true)) {
+            $auth_type = 'oauth';
+        }
+
+        update_option(MF_LLS_OPT_ZOOM_AUTH_TYPE, $auth_type);
+        update_option(MF_LLS_OPT_ZOOM_ACCOUNT_ID, sanitize_text_field($_POST['mf_lls_zoom_account_id'] ?? ''));
         update_option(MF_LLS_OPT_ZOOM_API_KEY, sanitize_text_field($_POST['mf_lls_zoom_api_key'] ?? ''));
         update_option(MF_LLS_OPT_ZOOM_API_SECRET, sanitize_text_field($_POST['mf_lls_zoom_api_secret'] ?? ''));
-        update_option(MF_LLS_OPT_ZOOM_AUTH_TYPE, sanitize_text_field($_POST['mf_lls_zoom_auth_type'] ?? 'oauth'));
     }
 
     /**
@@ -456,5 +466,93 @@ class MF_LLS_Admin_Settings
     public function get_current_tab()
     {
         return $this->current_tab;
+    }
+
+    /**
+     * AJAX: Test platform connection
+     */
+    public function ajax_test_connection()
+    {
+        check_ajax_referer('mf_lls_admin_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(esc_html__('Permission denied.', 'lp-live-studio'));
+        }
+
+        $platform = isset($_POST['platform']) ? sanitize_text_field($_POST['platform']) : '';
+        $allowed = array('zoom', 'google_meet', 'agora');
+
+        if (!in_array($platform, $allowed, true)) {
+            wp_send_json_error(esc_html__('Invalid platform.', 'lp-live-studio'));
+        }
+
+        $platform_instance = MF_LLS_Addon::instance()->get_platform($platform);
+
+        if (is_null($platform_instance)) {
+            wp_send_json_error(esc_html__('Platform class not found.', 'lp-live-studio'));
+        }
+
+        if (!$platform_instance->is_configured()) {
+            wp_send_json_error(esc_html__('Platform credentials are not configured. Please save your API keys first.', 'lp-live-studio'));
+        }
+
+        $result = $platform_instance->test_connection();
+
+        if (is_wp_error($result)) {
+            wp_send_json_error($result->get_error_message());
+        }
+
+        wp_send_json_success(esc_html__('Connection successful!', 'lp-live-studio'));
+    }
+
+    /**
+     * AJAX: Send test email
+     */
+    public function ajax_send_test_email()
+    {
+        check_ajax_referer('mf_lls_admin_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(esc_html__('Permission denied.', 'lp-live-studio'));
+        }
+
+        $admin_email = get_option('admin_email');
+        $site_name = get_option('blogname');
+
+        $subject = get_option('mf_lls_email_reminder_subject', __('Live Session Starting Soon: {lesson_title}', 'lp-live-studio'));
+        $body = get_option('mf_lls_email_reminder_body', '');
+
+        if (empty($body)) {
+            $body = "Hi {student_name},\n\nThis is a test email from LearnPress Live Studio.\n\nIf you received this, your email template is working correctly.\n\nBest regards,\n{site_name}";
+        }
+
+        // Replace placeholders with test data
+        $placeholders = array(
+            '{student_name}' => esc_html__('Test Student', 'lp-live-studio'),
+            '{lesson_title}' => esc_html__('Sample Live Session', 'lp-live-studio'),
+            '{course_title}' => esc_html__('Sample Course', 'lp-live-studio'),
+            '{start_time}' => current_time('d/m/Y H:i'),
+            '{join_url}' => esc_url(home_url()),
+            '{site_name}' => esc_html($site_name),
+        );
+
+        $subject = str_replace(array_keys($placeholders), array_values($placeholders), $subject);
+        $body = str_replace(array_keys($placeholders), array_values($placeholders), $body);
+
+        $headers = array('Content-Type: text/plain; charset=UTF-8');
+
+        $sent = wp_mail($admin_email, $subject, $body, $headers);
+
+        if ($sent) {
+            wp_send_json_success(
+                sprintf(
+                    /* translators: %s: admin email address */
+                    esc_html__('Test email sent to %s', 'lp-live-studio'),
+                    $admin_email
+                )
+            );
+        } else {
+            wp_send_json_error(esc_html__('Failed to send email. Please check your WordPress email configuration.', 'lp-live-studio'));
+        }
     }
 }

@@ -246,23 +246,27 @@ learnpress-live-studio/
   - [x] Sanitize tất cả input trước khi save (`sanitize_text_field`, `sanitize_textarea_field`)
   - [x] **License Gate Overlay** with close button and dashboard redirect
 
-- [ ] **1.3.2** Tạo các view files trong `includes/admin/views/`
+- [x] **1.3.2** Tạo các view files trong `includes/admin/views/`
   - [x] `settings-page.php` — Layout wrapper với tab navigation
-  - [ ] `settings-tab-general.php`
-  - [ ] `settings-tab-zoom.php`
-  - [ ] `settings-tab-google.php`
-  - [ ] `settings-tab-agora.php`
+  - [x] `settings-tab-general.php`
+  - [x] `settings-tab-zoom.php` (Account ID + Client ID + Client Secret)
+  - [x] `settings-tab-google.php`
+  - [x] `settings-tab-agora.php`
+  - [x] `settings-tab-email.php` (Reminder + Rating templates)
 
-- [ ] **1.3.3** Admin CSS/JS
-  - [ ] `src/css/admin-settings.scss`
-  - [ ] `src/js/admin-settings.js` (tab switching, test connection button)
-  - [x] Enqueue chỉ trên page `learnpress_page_lp-lls-settings` (Wait, slug needs to match the menu)
+- [x] **1.3.3** Admin CSS/JS
+  - [x] `assets/css/admin-settings.css`
+  - [x] `assets/js/admin-settings.js` (tab switching, test connection button, Google OAuth, send test email)
+  - [x] Enqueue chỉ trên page `learnpress_page_mf-lls-settings`
+  - [x] AJAX handlers: `mf_lls_test_connection`, `mf_lls_send_test_email`
 
 #### 1.4 Constants & Config
 
-- [ ] **1.4.1** Define tất cả option keys dạng constants
+- [x] **1.4.1** Define tất cả option keys dạng constants
   ```
   MF_LLS_OPT_DEFAULT_PLATFORM
+  MF_LLS_OPT_ZOOM_AUTH_TYPE
+  MF_LLS_OPT_ZOOM_ACCOUNT_ID
   MF_LLS_OPT_ZOOM_API_KEY
   MF_LLS_OPT_ZOOM_API_SECRET
   MF_LLS_OPT_GOOGLE_CLIENT_ID

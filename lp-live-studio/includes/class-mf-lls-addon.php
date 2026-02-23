@@ -215,9 +215,10 @@ class MF_LLS_Addon extends LP_Addon
     {
         // Option keys
         define('MF_LLS_OPT_DEFAULT_PLATFORM', 'mf_lls_default_platform');
+        define('MF_LLS_OPT_ZOOM_AUTH_TYPE', 'mf_lls_zoom_auth_type');
+        define('MF_LLS_OPT_ZOOM_ACCOUNT_ID', 'mf_lls_zoom_account_id');
         define('MF_LLS_OPT_ZOOM_API_KEY', 'mf_lls_zoom_api_key');
         define('MF_LLS_OPT_ZOOM_API_SECRET', 'mf_lls_zoom_api_secret');
-        define('MF_LLS_OPT_ZOOM_AUTH_TYPE', 'mf_lls_zoom_auth_type');
         define('MF_LLS_OPT_GOOGLE_CLIENT_ID', 'mf_lls_google_client_id');
         define('MF_LLS_OPT_GOOGLE_CLIENT_SECRET', 'mf_lls_google_client_secret');
         define('MF_LLS_OPT_GOOGLE_REFRESH_TOKEN', 'mf_lls_google_refresh_token');
