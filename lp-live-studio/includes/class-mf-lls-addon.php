@@ -219,6 +219,7 @@ class MF_LLS_Addon extends LP_Addon
         define('MF_LLS_OPT_ZOOM_ACCOUNT_ID', 'mf_lls_zoom_account_id');
         define('MF_LLS_OPT_ZOOM_API_KEY', 'mf_lls_zoom_api_key');
         define('MF_LLS_OPT_ZOOM_API_SECRET', 'mf_lls_zoom_api_secret');
+        define('MF_LLS_OPT_ZOOM_WEBHOOK_SECRET', 'mf_lls_zoom_webhook_secret');
         define('MF_LLS_OPT_GOOGLE_CLIENT_ID', 'mf_lls_google_client_id');
         define('MF_LLS_OPT_GOOGLE_CLIENT_SECRET', 'mf_lls_google_client_secret');
         define('MF_LLS_OPT_GOOGLE_REFRESH_TOKEN', 'mf_lls_google_refresh_token');
@@ -238,8 +239,11 @@ class MF_LLS_Addon extends LP_Addon
             MF_LLS_Admin_Settings::instance();
         }
 
-        // Platforms
+        // Platforms (abstract only — concrete classes loaded on demand)
         require_once MF_LLS_PATH . '/includes/platforms/abstract-mf-lls-platform.php';
+
+        // Register platform REST routes (Zoom webhook etc.)
+        add_action('rest_api_init', array($this, 'register_platform_rest_routes'));
 
         // Frontend
         require_once MF_LLS_PATH . '/includes/frontend/class-mf-lls-live-lesson.php';
@@ -251,6 +255,17 @@ class MF_LLS_Addon extends LP_Addon
 
         // Add custom cron schedule
         add_filter('cron_schedules', array($this, 'add_cron_schedules'));
+    }
+
+    /**
+     * Register REST API routes for all platforms.
+     * Loaded on rest_api_init only (not on every page load).
+     */
+    public function register_platform_rest_routes()
+    {
+        require_once MF_LLS_PATH . '/includes/platforms/class-mf-lls-zoom.php';
+        $zoom = new MF_LLS_Zoom();
+        $zoom->register_webhook_route();
     }
 
     /**

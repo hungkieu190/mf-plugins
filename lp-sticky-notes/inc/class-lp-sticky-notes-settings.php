@@ -257,6 +257,14 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
                 'desc' => esc_html__('Size of the toggle button.', 'lp-sticky-notes'),
             ),
             array(
+                'id' => 'lp_sticky_notes_button_bottom_offset',
+                'title' => esc_html__('Button Bottom Offset (px)', 'lp-sticky-notes'),
+                'type' => 'number',
+                'default' => '20',
+                'css' => 'width: 80px;',
+                'desc' => esc_html__('Distance from the bottom of the screen for bottom-positioned buttons. Increase this value on mobile to avoid overlapping with the LearnPress navigation buttons (e.g. set 80 to move it higher).', 'lp-sticky-notes'),
+            ),
+            array(
                 'id' => 'lp_sticky_notes_sidebar_width',
                 'title' => esc_html__('Sidebar Width', 'lp-sticky-notes'),
                 'type' => 'select',

@@ -197,9 +197,19 @@ defined('ABSPATH') || exit();
 					</svg>
 					<?php esc_html_e('All Notes', 'lp-sticky-notes'); ?>
 				</h3>
-				<button type="button" class="lp-all-notes-modal-close" id="lp-all-notes-modal-close">
-					&times;
-				</button>
+				<div class="lp-all-notes-modal-actions">
+					<button type="button" class="lp-btn-modal-export-pdf" id="lp-btn-modal-export-pdf"
+						title="<?php esc_attr_e('Export as PDF', 'lp-sticky-notes'); ?>">
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5h20v5a2 2 0 0 1-2 2h-2M6 14h12v8H6v-8z"
+								stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+						<?php esc_html_e('Export PDF', 'lp-sticky-notes'); ?>
+					</button>
+					<button type="button" class="lp-all-notes-modal-close" id="lp-all-notes-modal-close">
+						&times;
+					</button>
+				</div>
 			</div>
 			<div class="lp-all-notes-modal-body" id="lp-all-notes-modal-body">
 				<!-- Notes will be loaded here via JavaScript -->
@@ -215,3 +225,173 @@ defined('ABSPATH') || exit();
 			</div>
 		</div>
 	</div>
+
+	<style>
+		/* Export PDF button in modal header */
+		.lp-all-notes-modal-actions {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.lp-btn-modal-export-pdf {
+			background: rgba(255, 255, 255, 0.2);
+			color: var(--lp-sn-text-color, #92400e);
+			border: 1px solid var(--lp-sn-text-color, #92400e);
+			border-radius: 6px;
+			padding: 6px 14px;
+			font-size: 13px;
+			font-weight: 500;
+			cursor: pointer;
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			transition: all 0.2s ease;
+		}
+
+		.lp-btn-modal-export-pdf:hover {
+			background: rgba(255, 255, 255, 0.4);
+		}
+
+		/* Print container — clone of modal body injected directly into <body> before print */
+		#lp-sn-print-container {
+			display: none;
+		}
+
+		@media print {
+
+			/* Hide all direct children of body except our print container */
+			body>*:not(#lp-sn-print-container) {
+				display: none !important;
+			}
+
+			#lp-sn-print-container {
+				display: block !important;
+				padding: 20px;
+				font-family: sans-serif;
+			}
+
+			#lp-sn-print-container::before {
+				content: "<?php echo esc_js(__('My Notes', 'lp-sticky-notes')); ?>";
+				display: block;
+				font-size: 22px;
+				font-weight: bold;
+				margin-bottom: 20px;
+				border-bottom: 2px solid #333;
+				padding-bottom: 10px;
+			}
+
+			/* Notes groups */
+			#lp-sn-print-container .lp-notes-group {
+				break-inside: avoid;
+				page-break-inside: avoid;
+				box-shadow: none !important;
+				border: 1px solid #ccc;
+				border-radius: 0;
+				margin-bottom: 20px;
+			}
+
+			/* Group header — course + lesson name */
+			#lp-sn-print-container .lp-notes-group-header {
+				background: #f0f0f0 !important;
+				color: #111 !important;
+				padding: 10px 14px;
+				border-bottom: 1px solid #ccc;
+			}
+
+			/* Course name — prominent */
+			#lp-sn-print-container .lp-course-name {
+				display: block !important;
+				font-size: 13px;
+				font-weight: 700;
+				color: #333 !important;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				margin-bottom: 4px;
+			}
+
+			/* Lesson title */
+			#lp-sn-print-container .lp-notes-group-header h4 {
+				margin: 2px 0 0 0;
+				font-size: 15px;
+				color: #111 !important;
+			}
+
+			#lp-sn-print-container .lp-lesson-link {
+				color: #111 !important;
+				text-decoration: none !important;
+			}
+
+			/* Note items */
+			#lp-sn-print-container .lp-notes-group-list {
+				padding: 14px;
+				background: #fff !important;
+			}
+
+			#lp-sn-print-container .lp-note-item {
+				break-inside: avoid;
+				page-break-inside: avoid;
+				box-shadow: none !important;
+				transform: none !important;
+				border: 1px solid #e0e0e0;
+				margin-bottom: 10px;
+			}
+
+			/* Hide Edit/Delete action buttons */
+			#lp-sn-print-container .lp-note-actions {
+				display: none !important;
+			}
+
+			/* Note type badge */
+			#lp-sn-print-container .lp-note-type-badge {
+				border: 1px solid #ccc;
+				background: #fff !important;
+				color: #444 !important;
+			}
+
+			/* Highlight text */
+			#lp-sn-print-container .lp-note-highlight {
+				border-left: 3px solid #888;
+				background: #f9f9f9 !important;
+			}
+		}
+	</style>
+
+	<script>
+(function () {
+	'use strict';
+	var btn = document.getElementById('lp-btn-modal-export-pdf');
+	if (!btn) { return; }
+
+	btn.addEventListener('click', function () {
+		var modalBody = document.getElementById('lp-all-notes-modal-body');
+		if (!modalBody) { return; }
+
+		/* Clone modal body content into a direct child of <body> */
+		var printContainer = document.getElementById('lp-sn-print-container');
+		if (!printContainer) {
+			printContainer = document.createElement('div');
+			printContainer.id = 'lp-sn-print-container';
+			document.body.appendChild(printContainer);
+		}
+
+		printContainer.innerHTML = modalBody.innerHTML;
+
+		/* Set document.title → browser uses this as default PDF filename */
+		<?php
+		$current_user = wp_get_current_user();
+		$username = sanitize_title($current_user->user_login);
+		$domain = sanitize_title(parse_url(home_url(), PHP_URL_HOST));
+		?>
+		var originalTitle = document.title;
+		document.title = 'mynotes-<?php echo esc_js($username); ?>-<?php echo esc_js($domain); ?>';
+
+		/* Trigger print */
+		window.print();
+
+		/* Restore title and clean up after dialog closes */
+		document.title  = originalTitle;
+		printContainer.innerHTML = '';
+	});
+}());
+	</script>

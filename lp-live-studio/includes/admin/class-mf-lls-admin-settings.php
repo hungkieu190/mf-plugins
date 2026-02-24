@@ -426,6 +426,7 @@ class MF_LLS_Admin_Settings
         update_option(MF_LLS_OPT_ZOOM_ACCOUNT_ID, sanitize_text_field($_POST['mf_lls_zoom_account_id'] ?? ''));
         update_option(MF_LLS_OPT_ZOOM_API_KEY, sanitize_text_field($_POST['mf_lls_zoom_api_key'] ?? ''));
         update_option(MF_LLS_OPT_ZOOM_API_SECRET, sanitize_text_field($_POST['mf_lls_zoom_api_secret'] ?? ''));
+        update_option('mf_lls_zoom_webhook_secret', sanitize_text_field($_POST['mf_lls_zoom_webhook_secret'] ?? ''));
     }
 
     /**

@@ -417,13 +417,16 @@ class LP_Sticky_Notes_Hooks
 		}
 
 		// Button Position
+		$bottom_offset = absint(LP_Sticky_Notes_Settings::get_setting('lp_sticky_notes_button_bottom_offset', '20'));
+		$bottom_value = $bottom_offset . 'px';
+
 		$btn_pos_map = array(
 			'top-left' => array('top' => '20px', 'bottom' => 'auto', 'left' => '20px', 'right' => 'auto', 'transform' => 'none', 'hover' => 'scale(1.1)'),
 			'top-right' => array('top' => '20px', 'bottom' => 'auto', 'left' => 'auto', 'right' => '20px', 'transform' => 'none', 'hover' => 'scale(1.1)'),
 			'middle-left' => array('top' => '50%', 'bottom' => 'auto', 'left' => '20px', 'right' => 'auto', 'transform' => 'translateY(-50%)', 'hover' => 'translateY(-50%) scale(1.1)'),
 			'middle-right' => array('top' => '50%', 'bottom' => 'auto', 'left' => 'auto', 'right' => '20px', 'transform' => 'translateY(-50%)', 'hover' => 'translateY(-50%) scale(1.1)'),
-			'bottom-left' => array('top' => 'auto', 'bottom' => '20px', 'left' => '20px', 'right' => 'auto', 'transform' => 'none', 'hover' => 'scale(1.1)'),
-			'bottom-right' => array('top' => 'auto', 'bottom' => '20px', 'left' => 'auto', 'right' => '20px', 'transform' => 'none', 'hover' => 'scale(1.1)'),
+			'bottom-left' => array('top' => 'auto', 'bottom' => $bottom_value, 'left' => '20px', 'right' => 'auto', 'transform' => 'none', 'hover' => 'scale(1.1)'),
+			'bottom-right' => array('top' => 'auto', 'bottom' => $bottom_value, 'left' => 'auto', 'right' => '20px', 'transform' => 'none', 'hover' => 'scale(1.1)'),
 		);
 
 		if (isset($btn_pos_map[$button_position])) {

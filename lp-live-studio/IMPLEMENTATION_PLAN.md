@@ -284,35 +284,41 @@ learnpress-live-studio/
 
 #### 2.1 Register Live Lesson Type
 
-- [ ] **2.1.1** Tạo `class-mf-lls-live-lesson.php`
-  - [ ] Hook `lp/metabox/lesson/lists` → thêm live session fields
-  - [ ] Fields: `_mf_lls_is_live` (checkbox), `_mf_lls_platform` (select), `_mf_lls_start_time` (datetime), `_mf_lls_duration` (number), `_mf_lls_participant_limit` (number)
-  - [ ] Sử dụng LP Meta Box Field classes (`LP_Meta_Box_Checkbox_Field`, `LP_Meta_Box_Select_Field`, `LP_Meta_Box_Text_Field`)
+- [x] **2.1.1** Tạo `class-mf-lls-live-lesson.php`
+  - [x] Hook `lp/metabox/lesson/lists` → thêm live session fields
+  - [x] Fields: `_mf_lls_is_live` (checkbox), `_mf_lls_platform` (select), `_mf_lls_start_time` (datetime), `_mf_lls_duration` (number), `_mf_lls_participant_limit` (number)
+  - [x] Default platform từ `MF_LLS_OPT_DEFAULT_PLATFORM` option
 
 #### 2.2 Metabox & Save Logic
 
-- [ ] **2.2.1** Hook `learnpress_save_lp_lesson_metabox` → save live meta
-  - [ ] Sanitize `_mf_lls_start_time` (validate ISO 8601)
-  - [ ] Sanitize `_mf_lls_duration` (`absint()`)
-  - [ ] Sanitize `_mf_lls_participant_limit` (`absint()`)
-  - [ ] Sanitize `_mf_lls_platform` (whitelist: 'zoom', 'google_meet', 'agora')
-  - [ ] Auto-set `_mf_lls_status` = 'upcoming' khi save
+- [x] **2.2.1** Hook `learnpress_save_lp_lesson_metabox` → save live meta
+  - [x] Sanitize `_mf_lls_start_time` (validate ISO 8601, support multiple formats → normalize to Y-m-d H:i:s)
+  - [x] Sanitize `_mf_lls_duration` (`absint()`, clamp 1–1440)
+  - [x] Sanitize `_mf_lls_participant_limit` (`absint()`)
+  - [x] Sanitize `_mf_lls_platform` (whitelist: 'zoom', 'google_meet', 'agora')
+  - [x] Auto-set `_mf_lls_status` = 'upcoming' khi save (chỉ nếu chưa có)
+  - [x] Skip save nếu `_mf_lls_is_live` = '0'
 
 #### 2.3 Session Status Management
 
-- [ ] **2.3.1** Logic determine status
-  - [ ] `upcoming`: start_time > now
-  - [ ] `live`: start_time <= now <= start_time + duration
-  - [ ] `ended`: now > start_time + duration
-  - [ ] Function `mf_lls_get_session_status( $lesson_id )` trả status real-time
-  - [ ] Cron job update status hàng loạt (mỗi 5 phút)
+- [x] **2.3.1** Logic determine status
+  - [x] `upcoming`: start_time > now
+  - [x] `live`: start_time <= now <= start_time + duration
+  - [x] `ended`: now > start_time + duration
+  - [x] Static method `MF_LLS_Live_Lesson::get_session_status( $lesson_id )` — real-time, không phụ thuộc cache
+  - [x] Standalone helper `mf_lls_get_session_status( $lesson_id )`
+  - [x] Static method `MF_LLS_Live_Lesson::update_status_meta( $lesson_id )` — dùng bởi cron
 
 #### 2.4 Auto Create Meeting
 
-- [ ] **2.4.1** Hook `save_post_lp_lesson` → trigger meeting creation
-  - [ ] Chỉ create khi: `_mf_lls_is_live` = '1' AND `post_status` = 'publish' AND `_mf_lls_meeting_id` trống
-  - [ ] Gọi platform class `create_room()` → lưu `_mf_lls_meeting_id`, `_mf_lls_join_url`, `_mf_lls_host_url`
-  - [ ] Error handling: admin notice nếu API fail
+- [x] **2.4.1** Hook `save_post_lp_lesson` → trigger meeting creation
+  - [x] Skip DOING_AUTOSAVE và revisions
+  - [x] Chỉ create khi: `_mf_lls_is_live` = '1' AND `post_status` = 'publish' AND `_mf_lls_meeting_id` trống
+  - [x] License gate check trước khi create
+  - [x] Platform whitelist + `is_configured()` check
+  - [x] Start time required check
+  - [x] Gọi platform class `create_room()` → lưu `_mf_lls_meeting_id`, `_mf_lls_join_url`, `_mf_lls_host_url`, `_mf_lls_platform_data`
+  - [x] Error handling: transient-based admin notice (success/warning/error) — không dùng error_log
 
 ---
 

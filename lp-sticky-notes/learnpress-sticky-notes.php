@@ -4,7 +4,7 @@
  * Plugin URI: https://mamflow.com/product/learnpress-notes-addon-lp-sticky-notes/
  * Description: Allow students to take notes and highlight content for each lesson in LearnPress courses
  * Author: Mamflow
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author URI: https://mamflow.com/
  * Requires at least: 6.0
  * Requires PHP: 7.4
@@ -18,7 +18,7 @@
 defined('ABSPATH') || exit();
 
 // Define constants
-define('LP_STICKY_NOTES_VERSION', '1.0.3');
+define('LP_STICKY_NOTES_VERSION', '1.0.4');
 define('LP_STICKY_NOTES_FILE', __FILE__);
 define('LP_STICKY_NOTES_PATH', plugin_dir_path(__FILE__));
 define('LP_STICKY_NOTES_URL', plugin_dir_url(__FILE__));

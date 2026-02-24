@@ -13,6 +13,7 @@ $auth_type = get_option(MF_LLS_OPT_ZOOM_AUTH_TYPE, 'oauth');
 $account_id = get_option(MF_LLS_OPT_ZOOM_ACCOUNT_ID, '');
 $api_key = get_option(MF_LLS_OPT_ZOOM_API_KEY, '');
 $api_secret = get_option(MF_LLS_OPT_ZOOM_API_SECRET, '');
+$webhook_secret = get_option('mf_lls_zoom_webhook_secret', '');
 ?>
 
 <table class="form-table">
@@ -84,10 +85,33 @@ $api_secret = get_option(MF_LLS_OPT_ZOOM_API_SECRET, '');
         </tr>
 
         <tr>
+            <th scope="row">
+                <label for="mf_lls_zoom_webhook_secret">
+                    <?php esc_html_e( 'Webhook Secret Token', 'lp-live-studio' ); ?>
+                </label>
+            </th>
+            <td>
+                <input type="password" name="mf_lls_zoom_webhook_secret" id="mf_lls_zoom_webhook_secret"
+                    value="<?php echo esc_attr( $webhook_secret ); ?>" class="regular-text">
+                <p class="description">
+                    <?php esc_html_e( 'Secret Token from Zoom App → Feature → Event Subscriptions. Required for webhook signature verification.', 'lp-live-studio' ); ?>
+                    <br>
+                    <?php
+                    printf(
+                        /* translators: %s: Webhook endpoint URL */
+                        esc_html__( 'Webhook Endpoint URL: %s', 'lp-live-studio' ),
+                        '<code>' . esc_html( rest_url( 'mf-lls/v1/webhook/zoom' ) ) . '</code>'
+                    );
+                    ?>
+                </p>
+            </td>
+        </tr>
+
+        <tr>
             <th scope="row"></th>
             <td>
                 <button type="button" class="button button-secondary mf-lls-test-connection" data-platform="zoom">
-                    <?php esc_html_e('Test Connection', 'lp-live-studio'); ?>
+                    <?php esc_html_e( 'Test Connection', 'lp-live-studio' ); ?>
                 </button>
                 <span class="mf-lls-connection-status"></span>
             </td>

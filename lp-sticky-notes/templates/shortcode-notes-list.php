@@ -9,9 +9,22 @@ defined('ABSPATH') || exit();
 
 $show_course = isset($atts['show_course']) && $atts['show_course'] === 'yes';
 $show_lesson = isset($atts['show_lesson']) && $atts['show_lesson'] === 'yes';
+$word_threshold = 30; // words before truncation triggers View Full button
 ?>
 
 <div class="lp-shortcode-notes-list">
+
+    <?php if (!empty($notes)): ?>
+        <div class="lp-shortcode-toolbar">
+            <span class="lp-notes-count">
+                <?php printf(esc_html__('%d note(s)', 'lp-sticky-notes'), count($notes)); ?>
+            </span>
+            <button type="button" class="button lp-btn-export-pdf">
+                <?php esc_html_e('🖨 Export PDF', 'lp-sticky-notes'); ?>
+            </button>
+        </div>
+    <?php endif; ?>
+
     <?php if (empty($notes)): ?>
         <div class="lp-no-notes-shortcode">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -23,11 +36,16 @@ $show_lesson = isset($atts['show_lesson']) && $atts['show_lesson'] === 'yes';
         </div>
     <?php else: ?>
         <div class="lp-notes-grid">
-            <?php foreach ($notes as $note): ?>
+            <?php foreach ($notes as $note):
+                $word_count = str_word_count(strip_tags($note->content));
+                $is_long_note = $word_count > $word_threshold;
+                ?>
                 <div class="lp-note-card">
                     <div class="lp-note-card-header">
                         <span class="lp-note-type-badge note-type-<?php echo esc_attr($note->note_type); ?>">
-                            <?php echo $note->note_type === 'highlight' ? esc_html__('Highlight', 'lp-sticky-notes') : esc_html__('Text', 'lp-sticky-notes'); ?>
+                            <?php echo $note->note_type === 'highlight'
+                                ? esc_html__('Highlight', 'lp-sticky-notes')
+                                : esc_html__('Text', 'lp-sticky-notes'); ?>
                         </span>
                         <span class="lp-note-date">
                             <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($note->created_at))); ?>
@@ -57,9 +75,26 @@ $show_lesson = isset($atts['show_lesson']) && $atts['show_lesson'] === 'yes';
                         </div>
                     <?php endif; ?>
 
-                    <div class="lp-note-content">
-                        <?php echo wp_kses_post(wpautop($note->content)); ?>
-                    </div>
+                    <?php if ($is_long_note): ?>
+                        <div class="lp-note-content">
+                            <div class="lp-note-content-preview">
+                                <?php echo wp_kses_post(wp_trim_words($note->content, $word_threshold, '&hellip;')); ?>
+                            </div>
+                            <div class="lp-note-content-full" style="display:none;">
+                                <?php echo wp_kses_post(wpautop($note->content)); ?>
+                            </div>
+                            <button type="button" class="button button-small lp-view-full-sc"
+                                data-note-id="<?php echo esc_attr($note->id); ?>"
+                                data-label-expand="<?php esc_attr_e('View Full', 'lp-sticky-notes'); ?>"
+                                data-label-collapse="<?php esc_attr_e('Collapse', 'lp-sticky-notes'); ?>">
+                                <?php esc_html_e('View Full', 'lp-sticky-notes'); ?>
+                            </button>
+                        </div>
+                    <?php else: ?>
+                        <div class="lp-note-content">
+                            <?php echo wp_kses_post(wpautop($note->content)); ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -71,6 +106,28 @@ $show_lesson = isset($atts['show_lesson']) && $atts['show_lesson'] === 'yes';
         margin: 20px 0;
     }
 
+    /* Toolbar */
+    .lp-shortcode-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    .lp-notes-count {
+        font-size: 14px;
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    .lp-btn-export-pdf {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+    }
+
+    /* Empty state */
     .lp-no-notes-shortcode {
         text-align: center;
         padding: 40px 20px;
@@ -90,12 +147,14 @@ $show_lesson = isset($atts['show_lesson']) && $atts['show_lesson'] === 'yes';
         font-size: 16px;
     }
 
+    /* Grid */
     .lp-notes-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 20px;
     }
 
+    /* Card */
     .lp-note-card {
         background: #fefce8;
         border: 1px solid #fbbf24;
@@ -201,9 +260,101 @@ $show_lesson = isset($atts['show_lesson']) && $atts['show_lesson'] === 'yes';
         margin-bottom: 0;
     }
 
+    .lp-view-full-sc {
+        margin-top: 8px;
+        display: inline-block;
+    }
+
     @media (max-width: 768px) {
         .lp-notes-grid {
             grid-template-columns: 1fr;
         }
     }
+
+    /* -------------------------------------------------------------------------
+     * Print / Export PDF styles
+     * @media print is triggered by window.print() when user clicks Export PDF
+     * ------------------------------------------------------------------------ */
+    @media print {
+
+        /* Hide everything except the notes container */
+        body>* {
+            display: none !important;
+        }
+
+        .lp-shortcode-notes-list,
+        .lp-shortcode-notes-list * {
+            display: revert !important;
+        }
+
+        /* Hide UI controls in print */
+        .lp-shortcode-toolbar,
+        .lp-view-full-sc {
+            display: none !important;
+        }
+
+        /* Always show full content when printing */
+        .lp-note-content-full {
+            display: block !important;
+        }
+
+        .lp-note-content-preview {
+            display: none !important;
+        }
+
+        /* Reset grid to single column for print */
+        .lp-notes-grid {
+            display: block !important;
+        }
+
+        .lp-note-card {
+            break-inside: avoid;
+            box-shadow: none !important;
+            border: 1px solid #ccc !important;
+            transform: none !important;
+            margin-bottom: 16px;
+            page-break-inside: avoid;
+        }
+
+        .lp-shortcode-notes-list::before {
+            content: "My Study Notes";
+            display: block;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+    }
 </style>
+
+<script>
+    /* LP Sticky Notes Shortcode — View Full toggle & Export PDF */
+    (function () {
+        'use strict';
+
+        /* Feature #3 — View Full / Collapse toggle */
+        document.querySelectorAll('.lp-view-full-sc').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var card = btn.closest('.lp-note-card');
+                var full = card.querySelector('.lp-note-content-full');
+                var preview = card.querySelector('.lp-note-content-preview');
+                var isOpen = full.style.display !== 'none';
+
+                full.style.display = isOpen ? 'none' : '';
+                preview.style.display = isOpen ? '' : 'none';
+                btn.textContent = isOpen
+                    ? btn.getAttribute('data-label-expand')
+                    : btn.getAttribute('data-label-collapse');
+            });
+        });
+
+        /* Feature #4 — Export PDF via browser print dialog */
+        var exportBtn = document.querySelector('.lp-btn-export-pdf');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', function () {
+                window.print();
+            });
+        }
+    }());
+</script>

@@ -14,10 +14,14 @@
 	transform: var(--lp-sn-btn-transform, translateY(-50%));
 	width: var(--lp-sn-btn-size, 50px);
 	height: var(--lp-sn-btn-size, 50px);
+	min-width: var(--lp-sn-btn-size, 50px);
+	min-height: var(--lp-sn-btn-size, 50px);
+	padding: 0;
+	box-sizing: border-box;
 	background: var(--lp-sn-primary-color, #fbbf24);
 	color: var(--lp-sn-text-color, #92400e);
 	border: none;
-	border-radius: 50%;
+	border-radius: 50% !important;
 	cursor: pointer;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 	transition: all 0.3s ease;
