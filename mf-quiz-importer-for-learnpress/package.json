@@ -6,7 +6,8 @@
   "scripts": {
     "lint:js": "eslint 'assets/js/**/*.js'",
     "format": "prettier --write 'assets/**/*.{js,css}'",
-    "release": "node scripts/release.js"
+    "release": "node scripts/release.js",
+    "push": "git add . && git commit -m \"update: $(date '+%Y-%m-%d %H:%M:%S')\" && git push"
   },
   "keywords": [
     "wordpress",

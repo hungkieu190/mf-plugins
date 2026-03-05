@@ -130,7 +130,7 @@ class MF_Quiz_Importer_For_LearnPress
 
         // Admin hooks.
         if (is_admin()) {
-            add_action('admin_menu', array($this, 'add_admin_menu'));
+            add_action('admin_menu', array($this, 'add_admin_menu'), 20);
             add_action('admin_menu', array($this, 'add_license_menu'), 100);
             add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_assets'));
             add_action('admin_notices', array($this, 'license_notice'));
