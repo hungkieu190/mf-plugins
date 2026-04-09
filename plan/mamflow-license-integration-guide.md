@@ -1,8 +1,8 @@
 # Mamflow License System Integration Guide
 
 > **Purpose**: Complete step-by-step guide for integrating Mamflow License System into any LearnPress plugin.
-> **Last Updated**: 2026-02-12
-> **Tested On**: LP-Telegram-Notifier (Product ID: 47313)
+> **Last Updated**: 2026-03-05
+> **Tested On**: LP-Telegram-Notifier (47313), MF-Quiz-Importer-For-LearnPress
 
 ---
 
@@ -88,6 +88,102 @@ private function render_license_gate() {
 - Professional user experience
 - Consistent across all Mamflow plugins
 
+### 4. License Validation Rules — 3-Layer Protection (MANDATORY)
+
+Mỗi plugin Mamflow PHẢI implement đủ 3 lớp bảo vệ license. **KHÔNG được bỏ bớt bất kỳ lớp nào.**
+
+#### Layer 1: Local Expiry Check (trong `is_feature_enabled()`)
+
+**Mục đích**: Block ngay lập tức khi license hết hạn — KHÔNG cần gọi API, KHÔNG phụ thuộc cron.
+
+```php
+// Trong is_feature_enabled() — SAU khi check status === 'active'
+if ( ! empty( $license_data['expires_at'] ) ) {
+    if ( strtotime( $license_data['expires_at'] ) < current_time( 'timestamp' ) ) {
+        // Mark invalid locally so subsequent calls are fast.
+        $license_data['status'] = 'invalid';
+        update_option( $this->option_key, $license_data );
+        return false;
+    }
+}
+```
+
+**Tại sao quan trọng**: Nếu cron bị disable (shared hosting, WP Cron tắt), đây là tuyến phòng thủ duy nhất chặn license hết hạn.
+
+#### Layer 2: Fallback 72h API Re-check (trong `is_feature_enabled()`)
+
+**Mục đích**: Nếu `last_check` > 72 giờ, tự động gọi API verify — bảo vệ trường hợp cron bị tắt hoặc license bị revoke/refund trên server.
+
+```php
+// Trong is_feature_enabled() — SAU local expiry check
+$last_check = isset( $license_data['last_check'] ) ? $license_data['last_check'] : 0;
+$hours_since_check = ( current_time( 'timestamp' ) - $last_check ) / HOUR_IN_SECONDS;
+
+if ( $hours_since_check > 72 ) {
+    return $this->check_license_status();
+}
+```
+
+**Tại sao quan trọng**: License bị revoke/ban trên server sẽ được phát hiện trong tối đa 72 giờ, kể cả khi cron không chạy.
+
+#### Layer 3: Connection Error Handling (trong `check_license_status()`)
+
+**Mục đích**: Khi API server down, giữ nguyên status hiện tại NHƯNG vẫn enforce local expiry.
+
+```php
+// Trong check_license_status() — khi is_wp_error($response)
+if ( is_wp_error( $response ) ) {
+    if ( 'active' !== $license_data['status'] ) {
+        return false;
+    }
+    // Even if status is active, block if locally expired.
+    if ( ! empty( $license_data['expires_at'] ) && strtotime( $license_data['expires_at'] ) < current_time( 'timestamp' ) ) {
+        $license_data['status'] = 'invalid';
+        update_option( $this->option_key, $license_data );
+        return false;
+    }
+    return true;
+}
+```
+
+**Tại sao quan trọng**: Tránh 2 rủi ro:
+- API server down → license bị block nhầm (false negative)
+- API server down + license đã hết hạn → user vẫn dùng được (false positive)
+
+#### Bảng tổng hợp coverage
+
+| Trường hợp | Layer 1 | Layer 2 | Layer 3 |
+|---|---|---|---|
+| License hết hạn, cron hoạt động | ✅ | — | — |
+| License hết hạn, cron **bị tắt** | ✅ | — | — |
+| License bị refund/ban trên server | — | ✅ (max 72h) | — |
+| API server down, license còn hạn | — | — | ✅ giữ active |
+| API server down, license hết hạn | — | — | ✅ block |
+| Chưa check > 72h | — | ✅ force re-check | — |
+
+#### ❌ Forbidden Behaviors
+
+- **KHÔNG** chỉ dựa vào cron để check expiry — cron có thể bị tắt
+- **KHÔNG** cho phép dùng feature khi API error + license đã hết hạn
+- **KHÔNG** gọi API mỗi lần `is_feature_enabled()` — chỉ gọi khi > 72h hoặc qua cron
+- **KHÔNG** xóa `expires_at` khỏi option khi ghi — phải luôn đồng bộ từ API response
+
+#### `check_license_status()` — Sync `expires_at` từ API
+
+Khi API trả về thành công, PHẢI update cả `expires_at` vào local:
+
+```php
+// Trong check_license_status() — sau khi parse response
+$license_data['status']     = ( isset( $body['valid'] ) && $body['valid'] ) ? 'active' : 'invalid';
+$license_data['last_check'] = current_time( 'timestamp' );
+
+if ( isset( $body['expires_at'] ) ) {
+    $license_data['expires_at'] = $body['expires_at'];
+}
+
+update_option( $this->option_key, $license_data );
+```
+
 ---
 
 ## 🗂️ File Structure
@@ -146,10 +242,161 @@ class MF_[ABBREVIATION]_License_Handler {
         $this->option_key   = $config['option_key'];
     }
     
-    // Copy all methods from lp-telegram-notifier/includes/license/class-license-handler.php
-    // Methods: activate_license, deactivate_license, check_license_status, 
-    //          is_feature_enabled, get_license_data, get_site_domain,
-    //          get_days_until_expiration, is_expired
+    /**
+     * Activate license
+     * @param string $license_key License key from user.
+     * @return array Response with success status and message.
+     */
+    public function activate_license( $license_key ) {
+        // Copy from reference plugin — call API /activate endpoint
+        // Store: license_key, status, domain, expires_at, last_check
+    }
+    
+    /**
+     * Deactivate license
+     * @return array Response with success status and message.
+     */
+    public function deactivate_license() {
+        // Copy from reference plugin — call API /deactivate endpoint
+        // Delete option on success
+    }
+    
+    /**
+     * Check license status via API (called by cron + 72h fallback)
+     *
+     * MUST implement Layer 3: Connection Error Handling
+     * See section "4. License Validation Rules" for details.
+     *
+     * @return bool True if license is valid.
+     */
+    public function check_license_status() {
+        $license_data = get_option( $this->option_key );
+
+        if ( ! $license_data || empty( $license_data['license_key'] ) ) {
+            return false;
+        }
+
+        $response = wp_remote_post(
+            $this->api_url . '/check',
+            array(
+                'body'    => wp_json_encode( array(
+                    'license_key' => $license_data['license_key'],
+                    'domain'      => $license_data['domain'],
+                ) ),
+                'headers' => array( 'Content-Type' => 'application/json' ),
+                'timeout' => 15,
+            )
+        );
+
+        // Layer 3: Connection error — keep status but enforce local expiry
+        if ( is_wp_error( $response ) ) {
+            if ( 'active' !== $license_data['status'] ) {
+                return false;
+            }
+            if ( ! empty( $license_data['expires_at'] ) && strtotime( $license_data['expires_at'] ) < current_time( 'timestamp' ) ) {
+                $license_data['status'] = 'invalid';
+                update_option( $this->option_key, $license_data );
+                return false;
+            }
+            return true;
+        }
+
+        $body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+        // Sync status + expires_at from API
+        $license_data['status']     = ( isset( $body['valid'] ) && $body['valid'] ) ? 'active' : 'invalid';
+        $license_data['last_check'] = current_time( 'timestamp' );
+
+        if ( isset( $body['expires_at'] ) ) {
+            $license_data['expires_at'] = $body['expires_at'];
+        }
+
+        update_option( $this->option_key, $license_data );
+
+        return isset( $body['valid'] ) && $body['valid'];
+    }
+    
+    /**
+     * Check if premium features are enabled
+     *
+     * MUST implement Layer 1 (local expiry) + Layer 2 (72h fallback)
+     * See section "4. License Validation Rules" for details.
+     *
+     * @return bool True if license is valid and active.
+     */
+    public function is_feature_enabled() {
+        $license_data = get_option( $this->option_key );
+
+        if ( ! $license_data ) {
+            return false;
+        }
+
+        if ( ! isset( $license_data['status'] ) || 'active' !== $license_data['status'] ) {
+            return false;
+        }
+
+        // Layer 1: Local expiry — works even when cron is disabled
+        if ( ! empty( $license_data['expires_at'] ) ) {
+            if ( strtotime( $license_data['expires_at'] ) < current_time( 'timestamp' ) ) {
+                $license_data['status'] = 'invalid';
+                update_option( $this->option_key, $license_data );
+                return false;
+            }
+        }
+
+        // Layer 2: Fallback 72h — force API re-check if cron missed
+        $last_check        = isset( $license_data['last_check'] ) ? $license_data['last_check'] : 0;
+        $hours_since_check = ( current_time( 'timestamp' ) - $last_check ) / HOUR_IN_SECONDS;
+
+        if ( $hours_since_check > 72 ) {
+            return $this->check_license_status();
+        }
+
+        return true;
+    }
+    
+    /**
+     * Get license data
+     * @return array|false
+     */
+    public function get_license_data() {
+        return get_option( $this->option_key );
+    }
+    
+    /**
+     * Get current site domain
+     * @return string
+     */
+    public function get_site_domain() {
+        // Copy from reference plugin
+    }
+    
+    /**
+     * Get days until license expires
+     * @return int|null Days until expiration, null if lifetime.
+     */
+    public function get_days_until_expiration() {
+        $license_data = $this->get_license_data();
+        if ( ! $license_data || empty( $license_data['expires_at'] ) ) {
+            return null;
+        }
+        $expires_timestamp = strtotime( $license_data['expires_at'] );
+        $current_timestamp = current_time( 'timestamp' );
+        $days = floor( ( $expires_timestamp - $current_timestamp ) / DAY_IN_SECONDS );
+        return max( 0, $days );
+    }
+    
+    /**
+     * Check if license is expired
+     * @return bool
+     */
+    public function is_expired() {
+        $license_data = $this->get_license_data();
+        if ( ! $license_data || empty( $license_data['expires_at'] ) ) {
+            return false;
+        }
+        return strtotime( $license_data['expires_at'] ) < current_time( 'timestamp' );
+    }
 }
 ```
 
@@ -624,6 +871,10 @@ if ( isset( $_GET['page'] ) && 'mamflow-license' === $_GET['page'] ) {
 - [ ] License page tab appears
 - [ ] Admin notice appears and disappears correctly
 - [ ] Feature gating blocks without license
+- [ ] `is_feature_enabled()` has Layer 1 (local expiry check)
+- [ ] `is_feature_enabled()` has Layer 2 (72h fallback API re-check)
+- [ ] `check_license_status()` has Layer 3 (connection error + local expiry)
+- [ ] `check_license_status()` syncs `expires_at` from API response
 - [ ] Cron is scheduled on activation
 - [ ] Cron is cleared on deactivation
 - [ ] No conflicts with other Mamflow plugins
@@ -646,6 +897,6 @@ if ( isset( $_GET['page'] ) && 'mamflow-license' === $_GET['page'] ) {
 
 ---
 
-**Last Updated**: 2026-02-05 by AI Assistant
-**Tested On**: LP-Telegram-Notifier v1.0.0
+**Last Updated**: 2026-03-05 by AI Assistant
+**Tested On**: LP-Telegram-Notifier v1.0.0, MF-Quiz-Importer-For-LearnPress v1.0.0
 **Status**: ✅ Production Ready
