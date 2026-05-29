@@ -2,14 +2,15 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/js/utils.js":
+/***/ "./assets/src/js/utils.js"
 /*!********************************!*\
   !*** ./assets/src/js/utils.js ***!
   \********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   debounce: () => (/* binding */ debounce),
 /* harmony export */   eventHandlers: () => (/* binding */ eventHandlers),
 /* harmony export */   getDataOfForm: () => (/* binding */ getDataOfForm),
 /* harmony export */   getFieldKeysOfForm: () => (/* binding */ getFieldKeysOfForm),
@@ -33,7 +34,7 @@ __webpack_require__.r(__webpack_exports__);
  * @param data
  * @param functions
  * @since 4.2.5.1
- * @version 1.0.5
+ * @version 1.0.6
  */
 const lpClassName = {
   hidden: 'lp-hidden',
@@ -327,7 +328,40 @@ const eventHandlers = (eventName, eventHandlers) => {
   });
 };
 
-/***/ })
+/**
+ * Debounce - delays function execution until after `wait` ms of inactivity.
+ *
+ * Each call resets the timer. Only the last call in a burst executes.
+ *
+ * USE CASES:
+ * - Search inputs, form validation, window resize
+ * - Multiple elements need independent timers
+ * - When you need to call with different arguments
+ *
+ * EXAMPLES:
+ * const debouncedSearch = debounce( (query) => fetchResults(query), 300 );
+ * searchInput.addEventListener('input', (e) => debouncedSearch(e.target.value));
+ *
+ * const debouncedResize = debounce( recalculateLayout, 250 );
+ * window.addEventListener('resize', debouncedResize);
+ *
+ * ⚠️ Create ONCE outside event handlers, not inside.
+ *
+ * @param {Function} func - Function to debounce (can be anonymous)
+ * @param {number}   wait - Milliseconds to wait (default: 500)
+ * @return {Function} Debounced wrapper function
+ * @since 4.3.7
+ * @version 1.0.0
+ */
+const debounce = (func, wait = 500) => {
+  let timer;
+  return args => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(args), wait);
+  };
+};
+
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -349,6 +383,12 @@ const eventHandlers = (eventName, eventHandlers) => {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -386,15 +426,17 @@ const eventHandlers = (eventName, eventHandlers) => {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!**********************************************!*\
   !*** ./assets/src/js/frontend/curriculum.js ***!
   \**********************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./assets/src/js/utils.js");
+/* harmony import */ var lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lpAssetsJsPath/utils.js */ "./assets/src/js/utils.js");
 /**
  * Handle curriculum
  *
- * @version 1.0.1
+ * @version 1.0.2
  * @since 4.2.7.6
  */
 
@@ -453,8 +495,8 @@ const toggleSectionAll = elToggleAllSections => {
   const elExpand = elCurriculum.querySelector('.course-toggle-all-sections');
   const elCollapse = elCurriculum.querySelector('.course-toggle-all-sections.lp-collapse');
   if (elToggleAllSections.classList.contains('lp-collapse')) {
-    (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elExpand, 1);
-    (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elCollapse, 0);
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elExpand, 1);
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elCollapse, 0);
     elSections.forEach(el => {
       if (!el.classList.contains('lp-collapse')) {
         el.classList.add('lp-collapse');
@@ -462,8 +504,8 @@ const toggleSectionAll = elToggleAllSections => {
     });
   } else {
     elSections.forEach(el => {
-      (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elExpand, 0);
-      (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elCollapse, 1);
+      lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elExpand, 0);
+      lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elCollapse, 1);
       if (el.classList.contains('lp-collapse')) {
         el.classList.remove('lp-collapse');
       }
@@ -490,11 +532,11 @@ const checkAllSectionsCollapsed = elCurriculum => {
     }
   });
   if (isAllCollapsed) {
-    (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elExpand, 1);
-    (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elCollapse, 0);
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elExpand, 1);
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elCollapse, 0);
   } else {
-    (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elExpand, 0);
-    (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elCollapse, 1);
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elExpand, 0);
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elCollapse, 1);
   }
 };
 
@@ -508,18 +550,18 @@ const searchItemCourse = text => {
       const elSection = elItem.closest('.course-section');
       const titleItem = elItem.querySelector('.course-item-title').textContent;
       if (!searchText(titleItem, text)) {
-        (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elItem, 0);
+        lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elItem, 0);
         elItem.classList.add('lp-hide');
       } else {
         found = true;
-        (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elItem, 1);
+        lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elItem, 1);
         elSection.classList.remove('lp-collapse');
       }
     });
     if (!found) {
-      (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elSection, 0);
+      lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elSection, 0);
     } else {
-      (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elSection, 1);
+      lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl(elSection, 1);
     }
   });
 };
@@ -563,7 +605,7 @@ const scrollToItemViewing = elCurriculum => {
     behavior: 'smooth'
   });
 };
-(0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpOnElementReady)('.lp-course-curriculum', elCurriculum => {
+lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpOnElementReady('.lp-course-curriculum', elCurriculum => {
   checkAllSectionsCollapsed(elCurriculum);
 
   // Set interval to check if item viewing is changed
@@ -574,6 +616,8 @@ const scrollToItemViewing = elCurriculum => {
     }
   }, 300);
 });
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=curriculum.js.map

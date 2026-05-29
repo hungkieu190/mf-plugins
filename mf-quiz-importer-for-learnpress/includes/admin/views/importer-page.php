@@ -61,16 +61,16 @@ if (!wp_style_is('mf-quiz-importer-admin', 'enqueued')) {
             <!-- Import Quiz Tab Content -->
             <div class="mf-quiz-importer-card">
                 <h2><?php _e('Import Quizzes', 'mf-quiz-importer-lp'); ?></h2>
-            <p><?php _e('Upload a CSV, Excel, or JSON file to import complete quizzes with questions into LearnPress.', 'mf-quiz-importer-lp'); ?></p>
+            <p><?php _e('Upload a CSV, XLSX, or JSON file to import complete quizzes with questions into LearnPress.', 'mf-quiz-importer-lp'); ?></p>
             
             <form id="mf-quiz-importer-form" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="import_type" value="quiz">
                 <div class="mf-upload-area">
-                    <input type="file" id="mf-quiz-file" name="file" accept=".csv,.xlsx,.xls,.json" required>
+                    <input type="file" id="mf-quiz-file" name="file" accept=".csv,.xlsx,.json" required>
                     <label for="mf-quiz-file" class="mf-upload-label">
                         <span class="dashicons dashicons-upload"></span>
                         <span class="mf-upload-text"><?php _e('Drag & Drop or Click to Upload', 'mf-quiz-importer-lp'); ?></span>
-                        <span class="mf-upload-hint"><?php _e('Supported formats: CSV, Excel (XLSX/XLS), JSON', 'mf-quiz-importer-lp'); ?></span>
+                        <span class="mf-upload-hint"><?php _e('Supported formats: CSV, XLSX, JSON', 'mf-quiz-importer-lp'); ?></span>
                     </label>
                 </div>
                 
@@ -243,11 +243,11 @@ if (!wp_style_is('mf-quiz-importer-admin', 'enqueued')) {
                     </div>
                     
                     <div class="mf-upload-area">
-                        <input type="file" id="mf-question-file" name="file" accept=".csv,.xlsx,.xls,.json" required>
+                        <input type="file" id="mf-question-file" name="file" accept=".csv,.xlsx,.json" required>
                         <label for="mf-question-file" class="mf-upload-label">
                             <span class="dashicons dashicons-upload"></span>
                             <span class="mf-upload-text"><?php _e('Drag & Drop or Click to Upload', 'mf-quiz-importer-lp'); ?></span>
-                            <span class="mf-upload-hint"><?php _e('Supported formats: CSV, Excel (XLSX/XLS), JSON', 'mf-quiz-importer-lp'); ?></span>
+                            <span class="mf-upload-hint"><?php _e('Supported formats: CSV, XLSX, JSON', 'mf-quiz-importer-lp'); ?></span>
                         </label>
                     </div>
                     

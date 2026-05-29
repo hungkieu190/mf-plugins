@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Quiz Importer For LearnPress
  * Plugin URI: https://mamflow.com/product/quiz-importer-for-learnpress
- * Description: Import quizzes from various formats (CSV, Excel, JSON) into LearnPress LMS
- * Version: 1.0.0
+ * Description: Import quizzes from various formats (CSV, XLSX, JSON) into LearnPress LMS
+ * Version: 1.0.1
  * Author: MamFlow
  * Author URI: https://mamflow.com
  * Text Domain: mf-quiz-importer-lp
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('MF_QUIZ_IMPORTER_VERSION', '1.0.0');
+define('MF_QUIZ_IMPORTER_VERSION', '1.0.1');
 define('MF_QUIZ_IMPORTER_PLUGIN_FILE', __FILE__);
 define('MF_QUIZ_IMPORTER_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('MF_QUIZ_IMPORTER_PLUGIN_URL', plugin_dir_url(__FILE__));
@@ -261,7 +261,7 @@ class MF_Quiz_Importer_For_LearnPress
             <!-- Blurred background preview -->
             <div style="filter: blur(5px); pointer-events: none; padding: 20px; opacity: 0.4;">
                 <h2><?php esc_html_e('Quiz Importer', 'mf-quiz-importer-lp'); ?></h2>
-                <p><?php esc_html_e('Import quizzes from CSV, Excel, JSON into LearnPress LMS...', 'mf-quiz-importer-lp'); ?>
+                <p><?php esc_html_e('Import quizzes from CSV, XLSX, JSON into LearnPress LMS...', 'mf-quiz-importer-lp'); ?>
                 </p>
                 <div style="background:#f0f0f0; height:200px; border-radius:4px;"></div>
             </div>
@@ -281,7 +281,7 @@ class MF_Quiz_Importer_For_LearnPress
                         <?php esc_html_e('Activate your license to unlock full quiz import capabilities:', 'mf-quiz-importer-lp'); ?>
                     </p>
                     <ul style="text-align: left; color: #50575e; margin-bottom: 28px; padding-left: 20px;">
-                        <li><?php esc_html_e('Import from CSV, Excel, JSON formats', 'mf-quiz-importer-lp'); ?></li>
+                        <li><?php esc_html_e('Import from CSV, XLSX, JSON formats', 'mf-quiz-importer-lp'); ?></li>
                         <li><?php esc_html_e('Bulk quiz creation in LearnPress', 'mf-quiz-importer-lp'); ?></li>
                         <li><?php esc_html_e('Multiple question types support', 'mf-quiz-importer-lp'); ?></li>
                         <li><?php esc_html_e('Automatic scoring & grading settings', 'mf-quiz-importer-lp'); ?></li>

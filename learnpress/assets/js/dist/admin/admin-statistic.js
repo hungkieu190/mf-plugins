@@ -2,11 +2,11 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/@kurkle/color/dist/color.esm.js":
+/***/ "./node_modules/@kurkle/color/dist/color.esm.js"
 /*!******************************************************!*\
   !*** ./node_modules/@kurkle/color/dist/color.esm.js ***!
   \******************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -623,13 +623,13 @@ function index_esm(input) {
 
 
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/chart.js/auto/auto.js":
+/***/ "./node_modules/chart.js/auto/auto.js"
 /*!********************************************!*\
   !*** ./node_modules/chart.js/auto/auto.js ***!
   \********************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -691,13 +691,13 @@ _dist_chart_js__WEBPACK_IMPORTED_MODULE_0__.Chart.register(..._dist_chart_js__WE
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_dist_chart_js__WEBPACK_IMPORTED_MODULE_0__.Chart);
 
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/chart.js/dist/chart.js":
+/***/ "./node_modules/chart.js/dist/chart.js"
 /*!*********************************************!*\
   !*** ./node_modules/chart.js/dist/chart.js ***!
   \*********************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -12351,13 +12351,13 @@ const registerables = [
 //# sourceMappingURL=chart.js.map
 
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/chart.js/dist/chunks/helpers.dataset.js":
+/***/ "./node_modules/chart.js/dist/chunks/helpers.dataset.js"
 /*!**************************************************************!*\
   !*** ./node_modules/chart.js/dist/chunks/helpers.dataset.js ***!
   \**************************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -15279,7 +15279,7 @@ function getDatasetClipArea(chart, meta) {
 //# sourceMappingURL=helpers.dataset.js.map
 
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -15301,6 +15301,12 @@ function getDatasetClipArea(chart, meta) {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -15338,6 +15344,8 @@ function getDatasetClipArea(chart, meta) {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!************************************************!*\
   !*** ./assets/src/js/admin/admin-statistic.js ***!
   \************************************************/
@@ -15723,6 +15731,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   };
 });
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=admin-statistic.js.map

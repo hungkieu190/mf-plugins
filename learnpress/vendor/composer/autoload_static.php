@@ -4,33 +4,33 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit8544e55cb892a0745c66576872b5abce
+class ComposerStaticInit0f605074db146227d4f3cabab672b077
 {
     public static $prefixLengthsPsr4 = array (
-        'T' => 
+        'T' =>
         array (
             'TijsVerkoyen\\CssToInlineStyles\\' => 31,
         ),
-        'S' => 
+        'S' =>
         array (
             'Symfony\\Component\\CssSelector\\' => 30,
         ),
-        'L' => 
+        'L' =>
         array (
             'LearnPress\\' => 11,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'TijsVerkoyen\\CssToInlineStyles\\' => 
+        'TijsVerkoyen\\CssToInlineStyles\\' =>
         array (
             0 => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src',
         ),
-        'Symfony\\Component\\CssSelector\\' => 
+        'Symfony\\Component\\CssSelector\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/css-selector',
         ),
-        'LearnPress\\' => 
+        'LearnPress\\' =>
         array (
             0 => __DIR__ . '/../..' . '/inc',
         ),
@@ -43,9 +43,9 @@ class ComposerStaticInit8544e55cb892a0745c66576872b5abce
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit8544e55cb892a0745c66576872b5abce::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit8544e55cb892a0745c66576872b5abce::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit8544e55cb892a0745c66576872b5abce::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit0f605074db146227d4f3cabab672b077::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit0f605074db146227d4f3cabab672b077::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit0f605074db146227d4f3cabab672b077::$classMap;
 
         }, null, ClassLoader::class);
     }

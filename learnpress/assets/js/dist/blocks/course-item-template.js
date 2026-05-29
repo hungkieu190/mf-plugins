@@ -1,11 +1,11 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/apps/js/blocks/courses/course-item-template/edit.js":
+/***/ "./assets/src/apps/js/blocks/courses/course-item-template/edit.js"
 /*!************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/courses/course-item-template/edit.js ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -26,7 +26,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _js_api_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../../../js/api.js */ "./assets/src/js/api.js");
+/* harmony import */ var lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lpAssetsJsPath/utils.js */ "./assets/src/js/utils.js");
+/* harmony import */ var lpAssetsJsPath_api_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! lpAssetsJsPath/api.js */ "./assets/src/js/api.js");
+
 
 
 
@@ -81,12 +83,9 @@ function PostTemplateBlockPreview({
   }));
 }
 const fetchLearnPressCourses = async (courseQuery, signal) => {
-  const url = _js_api_js__WEBPACK_IMPORTED_MODULE_7__["default"].apiCourses;
-  let params = '?return_type=json';
-  if (courseQuery) {
-    params += `&${new URLSearchParams(courseQuery).toString()}`;
-  }
-  const response = await fetch(url + params, {
+  let url = lpAssetsJsPath_api_js__WEBPACK_IMPORTED_MODULE_8__["default"].apiEditCoursesArchiveBlock;
+  url = lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_7__.lpAddQueryArgs(url, courseQuery);
+  const response = await fetch(url, {
     method: 'GET',
     signal
   });
@@ -274,13 +273,13 @@ const Edit = ({
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Edit);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/courses/course-item-template/save.js":
+/***/ "./assets/src/apps/js/blocks/courses/course-item-template/save.js"
 /*!************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/courses/course-item-template/save.js ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -301,13 +300,13 @@ const Save = props => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Save);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/api.js":
+/***/ "./assets/src/js/api.js"
 /*!******************************!*\
   !*** ./assets/src/js/api.js ***!
   \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -341,6 +340,7 @@ if ('undefined' !== typeof lpData) {
   lplistAPI.frontend = {
     apiWidgets: lp_rest_url + 'lp/v1/widgets/api',
     apiCourses: lp_rest_url + 'lp/v1/courses/archive-course',
+    // Deprecated API, don't load from v4.3.7
     apiAJAX: lp_rest_url + 'lp/v1/load_content_via_ajax/',
     // Deprecated since 4.3.0
     apiProfileCoverImage: lp_rest_url + 'lp/v1/profile/cover-image'
@@ -348,93 +348,457 @@ if ('undefined' !== typeof lpData) {
 }
 if (lp_rest_url) {
   lplistAPI.apiCourses = lp_rest_url + 'lp/v1/courses/';
+  lplistAPI.apiEditCoursesArchiveBlock = lp_rest_url + 'lp/v1/courses/edit-archive-block';
+  lplistAPI.apiCoursesSuggest = lp_rest_url + 'lp/v1/courses/courses-suggest';
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (lplistAPI);
 
-/***/ }),
+/***/ },
 
-/***/ "react":
+/***/ "./assets/src/js/utils.js"
+/*!********************************!*\
+  !*** ./assets/src/js/utils.js ***!
+  \********************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   debounce: () => (/* binding */ debounce),
+/* harmony export */   eventHandlers: () => (/* binding */ eventHandlers),
+/* harmony export */   getDataOfForm: () => (/* binding */ getDataOfForm),
+/* harmony export */   getFieldKeysOfForm: () => (/* binding */ getFieldKeysOfForm),
+/* harmony export */   listenElementCreated: () => (/* binding */ listenElementCreated),
+/* harmony export */   listenElementViewed: () => (/* binding */ listenElementViewed),
+/* harmony export */   lpAddQueryArgs: () => (/* binding */ lpAddQueryArgs),
+/* harmony export */   lpAjaxParseJsonOld: () => (/* binding */ lpAjaxParseJsonOld),
+/* harmony export */   lpClassName: () => (/* binding */ lpClassName),
+/* harmony export */   lpFetchAPI: () => (/* binding */ lpFetchAPI),
+/* harmony export */   lpGetCurrentURLNoParam: () => (/* binding */ lpGetCurrentURLNoParam),
+/* harmony export */   lpOnElementReady: () => (/* binding */ lpOnElementReady),
+/* harmony export */   lpSetLoadingEl: () => (/* binding */ lpSetLoadingEl),
+/* harmony export */   lpShowHideEl: () => (/* binding */ lpShowHideEl),
+/* harmony export */   mergeDataWithDatForm: () => (/* binding */ mergeDataWithDatForm),
+/* harmony export */   toggleCollapse: () => (/* binding */ toggleCollapse)
+/* harmony export */ });
+/**
+ * Utils functions
+ *
+ * @param url
+ * @param data
+ * @param functions
+ * @since 4.2.5.1
+ * @version 1.0.6
+ */
+const lpClassName = {
+  hidden: 'lp-hidden',
+  loading: 'loading',
+  elCollapse: 'lp-collapse',
+  elSectionToggle: '.lp-section-toggle',
+  elTriggerToggle: '.lp-trigger-toggle'
+};
+const lpFetchAPI = (url, data = {}, functions = {}) => {
+  if ('function' === typeof functions.before) {
+    functions.before();
+  }
+  fetch(url, {
+    method: 'GET',
+    ...data
+  }).then(response => response.json()).then(response => {
+    if ('function' === typeof functions.success) {
+      functions.success(response);
+    }
+  }).catch(err => {
+    if ('function' === typeof functions.error) {
+      functions.error(err);
+    }
+  }).finally(() => {
+    if ('function' === typeof functions.completed) {
+      functions.completed();
+    }
+  });
+};
+
+/**
+ * Get current URL without params.
+ *
+ * @since 4.2.5.1
+ */
+const lpGetCurrentURLNoParam = () => {
+  let currentUrl = window.location.href;
+  const hasParams = currentUrl.includes('?');
+  if (hasParams) {
+    currentUrl = currentUrl.split('?')[0];
+  }
+  return currentUrl;
+};
+const lpAddQueryArgs = (endpoint, args) => {
+  const url = new URL(endpoint);
+  Object.keys(args).forEach(arg => {
+    url.searchParams.set(arg, args[arg]);
+  });
+  return url;
+};
+
+/**
+ * Listen element viewed.
+ *
+ * @param el
+ * @param callback
+ * @since 4.2.5.8
+ */
+const listenElementViewed = (el, callback) => {
+  const observerSeeItem = new IntersectionObserver(function (entries) {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        callback(entry);
+      }
+    }
+  });
+  observerSeeItem.observe(el);
+};
+
+/**
+ * Listen element created.
+ *
+ * @param callback
+ * @since 4.2.5.8
+ */
+const listenElementCreated = callback => {
+  const observerCreateItem = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.addedNodes) {
+        mutation.addedNodes.forEach(function (node) {
+          if (node.nodeType === 1) {
+            callback(node);
+          }
+        });
+      }
+    });
+  });
+  observerCreateItem.observe(document, {
+    childList: true,
+    subtree: true
+  });
+  // End.
+};
+
+/**
+ * Listen element created.
+ *
+ * @param selector
+ * @param callback
+ * @since 4.2.7.1
+ */
+const lpOnElementReady = (selector, callback) => {
+  const element = document.querySelector(selector);
+  if (element) {
+    callback(element);
+    return;
+  }
+  const observer = new MutationObserver((mutations, obs) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      obs.disconnect();
+      callback(element);
+    }
+  });
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
+};
+
+// Parse JSON from string with content include LP_AJAX_START.
+const lpAjaxParseJsonOld = data => {
+  if (typeof data !== 'string') {
+    return data;
+  }
+  const m = String.raw({
+    raw: data
+  }).match(/<-- LP_AJAX_START -->(.*)<-- LP_AJAX_END -->/s);
+  try {
+    if (m) {
+      data = JSON.parse(m[1].replace(/(?:\r\n|\r|\n)/g, ''));
+    } else {
+      data = JSON.parse(data);
+    }
+  } catch (e) {
+    data = {};
+  }
+  return data;
+};
+
+// status 0: hide, 1: show
+const lpShowHideEl = (el, status = 0) => {
+  if (!el) {
+    return;
+  }
+  if (!status) {
+    el.classList.add(lpClassName.hidden);
+  } else {
+    el.classList.remove(lpClassName.hidden);
+  }
+};
+
+// status 0: hide, 1: show
+const lpSetLoadingEl = (el, status) => {
+  if (!el) {
+    return;
+  }
+  if (!status) {
+    el.classList.remove(lpClassName.loading);
+  } else {
+    el.classList.add(lpClassName.loading);
+  }
+};
+
+// Toggle collapse section
+const toggleCollapse = (e, target, elTriggerClassName = '', elsExclude = [], callback) => {
+  if (!elTriggerClassName) {
+    elTriggerClassName = lpClassName.elTriggerToggle;
+  }
+
+  // Exclude elements, which should not trigger the collapse toggle
+  if (elsExclude && elsExclude.length > 0) {
+    for (const elExclude of elsExclude) {
+      if (target.closest(elExclude)) {
+        return;
+      }
+    }
+  }
+  const elTrigger = target.closest(elTriggerClassName);
+  if (!elTrigger) {
+    return;
+  }
+
+  //console.log( 'elTrigger', elTrigger );
+
+  const elSectionToggle = elTrigger.closest(`${lpClassName.elSectionToggle}`);
+  if (!elSectionToggle) {
+    return;
+  }
+  elSectionToggle.classList.toggle(`${lpClassName.elCollapse}`);
+  if ('function' === typeof callback) {
+    callback(elSectionToggle);
+  }
+};
+
+// Get data of form
+const getDataOfForm = form => {
+  const dataSend = {};
+  const formData = new FormData(form);
+  for (const pair of formData.entries()) {
+    const key = pair[0];
+    const value = formData.getAll(key);
+    if (!dataSend.hasOwnProperty(key)) {
+      // Convert value array to string.
+      dataSend[key] = value.join(',');
+    }
+  }
+  return dataSend;
+};
+
+// Get field keys of form
+const getFieldKeysOfForm = form => {
+  const keys = [];
+  const elements = form.elements;
+  for (let i = 0; i < elements.length; i++) {
+    const name = elements[i].name;
+    if (name && !keys.includes(name)) {
+      keys.push(name);
+    }
+  }
+  return keys;
+};
+
+// Merge data handle with data form.
+const mergeDataWithDatForm = (elForm, dataHandle) => {
+  const dataForm = getDataOfForm(elForm);
+  const keys = getFieldKeysOfForm(elForm);
+  keys.forEach(key => {
+    if (!dataForm.hasOwnProperty(key)) {
+      delete dataHandle[key];
+    } else if (dataForm[key][0] === '') {
+      delete dataForm[key];
+      delete dataHandle[key];
+    }
+  });
+  dataHandle = {
+    ...dataHandle,
+    ...dataForm
+  };
+  return dataHandle;
+};
+
+/**
+ * Event trigger
+ * For each list of event handlers, listen event on document.
+ *
+ * eventName: 'click', 'change', ...
+ * eventHandlers = [ { selector: '.lp-button', callBack: function(){}, class: object } ]
+ *
+ * @param eventName
+ * @param eventHandlers
+ */
+const eventHandlers = (eventName, eventHandlers) => {
+  document.addEventListener(eventName, e => {
+    const target = e.target;
+    let args = {
+      e,
+      target
+    };
+    eventHandlers.forEach(eventHandler => {
+      args = {
+        ...args,
+        ...eventHandler
+      };
+
+      //console.log( args );
+
+      // Check condition before call back
+      if (eventHandler.conditionBeforeCallBack) {
+        if (eventHandler.conditionBeforeCallBack(args) !== true) {
+          return;
+        }
+      }
+
+      // Special check for keydown event with checkIsEventEnter = true
+      if (eventName === 'keydown' && eventHandler.checkIsEventEnter) {
+        if (e.key !== 'Enter') {
+          return;
+        }
+      }
+      if (target.closest(eventHandler.selector)) {
+        if (eventHandler.class) {
+          // Call method of class, function callBack will understand exactly {this} is class object.
+          eventHandler.class[eventHandler.callBack](args);
+        } else {
+          // For send args is objected, {this} is eventHandler object, not class object.
+          eventHandler.callBack(args);
+        }
+      }
+    });
+  });
+};
+
+/**
+ * Debounce - delays function execution until after `wait` ms of inactivity.
+ *
+ * Each call resets the timer. Only the last call in a burst executes.
+ *
+ * USE CASES:
+ * - Search inputs, form validation, window resize
+ * - Multiple elements need independent timers
+ * - When you need to call with different arguments
+ *
+ * EXAMPLES:
+ * const debouncedSearch = debounce( (query) => fetchResults(query), 300 );
+ * searchInput.addEventListener('input', (e) => debouncedSearch(e.target.value));
+ *
+ * const debouncedResize = debounce( recalculateLayout, 250 );
+ * window.addEventListener('resize', debouncedResize);
+ *
+ * ⚠️ Create ONCE outside event handlers, not inside.
+ *
+ * @param {Function} func - Function to debounce (can be anonymous)
+ * @param {number}   wait - Milliseconds to wait (default: 500)
+ * @return {Function} Debounced wrapper function
+ * @since 4.3.7
+ * @version 1.0.0
+ */
+const debounce = (func, wait = 500) => {
+  let timer;
+  return args => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(args), wait);
+  };
+};
+
+/***/ },
+
+/***/ "react"
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["React"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/block-editor":
+/***/ "@wordpress/block-editor"
 /*!*************************************!*\
   !*** external ["wp","blockEditor"] ***!
   \*************************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["blockEditor"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/blocks":
+/***/ "@wordpress/blocks"
 /*!********************************!*\
   !*** external ["wp","blocks"] ***!
   \********************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["blocks"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/components":
+/***/ "@wordpress/components"
 /*!************************************!*\
   !*** external ["wp","components"] ***!
   \************************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["components"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/data":
+/***/ "@wordpress/data"
 /*!******************************!*\
   !*** external ["wp","data"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["data"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/element":
+/***/ "@wordpress/element"
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
   \*********************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["element"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/i18n":
+/***/ "@wordpress/i18n"
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["i18n"];
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/classnames/index.js":
+/***/ "./node_modules/classnames/index.js"
 /*!******************************************!*\
   !*** ./node_modules/classnames/index.js ***!
   \******************************************/
-/***/ ((module, exports) => {
+(module, exports) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	Copyright (c) 2018 Jed Watson.
@@ -510,22 +874,23 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 			return classNames;
 		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {}
+	} else // removed by dead control flow
+{}
 }());
 
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/courses/course-item-template/block.json":
+/***/ "./assets/src/apps/js/blocks/courses/course-item-template/block.json"
 /*!***************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/courses/course-item-template/block.json ***!
   \***************************************************************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"learnpress/course-item-template","title":"Course Item Template","category":"","description":"Course Item Template","textdomain":"learnpress","keywords":["course item","learnpress"],"usesContext":["lpCourseQuery"],"supports":{"align":true},"attributes":{"layout":{"type":"string","default":"list"},"columns":{"type":"number","default":3}},"ancestor":["learnpress/list-courses"]}');
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -547,6 +912,12 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -596,7 +967,7 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";
 /*!*************************************************************************!*\

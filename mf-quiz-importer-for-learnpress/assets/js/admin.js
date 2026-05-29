@@ -84,13 +84,11 @@
                 
                 if (file) {
                     // Validate file type
-                    const validTypes = ['text/csv', 'application/json', 'application/vnd.ms-excel', 
-                                       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
-                    const validExtensions = ['.csv', '.json', '.xls', '.xlsx'];
+                    const validExtensions = ['.csv', '.json', '.xlsx'];
                     const fileName = file.name.toLowerCase();
                     const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
                     
-                    if (!hasValidExtension && !validTypes.includes(file.type)) {
+                    if (!hasValidExtension) {
                         QuizImporter.showError(
                             'Invalid file type. Please upload CSV, JSON, or Excel (XLSX) files only.',
                             $('#mf-quiz-importer-form')
@@ -127,13 +125,11 @@
                 
                 if (file) {
                     // Validate file type
-                    const validTypes = ['text/csv', 'application/json', 'application/vnd.ms-excel', 
-                                       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
-                    const validExtensions = ['.csv', '.json', '.xls', '.xlsx'];
+                    const validExtensions = ['.csv', '.json', '.xlsx'];
                     const fileName = file.name.toLowerCase();
                     const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
                     
-                    if (!hasValidExtension && !validTypes.includes(file.type)) {
+                    if (!hasValidExtension) {
                         QuizImporter.showError(
                             'Invalid file type. Please upload CSV, JSON, or Excel (XLSX) files only.',
                             $('#mf-question-importer-form')

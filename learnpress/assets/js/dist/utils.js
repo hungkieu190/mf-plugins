@@ -1,11 +1,11 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/js/utils/cookies.js":
+/***/ "./assets/src/js/utils/cookies.js"
 /*!****************************************!*\
   !*** ./assets/src/js/utils/cookies.js ***!
   \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -64,13 +64,13 @@ const Cookies = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Cookies);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils/event-callback.js":
+/***/ "./assets/src/js/utils/event-callback.js"
 /*!***********************************************!*\
   !*** ./assets/src/js/utils/event-callback.js ***!
   \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -164,19 +164,20 @@ const Event_Callback = function Event_Callback(self) {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Event_Callback);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils/extend.js":
+/***/ "./assets/src/js/utils/extend.js"
 /*!***************************************!*\
   !*** ./assets/src/js/utils/extend.js ***!
   \***************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+Object.defineProperty(__WEBPACK_DEFAULT_EXPORT__, "name", { value: "default", configurable: true });
 /* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__() {
   window.LP = window.LP || {};
   if (typeof arguments[0] === 'string') {
@@ -187,13 +188,13 @@ __webpack_require__.r(__webpack_exports__);
   }
 }
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils/fn.js":
+/***/ "./assets/src/js/utils/fn.js"
 /*!***********************************!*\
   !*** ./assets/src/js/utils/fn.js ***!
   \***********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -232,13 +233,13 @@ let exp;
 })();
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (exp);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils/hook.js":
+/***/ "./assets/src/js/utils/hook.js"
 /*!*************************************!*\
   !*** ./assets/src/js/utils/hook.js ***!
   \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -326,13 +327,13 @@ const Hook = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Hook);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils/iframe-submit.js":
+/***/ "./assets/src/js/utils/iframe-submit.js"
 /*!**********************************************!*\
   !*** ./assets/src/js/utils/iframe-submit.js ***!
   \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -360,13 +361,13 @@ const IframeSubmit = function (form) {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (IframeSubmit);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils/jquery.plugins.js":
+/***/ "./assets/src/js/utils/jquery.plugins.js"
 /*!***********************************************!*\
   !*** ./assets/src/js/utils/jquery.plugins.js ***!
   \***********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -560,13 +561,13 @@ $.fn.progress = progress;
   progress
 });
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils/local-storage.js":
+/***/ "./assets/src/js/utils/local-storage.js"
 /*!**********************************************!*\
   !*** ./assets/src/js/utils/local-storage.js ***!
   \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -611,13 +612,13 @@ const _localStorage = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_localStorage);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils/message-box.js":
+/***/ "./assets/src/js/utils/message-box.js"
 /*!********************************************!*\
   !*** ./assets/src/js/utils/message-box.js ***!
   \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -868,13 +869,13 @@ const MessageBox = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MessageBox);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils/quick-tip.js":
+/***/ "./assets/src/js/utils/quick-tip.js"
 /*!******************************************!*\
   !*** ./assets/src/js/utils/quick-tip.js ***!
   \******************************************/
-/***/ (() => {
+() {
 
 (function ($) {
   function QuickTip(el, options) {
@@ -985,13 +986,13 @@ const MessageBox = {
   });
 })(jQuery);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils/show-password.js":
+/***/ "./assets/src/js/utils/show-password.js"
 /*!**********************************************!*\
   !*** ./assets/src/js/utils/show-password.js ***!
   \**********************************************/
-/***/ (() => {
+() {
 
 const $ = jQuery;
 $(function () {
@@ -1007,7 +1008,7 @@ $(function () {
   });
 });
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -1029,6 +1030,12 @@ $(function () {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -1078,7 +1085,7 @@ $(function () {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";
 /*!**************************************!*\

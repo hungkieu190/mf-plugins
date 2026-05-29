@@ -78,16 +78,20 @@ class MF_Quiz_Importer_Admin {
         if (!current_user_can('manage_options')) {
             wp_send_json_error(array('message' => __('Permission denied.', 'mf-quiz-importer-lp')));
         }
+
+        if (!$this->is_license_active()) {
+            wp_send_json_error(array('message' => __('This feature requires an active license. Please activate your license to import quizzes.', 'mf-quiz-importer-lp')));
+        }
         
         if (empty($_FILES['file'])) {
             wp_send_json_error(array('message' => __('No file uploaded.', 'mf-quiz-importer-lp')));
         }
         
         $file = $_FILES['file'];
-        $allowed_types = array('text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/json');
-        
-        if (!in_array($file['type'], $allowed_types)) {
-            wp_send_json_error(array('message' => __('Invalid file type. Only CSV, Excel, and JSON files are allowed.', 'mf-quiz-importer-lp')));
+
+        $validation = $this->validate_uploaded_file($file);
+        if (is_wp_error($validation)) {
+            wp_send_json_error(array('message' => $validation->get_error_message()));
         }
         
         $upload_dir = wp_upload_dir();
@@ -118,6 +122,10 @@ class MF_Quiz_Importer_Admin {
         
         if (!current_user_can('manage_options')) {
             wp_send_json_error(array('message' => __('Permission denied.', 'mf-quiz-importer-lp')));
+        }
+
+        if (!$this->is_license_active()) {
+            wp_send_json_error(array('message' => __('This feature requires an active license. Please activate your license to import quizzes.', 'mf-quiz-importer-lp')));
         }
         
         $filename = isset($_POST['file']) ? sanitize_text_field($_POST['file']) : '';
@@ -167,6 +175,54 @@ class MF_Quiz_Importer_Admin {
         }
         
         wp_send_json_success($response);
+    }
+
+    /**
+     * Check if the paid import feature is enabled by license.
+     *
+     * @return bool
+     */
+    private function is_license_active() {
+        if (!class_exists('MF_Quiz_Importer_For_LearnPress')) {
+            return false;
+        }
+
+        $license_handler = MF_Quiz_Importer_For_LearnPress::instance()->get_license_handler();
+
+        return $license_handler && $license_handler->is_feature_enabled();
+    }
+
+    /**
+     * Validate uploaded import file by extension first, MIME second.
+     *
+     * @param array $file Uploaded file array.
+     * @return true|WP_Error
+     */
+    private function validate_uploaded_file($file) {
+        $filename = isset($file['name']) ? $file['name'] : '';
+        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+        $mime_type = isset($file['type']) ? strtolower($file['type']) : '';
+
+        $allowed_extensions = array('csv', 'xlsx', 'json');
+        if (!in_array($extension, $allowed_extensions, true)) {
+            if ($extension === 'xls') {
+                return new WP_Error('xls_not_supported', __('Legacy XLS files are not supported. Please save the file as XLSX or CSV and try again.', 'mf-quiz-importer-lp'));
+            }
+
+            return new WP_Error('invalid_file_extension', __('Invalid file extension. Supported formats: CSV, XLSX, JSON.', 'mf-quiz-importer-lp'));
+        }
+
+        $allowed_mimes = array(
+            'csv' => array('text/csv', 'text/plain', 'application/csv', 'application/vnd.ms-excel', 'application/octet-stream', ''),
+            'json' => array('application/json', 'text/plain', 'application/octet-stream', ''),
+            'xlsx' => array('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/octet-stream', 'application/zip', ''),
+        );
+
+        if (!in_array($mime_type, $allowed_mimes[$extension], true)) {
+            return new WP_Error('invalid_file_type', __('Invalid file type. Supported formats: CSV, XLSX, JSON.', 'mf-quiz-importer-lp'));
+        }
+
+        return true;
     }
 }
 

@@ -122,7 +122,7 @@ class MF_Excel_Parser {
         // For better compatibility, we'll suggest converting to XLSX or CSV
         return new WP_Error(
             'xls_not_supported',
-            __('XLS format (Excel 97-2003) is not fully supported. Please save your file as XLSX (Excel 2007+) or CSV format.', 'mf-quiz-importer-lp')
+            __('XLS format (Excel 97-2003) is not supported. Please save your file as XLSX (Excel 2007+) or CSV format.', 'mf-quiz-importer-lp')
         );
     }
     

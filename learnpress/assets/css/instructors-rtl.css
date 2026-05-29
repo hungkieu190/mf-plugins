@@ -209,11 +209,9 @@ p:last-child {
   margin-left: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle;
-  margin-top: -2px;
 }
 
 .lp-hidden {

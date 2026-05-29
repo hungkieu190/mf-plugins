@@ -7,10 +7,8 @@
  * @version 4.0.1
  */
 
-use LearnPress\Databases\Order\LPOrderItemsDB;
-use LearnPress\Filters\Order\OrderItemsFilter;
-use LearnPress\Models\UserItems\UserCourseModel;
-use LearnPress\Models\UserItems\UserItemModel;
+use LearnPress\Databases\PostDB;
+use LearnPress\Filters\PostFilter;
 use LearnPress\Models\UserModel;
 
 defined( 'ABSPATH' ) || exit();
@@ -983,8 +981,9 @@ if ( ! class_exists( 'LP_Order' ) ) {
 
 			$url = false;
 			if ( $this->has_status( 'pending' ) ) {
-				$user = learn_press_get_current_user();
-				$url  = learn_press_user_profile_link( $user->get_id(), LP_Settings::instance()->get( 'profile_endpoints.orders' ) );
+				$user_id = get_current_user_id();
+				$profile = LP_Profile::instance( $user_id );
+				$url     = $profile->get_tab_link( LP_Settings::instance()->get( 'profile_endpoints.orders' ) );
 				if ( ! $force ) {
 					$url = esc_url_raw( add_query_arg( 'cancel-order', $this->get_id(), $url ) );
 				} else {
@@ -1017,36 +1016,51 @@ if ( ! class_exists( 'LP_Order' ) ) {
 					'text' => __( 'Cancel', 'learnpress' ),
 				);
 			}
+
+			$payment_method      = sanitize_key( (string) get_post_meta( $this->get_id(), '_payment_method', true ) );
+			$subscription_status = get_post_meta( $this->get_id(), LP_Gateway_Abstract::META_SUBSCRIPTION_STATUS, true );
+			if ( ! empty( $payment_method ) && in_array( $subscription_status, array( 'active', 'trialing', 'past_due' ), true ) ) {
+				$gateway = LP_Gateways::instance()->get_gateway( $payment_method );
+				if ( $gateway instanceof LP_Gateway_Abstract ) {
+					$manage_url = $gateway->get_manage_subscription_url( $this );
+					if ( ! empty( $manage_url ) ) {
+						$actions['manage-subscription'] = array(
+							'url'  => esc_url_raw( $manage_url ),
+							'text' => __( 'Manage subscription', 'learnpress' ),
+						);
+					}
+				}
+			}
+
 			$actions = apply_filters( 'learn-press/profile-order-actions', $actions, $this->get_id() );
 
 			return $actions;
 		}
 
 		public function add_note( $note = null ) {
+			$comment_author       = '';
+			$comment_author_email = '';
 			if ( is_user_logged_in() ) {
 				$user                 = get_user_by( 'id', get_current_user_id() );
 				$comment_author       = $user->display_name;
 				$comment_author_email = $user->user_email;
-				$comment_post_ID      = $this->get_id();
-				$comment_author_url   = '';
-				$comment_content      = $note;
-				$comment_agent        = 'LearnPress';
-				$comment_type         = 'lp_order_note';
-				$comment_parent       = 0;
-				$comment_approved     = 1;
-
-				$commentdata = apply_filters(
-					'learn_press_new_order_note_data',
-					compact( 'comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_content', 'comment_agent', 'comment_type', 'comment_parent', 'comment_approved' ),
-					$this->get_id()
-				);
-
-				$comment_id = wp_insert_comment( $commentdata );
-
-				return $comment_id;
 			}
 
-			return false;
+			$comment_post_ID    = $this->get_id();
+			$comment_author_url = '';
+			$comment_content    = $note;
+			$comment_agent      = 'LearnPress';
+			$comment_type       = 'lp_order_note';
+			$comment_parent     = 0;
+			$comment_approved   = 1;
+
+			$commentdata = apply_filters(
+				'learn_press_new_order_note_data',
+				compact( 'comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_content', 'comment_agent', 'comment_type', 'comment_parent', 'comment_approved' ),
+				$this->get_id()
+			);
+
+			return wp_insert_comment( $commentdata );
 		}
 
 		/**
@@ -1234,7 +1248,8 @@ if ( ! class_exists( 'LP_Order' ) ) {
 
 				$return = $this->_curd->update( $this );
 			} else {
-				$return = $this->_curd->create( $this );
+				$return    = $this->_curd->create( $this );
+				$this->_id = $return;
 			}
 
 			$new_status_post = get_post_status( $this->get_id() );
@@ -1394,6 +1409,104 @@ if ( ! class_exists( 'LP_Order' ) ) {
 			];
 
 			return apply_filters( 'lp/order/statuses', $order_statuses );
+		}
+
+		/**
+		 * Query list orders.
+		 *
+		 * @param PostFilter $post_filter
+		 * @param array $param [ 'author' => int, 'post_status' => string|array, 's' => string, 'm' => string, 'posts_per_page' => int, 'paged' => int, 'orderby' => string, 'order' => string ]
+		 *
+		 * @return void
+		 * @throws Exception
+		 * @since 4.3.2.8
+		 * @version 1.0.0
+		 */
+		public static function handle_params_query_list_orders( PostFilter &$post_filter, array $param = [] ) {
+			$post_db       = PostDB::getInstance();
+			$user_of_order = absint( $param['author'] ?? 0 );
+			$status        = $param['post_status'] ?? '';
+			$key           = $param['s'] ?? '';
+			$month         = $param['m'] ?? '';
+			$limit         = $param['posts_per_page'] ?? 20;
+			$paged         = $param['paged'] ?? 1;
+
+			$order_by = $param['orderby'] ?? 'date';
+			if ( empty( $order_by ) ) {
+				$order_by = 'ID';
+			} else {
+				switch ( $order_by ) {
+					case 'date':
+						$order_by = 'post_date';
+						break;
+					case 'title':
+						$order_by = 'ID';
+						break;
+				}
+			}
+
+			$order = $param['order'] ?? 'DESC';
+			// End convert params
+
+			if ( $order_by === 'order_total' ) {
+				$post_filter->join[]   = "INNER JOIN {$post_db->tb_postmeta} pm2 ON p.ID = pm2.post_id AND pm2.meta_key = '_order_total'";
+				$post_filter->where[]  = 'AND CAST(pm2.meta_value AS UNSIGNED)';
+				$post_filter->order_by = 'pm2.meta_value';
+			} else {
+				$post_filter->order_by = $order_by;
+			}
+
+			if ( ! empty( $key ) ) {
+				$pattern          = '/^#\d+$/';
+				$is_order_id_sure = false;
+				if ( preg_match( $pattern, $key ) ) {
+					$is_order_id_sure = true;
+					$key              = str_replace( '#', '', $key );
+				}
+
+				$pattern2 = '#^0+.*\d+$#';
+				if ( preg_match( $pattern2, $key ) ) {
+					$key = (int) $key;
+				}
+
+				$key = trim( $key );
+
+				if ( $is_order_id_sure ) {
+					$post_filter->where[] = $post_db->wpdb->prepare( 'AND p.ID = %d', $key );
+				} else {
+					$post_filter->join[]  = "INNER JOIN {$post_db->tb_lp_order_items} lpori ON p.ID = lpori.order_id";
+					$post_filter->where[] = $post_db->wpdb->prepare(
+						'AND (p.ID = %d OR lpori.order_item_name like %s)',
+						$key,
+						'%' . $key . '%'
+					);
+				}
+			}
+
+			if ( ! empty( $month ) ) {
+				$year                 = substr( $month, 0, 4 );
+				$post_filter->where[] = "AND YEAR(p.post_date) = $year";
+				if ( strlen( $month ) > 5 ) {
+					$mon                  = substr( $month, 4, 2 );
+					$post_filter->where[] = "AND MONTH(p.post_date) = $mon";
+				}
+			}
+
+			$post_filter->order = $order;
+			$post_filter->limit = $limit;
+			$post_filter->page  = $paged;
+
+			if ( ! empty( $user_of_order ) ) {
+				$user_id              = absint( $user_of_order );
+				$post_filter->join[]  = "INNER JOIN {$post_db->tb_postmeta} pm1 ON p.ID = pm1.post_id AND pm1.meta_key = '_user_id'";
+				$post_filter->where[] = "AND ( pm1.meta_value like '%\"$user_id\"%' OR pm1.meta_value = $user_id )";
+			}
+
+			if ( ! empty( $status ) && $status !== 'all' ) {
+				$post_filter->post_status = (array) $status;
+			} else {
+				$post_filter->where[] = $post_db->wpdb->prepare( 'AND p.post_status != %s', LP_ORDER_TRASH );
+			}
 		}
 	}
 }

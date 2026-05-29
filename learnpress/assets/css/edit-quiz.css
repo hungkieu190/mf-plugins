@@ -73,7 +73,7 @@
   flex: 1;
 }
 .swal2-popup .swal2-actions button.swal2-confirm {
-  background-color: #E02200;
+  background-color: #e02200;
 }
 .swal2-popup .swal2-actions button.swal2-cancel {
   background-color: transparent;
@@ -81,7 +81,7 @@
   color: inherit;
 }
 .swal2-popup .swal2-warning {
-  color: #E02200;
+  color: #e02200;
   border-color: transparent;
   background-color: rgba(223, 0, 0, 0.1019607843);
 }
@@ -108,6 +108,14 @@
   max-height: 200px;
   overflow: hidden;
 }
+.swal2-popup .swal2-close {
+  background-color: unset !important;
+  outline: none !important;
+  color: rgb(204, 204, 204) !important;
+}
+.swal2-popup .swal2-close:hover {
+  color: #f27474 !important;
+}
 
 .lp-icon-spinner {
   animation: rotation 2s infinite linear;
@@ -124,7 +132,7 @@
   cursor: grabbing;
 }
 
-/***** Main Question Edit Styles *****/
+/***** Main Question Edit Styles using styles from Quiz Builder *****/
 .lp-question-edit-main {
   display: grid;
   gap: 20px;
@@ -255,7 +263,8 @@
   display: grid;
   gap: 5px;
 }
-.lp-question-field-settings input[type=text], .lp-question-field-settings input[type=number] {
+.lp-question-field-settings input[type=text],
+.lp-question-field-settings input[type=number] {
   padding: 0 10px;
 }
 
@@ -282,7 +291,8 @@
   padding: 10px;
   background: #eee;
 }
-.lp-question-fib-blank-option-item .lp-question-fib-option-header .lp-icon-angle-down::before, .lp-question-fib-blank-option-item .lp-question-fib-option-header .lp-icon-angle-up::before {
+.lp-question-fib-blank-option-item .lp-question-fib-option-header .lp-icon-angle-down::before,
+.lp-question-fib-blank-option-item .lp-question-fib-option-header .lp-icon-angle-up::before {
   content: "\f142";
   width: 15px;
   text-align: center;
@@ -296,7 +306,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border: 1px solid #EEEEEE;
+  border: 1px solid #eeeeee;
   border-top: none;
 }
 .lp-question-fib-blank-option-item .lp-question-fib-option-detail p {

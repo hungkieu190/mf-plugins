@@ -3,10 +3,12 @@
  * class AjaxBase
  *
  * @since 4.2.7.6
- * @version 1.0.5
+ * @version 1.0.6
  */
 
 namespace LearnPress\Ajax;
+
+use LP_Request;
 
 /**
  * @use LoadContentViaAjax::load_content_via_ajax
@@ -17,8 +19,8 @@ namespace LearnPress\Ajax;
 abstract class AbstractAjax {
 	public static function catch_lp_ajax() {
 		if ( ! empty( $_REQUEST['lp-load-ajax'] ) ) {
-			$action = $_REQUEST['lp-load-ajax'];
-			$nonce  = $_REQUEST['nonce'] ?? '';
+			$action = LP_Request::get_param( 'lp-load-ajax' );
+			$nonce  = LP_Request::get_param( 'nonce' );
 			$class  = new static();
 
 			if ( ! method_exists( $class, $action ) ) {
@@ -30,6 +32,7 @@ abstract class AbstractAjax {
 				LoadContentViaAjax::class,
 			];
 
+			// Todo: should write separation check none login and none not login
 			if ( ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
 				if ( ! in_array( get_class( $class ), $class_no_nonce ) ) {
 					wp_die( 'Invalid request!', 400 );

@@ -1,11 +1,11 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/apps/js/frontend/material.js":
+/***/ "./assets/src/apps/js/frontend/material.js"
 /*!*************************************************!*\
   !*** ./assets/src/apps/js/frontend/material.js ***!
   \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -53,13 +53,13 @@ function lpMaterialsLoad() {
   });
 }
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/show-lp-overlay-complete-item.js":
+/***/ "./assets/src/apps/js/frontend/show-lp-overlay-complete-item.js"
 /*!**********************************************************************!*\
   !*** ./assets/src/apps/js/frontend/show-lp-overlay-complete-item.js ***!
   \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -113,13 +113,13 @@ const lpModalOverlayCompleteItem = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (lpModalOverlayCompleteItem);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/components/comment.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/components/comment.js"
 /*!*****************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/components/comment.js ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -173,13 +173,13 @@ const commentForm = () => {
   // } );
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/components/compatible.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/components/compatible.js"
 /*!********************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/components/compatible.js ***!
   \********************************************************************************/
-/***/ (() => {
+() {
 
 /**
  * Compatible with Page Builder.
@@ -242,13 +242,13 @@ LP.Hook.addAction('lp-question-compatible-builder', () => {
   }
 });
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/components/items-progress.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/components/items-progress.js"
 /*!************************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/components/items-progress.js ***!
   \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -306,13 +306,13 @@ const getResponse = async ele => {
   _show_lp_overlay_complete_item__WEBPACK_IMPORTED_MODULE_1__["default"].init();
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/components/progress.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/components/progress.js"
 /*!******************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/components/progress.js ***!
   \******************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -332,13 +332,13 @@ const progressBar = () => {
   });
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/components/search.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/components/search.js"
 /*!****************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/components/search.js ***!
   \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -414,13 +414,13 @@ const searchCourseContent = () => {
   }
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/components/sidebar.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/components/sidebar.js"
 /*!*****************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/components/sidebar.js ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -496,13 +496,13 @@ const Sidebar = () => {
   });
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/index.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/index.js"
 /*!****************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/index.js ***!
   \****************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -562,13 +562,13 @@ document.addEventListener('DOMContentLoaded', () => {
   singleCurriculums.checkCourseDurationExpire();
 });
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/utils/lp-modal-overlay.js":
+/***/ "./assets/src/apps/js/utils/lp-modal-overlay.js"
 /*!******************************************************!*\
   !*** ./assets/src/apps/js/utils/lp-modal-overlay.js ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -629,17 +629,18 @@ const lpModalOverlay = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (lpModalOverlay);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils.js":
+/***/ "./assets/src/js/utils.js"
 /*!********************************!*\
   !*** ./assets/src/js/utils.js ***!
   \********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   debounce: () => (/* binding */ debounce),
 /* harmony export */   eventHandlers: () => (/* binding */ eventHandlers),
 /* harmony export */   getDataOfForm: () => (/* binding */ getDataOfForm),
 /* harmony export */   getFieldKeysOfForm: () => (/* binding */ getFieldKeysOfForm),
@@ -663,7 +664,7 @@ __webpack_require__.r(__webpack_exports__);
  * @param data
  * @param functions
  * @since 4.2.5.1
- * @version 1.0.5
+ * @version 1.0.6
  */
 const lpClassName = {
   hidden: 'lp-hidden',
@@ -957,40 +958,73 @@ const eventHandlers = (eventName, eventHandlers) => {
   });
 };
 
-/***/ }),
+/**
+ * Debounce - delays function execution until after `wait` ms of inactivity.
+ *
+ * Each call resets the timer. Only the last call in a burst executes.
+ *
+ * USE CASES:
+ * - Search inputs, form validation, window resize
+ * - Multiple elements need independent timers
+ * - When you need to call with different arguments
+ *
+ * EXAMPLES:
+ * const debouncedSearch = debounce( (query) => fetchResults(query), 300 );
+ * searchInput.addEventListener('input', (e) => debouncedSearch(e.target.value));
+ *
+ * const debouncedResize = debounce( recalculateLayout, 250 );
+ * window.addEventListener('resize', debouncedResize);
+ *
+ * ⚠️ Create ONCE outside event handlers, not inside.
+ *
+ * @param {Function} func - Function to debounce (can be anonymous)
+ * @param {number}   wait - Milliseconds to wait (default: 500)
+ * @return {Function} Debounced wrapper function
+ * @since 4.3.7
+ * @version 1.0.0
+ */
+const debounce = (func, wait = 500) => {
+  let timer;
+  return args => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(args), wait);
+  };
+};
 
-/***/ "react":
+/***/ },
+
+/***/ "react"
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["React"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/element":
+/***/ "@wordpress/element"
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
   \*********************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["element"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/url":
+/***/ "@wordpress/url"
 /*!*****************************!*\
   !*** external ["wp","url"] ***!
   \*****************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["url"];
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -1012,6 +1046,12 @@ module.exports = window["wp"]["url"];
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -1061,7 +1101,7 @@ module.exports = window["wp"]["url"];
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";
 /*!**********************************************************!*\

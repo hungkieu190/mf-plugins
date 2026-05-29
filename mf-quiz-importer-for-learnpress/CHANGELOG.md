@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.1] - 2026-05-29
+
+### Fixed
+
+- Fixed questions-only imports to use the same LearnPress 4-compatible answer storage and quiz-question relationship logic as full quiz imports.
+- Removed misleading legacy XLS upload support from the import flow; supported formats are now CSV, XLSX, and JSON.
+- Improved CSV row handling so missing or extra columns no longer trigger `array_combine()` warnings.
+- Added row-level CSV errors for missing required quiz/question titles and ignored extra columns.
+- Relaxed upload validation so valid CSV/JSON files are accepted when browsers or servers send generic MIME types.
+- Added license checks to AJAX upload and import processing actions.
+
+### Changed
+
+- Bumped plugin version to 1.0.1.
+
+---
+
 ## [1.0.0] - 2024-11-14
 
 ### 🎉 Initial Release
@@ -200,7 +217,7 @@ First stable release of Quiz Importer for LearnPress!
 ## Future Releases
 
 ### Planned Features
-- Excel (XLS) legacy format support
+- Legacy XLS import support
 - Export functionality
 - Bulk edit questions
 - Question bank management

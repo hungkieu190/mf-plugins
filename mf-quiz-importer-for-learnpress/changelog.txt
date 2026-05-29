@@ -1,0 +1,100 @@
+Quiz Importer for LearnPress - Changelog
+
+Version 1.0.1 - 2026-05-29
+Status: Implemented
+
+Summary:
+This release focuses on stability, LearnPress 4 compatibility, safer imports, clearer file format support, and license enforcement for backend AJAX actions.
+
+Fixed Issues:
+
+[x] Fixed questions-only import for LearnPress 4.
+    - Questions-only import now reuses the LearnPress 4-compatible question creation flow from MF_Quiz_Creator.
+    - Answers are stored in the LearnPress question answers table.
+    - Questions are attached to quizzes through LP_Quiz_CURD::add_question() when available.
+    - Fallback attachment uses the LearnPress quiz questions table.
+    - The old primary path using _lp_questions, _lp_answer_options, and _lp_answer was removed from MF_Question_Importer.
+
+[x] Removed misleading legacy XLS support.
+    - Removed .xls from frontend file input accept attributes.
+    - Removed .xls from JavaScript extension validation.
+    - Backend upload validation now rejects .xls with a clear message.
+    - Import routing now returns a clear unsupported message for legacy XLS files.
+    - UI/docs now state supported formats as CSV, XLSX, JSON.
+    - Docs now tell users to save legacy XLS files as XLSX or CSV before importing.
+
+[x] Improved CSV row handling.
+    - Added safe CSV row normalization before array_combine().
+    - Missing columns are padded with empty values.
+    - Extra columns are ignored with row-level feedback.
+    - Fully empty rows are skipped.
+    - Missing required quiz/question titles now return row-level errors.
+    - Complete quiz CSV, simple quiz CSV, and questions-only CSV now use normalized rows.
+
+[x] Improved file extension and MIME validation.
+    - Upload validation now checks extension first.
+    - Allowed extensions in 1.0.1: csv, xlsx, json.
+    - MIME is treated as a secondary signal.
+    - CSV files uploaded as text/plain or application/octet-stream can be accepted.
+    - JSON files uploaded as text/plain or application/octet-stream can be accepted.
+    - Dangerous or unsupported extensions are rejected regardless of MIME.
+
+[x] Added license checks to import AJAX actions.
+    - mf_quiz_importer_upload now checks active license before processing upload.
+    - mf_quiz_importer_process now checks active license before importing.
+    - Inactive license returns a clear JSON error.
+    - Existing admin page license gate remains in place.
+
+[x] Updated version and release documentation.
+    - Plugin header version updated to 1.0.1.
+    - MF_QUIZ_IMPORTER_VERSION updated to 1.0.1.
+    - package.json version updated to 1.0.1.
+    - readme.txt stable tag updated to 1.0.1.
+    - CHANGELOG.md updated.
+    - RELEASE-NOTES.md updated.
+    - README/docs updated where relevant.
+    - planning/version-1.0.1.md checklist updated.
+
+Verification Checklist:
+
+[x] PHP syntax check passed for changed PHP files.
+[x] git diff --check passed with no whitespace errors.
+[ ] Manual UI test: complete quiz import from CSV.
+[ ] Manual UI test: complete quiz import from JSON.
+[ ] Manual UI test: complete quiz import from XLSX.
+[ ] Manual UI test: questions-only import from CSV.
+[ ] Manual UI test: questions-only import from JSON.
+[ ] Manual UI test: questions-only import from XLSX.
+[ ] Manual UI test: invalid CSV row handling.
+[ ] Manual UI test: unsupported .xls rejection.
+[ ] Manual UI test: inactive license blocks upload/import.
+[ ] Manual UI test: active license allows upload/import.
+
+Known Follow-up:
+
+[ ] npm run lint:js currently cannot run in this environment because the installed ESLint does not recognize the es2021 env key in .eslintrc.json. This is a tooling/config mismatch and should be fixed separately.
+
+Changed Files Overview:
+
+- mf-quiz-importer-for-learnpress.php
+- package.json
+- readme.txt
+- CHANGELOG.md
+- RELEASE-NOTES.md
+- README.md
+- FEATURES.md
+- IMPORT-GUIDE.md
+- QUICK-START.md
+- UI-GUIDE.md
+- DOCUMENTATION-INDEX.md
+- samples/EXCEL-GUIDE.md
+- assets/js/admin.js
+- includes/admin/class-admin.php
+- includes/admin/class-importer.php
+- includes/admin/views/importer-page.php
+- includes/class-excel-parser.php
+- includes/class-question-importer.php
+- includes/class-quiz-creator.php
+- includes/class-quiz-parser.php
+- planning/roadmap.md
+- planning/version-1.0.1.md

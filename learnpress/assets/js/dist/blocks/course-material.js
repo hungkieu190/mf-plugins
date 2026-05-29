@@ -2,11 +2,11 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/apps/js/blocks/course-elements/course-material/edit.js":
+/***/ "./assets/src/apps/js/blocks/course-elements/course-material/edit.js"
 /*!***************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/course-elements/course-material/edit.js ***!
   \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -68,13 +68,13 @@ const Edit = props => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Edit);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/course-elements/course-material/save.js":
+/***/ "./assets/src/apps/js/blocks/course-elements/course-material/save.js"
 /*!***************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/course-elements/course-material/save.js ***!
   \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -82,13 +82,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const save = props => null;
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/utilBlock.js":
+/***/ "./assets/src/apps/js/blocks/utilBlock.js"
 /*!************************************************!*\
   !*** ./assets/src/apps/js/blocks/utilBlock.js ***!
   \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -140,67 +140,67 @@ const checkTemplatesCanLoadBlock = (templates, metadata, callBack) => {
 };
 
 
-/***/ }),
+/***/ },
 
-/***/ "react":
+/***/ "react"
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["React"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/block-editor":
+/***/ "@wordpress/block-editor"
 /*!*************************************!*\
   !*** external ["wp","blockEditor"] ***!
   \*************************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["blockEditor"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/blocks":
+/***/ "@wordpress/blocks"
 /*!********************************!*\
   !*** external ["wp","blocks"] ***!
   \********************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["blocks"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/data":
+/***/ "@wordpress/data"
 /*!******************************!*\
   !*** external ["wp","data"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["data"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/i18n":
+/***/ "@wordpress/i18n"
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["i18n"];
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/course-elements/course-material/block.json":
+/***/ "./assets/src/apps/js/blocks/course-elements/course-material/block.json"
 /*!******************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/course-elements/course-material/block.json ***!
   \******************************************************************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"learnpress/course-material","title":"Course Material","category":"learnpress-course-elements","icon":"download","description":"Renders template Material Course PHP templates.","textdomain":"learnpress","keywords":["material single course","learnpress"],"ancestor":["learnpress/single-course"],"usesContext":["lpCourseData"],"supports":{"multiple":true,"align":["wide","full"],"html":false,"typography":{"fontSize":true,"lineHeight":false,"fontWeight":true,"__experimentalFontFamily":false,"__experimentalTextDecoration":false,"__experimentalFontStyle":false,"__experimentalFontWeight":true,"__experimentalLetterSpacing":false,"__experimentalTextTransform":true,"__experimentalDefaultControls":{"fontSize":false}},"color":{"background":false,"text":true,"link":false,"heading":true,"gradients":false,"__experimentalDefaultControls":{"text":true,"h3":true}},"spacing":{"padding":true,"margin":true,"__experimentalDefaultControls":{"margin":false,"padding":false}}}}');
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -222,6 +222,12 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -271,6 +277,8 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!****************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/course-elements/course-material/index.js ***!
   \****************************************************************************/
@@ -303,6 +311,8 @@ const templatesName = ['learnpress/learnpress//single-lp_course'];
   edit: _edit__WEBPACK_IMPORTED_MODULE_0__["default"],
   save: _save__WEBPACK_IMPORTED_MODULE_1__.save
 });
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=course-material.js.map

@@ -2,14 +2,15 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/js/utils.js":
+/***/ "./assets/src/js/utils.js"
 /*!********************************!*\
   !*** ./assets/src/js/utils.js ***!
   \********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   debounce: () => (/* binding */ debounce),
 /* harmony export */   eventHandlers: () => (/* binding */ eventHandlers),
 /* harmony export */   getDataOfForm: () => (/* binding */ getDataOfForm),
 /* harmony export */   getFieldKeysOfForm: () => (/* binding */ getFieldKeysOfForm),
@@ -33,7 +34,7 @@ __webpack_require__.r(__webpack_exports__);
  * @param data
  * @param functions
  * @since 4.2.5.1
- * @version 1.0.5
+ * @version 1.0.6
  */
 const lpClassName = {
   hidden: 'lp-hidden',
@@ -327,7 +328,40 @@ const eventHandlers = (eventName, eventHandlers) => {
   });
 };
 
-/***/ })
+/**
+ * Debounce - delays function execution until after `wait` ms of inactivity.
+ *
+ * Each call resets the timer. Only the last call in a burst executes.
+ *
+ * USE CASES:
+ * - Search inputs, form validation, window resize
+ * - Multiple elements need independent timers
+ * - When you need to call with different arguments
+ *
+ * EXAMPLES:
+ * const debouncedSearch = debounce( (query) => fetchResults(query), 300 );
+ * searchInput.addEventListener('input', (e) => debouncedSearch(e.target.value));
+ *
+ * const debouncedResize = debounce( recalculateLayout, 250 );
+ * window.addEventListener('resize', debouncedResize);
+ *
+ * ⚠️ Create ONCE outside event handlers, not inside.
+ *
+ * @param {Function} func - Function to debounce (can be anonymous)
+ * @param {number}   wait - Milliseconds to wait (default: 500)
+ * @return {Function} Debounced wrapper function
+ * @since 4.3.7
+ * @version 1.0.0
+ */
+const debounce = (func, wait = 500) => {
+  let timer;
+  return args => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(args), wait);
+  };
+};
+
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -349,6 +383,12 @@ const eventHandlers = (eventName, eventHandlers) => {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -386,6 +426,8 @@ const eventHandlers = (eventName, eventHandlers) => {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!***********************************!*\
   !*** ./assets/src/js/loadAJAX.js ***!
   \***********************************/
@@ -398,7 +440,7 @@ __webpack_require__.r(__webpack_exports__);
  * Load all you need via AJAX
  *
  * @since 4.2.5.7
- * @version 1.0.9
+ * @version 1.1.0
  */
 
 
@@ -511,7 +553,9 @@ const lpAJAX = () => {
               console.log(error);
             },
             completed: () => {
-              wp.hooks.doAction('lp-ajax-completed', element, dataSend);
+              if (typeof wp !== 'undefined' && wp.hooks) {
+                wp.hooks.doAction('lp-ajax-completed', element, dataSend);
+              }
               window.lpAJAXG.getElements();
               //console.log( 'completed' );
               if (elLoadingFirst) {
@@ -601,7 +645,7 @@ const lpAJAX = () => {
       return elLPTarget.dataset.send = JSON.stringify(dataSend);
     },
     showHideLoading: (elLPTarget, status) => {
-      const elLoading = elLPTarget.closest(`div:not(${classLPTarget})`).querySelector('.lp-loading-change');
+      const elLoading = elLPTarget.nextElementSibling?.querySelector('.lp-loading-change');
       if (elLoading) {
         (0,_utils_js__WEBPACK_IMPORTED_MODULE_0__.lpShowHideEl)(elLoading, status);
       }
@@ -643,6 +687,8 @@ document.addEventListener('DOMContentLoaded', () => {
   window.lpAJAXG.getElements();
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (lpAJAX);
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=loadAJAX.js.map

@@ -2,11 +2,11 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/apps/js/blocks/course-filter-elements/course-price-filter/edit.js":
+/***/ "./assets/src/apps/js/blocks/course-filter-elements/course-price-filter/edit.js"
 /*!**************************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/course-filter-elements/course-price-filter/edit.js ***!
   \**************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -40,13 +40,13 @@ const edit = props => {
   }, '25'))));
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/course-filter-elements/course-price-filter/save.js":
+/***/ "./assets/src/apps/js/blocks/course-filter-elements/course-price-filter/save.js"
 /*!**************************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/course-filter-elements/course-price-filter/save.js ***!
   \**************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -54,57 +54,57 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const save = props => null;
 
-/***/ }),
+/***/ },
 
-/***/ "react":
+/***/ "react"
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["React"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/block-editor":
+/***/ "@wordpress/block-editor"
 /*!*************************************!*\
   !*** external ["wp","blockEditor"] ***!
   \*************************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["blockEditor"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/blocks":
+/***/ "@wordpress/blocks"
 /*!********************************!*\
   !*** external ["wp","blocks"] ***!
   \********************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["blocks"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/i18n":
+/***/ "@wordpress/i18n"
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["i18n"];
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/course-filter-elements/course-price-filter/block.json":
+/***/ "./assets/src/apps/js/blocks/course-filter-elements/course-price-filter/block.json"
 /*!*****************************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/course-filter-elements/course-price-filter/block.json ***!
   \*****************************************************************************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"learnpress/course-price-filter","title":"Price Filter","category":"learnpress-course-elements","description":"Renders template Price Filter PHP templates.","textdomain":"learnpress","keywords":["price filter archive course","learnpress"],"usesContext":[],"supports":{"multiple":false,"align":["wide","full"],"html":false,"typography":{"fontSize":true,"lineHeight":false,"fontWeight":true,"__experimentalFontFamily":false,"__experimentalTextDecoration":false,"__experimentalFontStyle":false,"__experimentalFontWeight":true,"__experimentalLetterSpacing":false,"__experimentalTextTransform":true,"__experimentalDefaultControls":{"fontSize":true}},"color":{"background":false,"text":true,"__experimentalDefaultControls":{"text":true}},"__experimentalBorder":{"color":true,"radius":false,"width":true,"__experimentalDefaultControls":{"width":false,"color":false}},"spacing":{"padding":true,"margin":true,"__experimentalDefaultControls":{"padding":false,"margin":false}}},"ancestor":["learnpress/course-filter"]}');
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -126,6 +126,12 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -175,6 +181,8 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!***************************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/course-filter-elements/course-price-filter/index.js ***!
   \***************************************************************************************/
@@ -214,6 +222,8 @@ __webpack_require__.r(__webpack_exports__);
   edit: _edit__WEBPACK_IMPORTED_MODULE_1__.edit,
   save: _save__WEBPACK_IMPORTED_MODULE_2__.save
 });
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=course-price-filter.js.map

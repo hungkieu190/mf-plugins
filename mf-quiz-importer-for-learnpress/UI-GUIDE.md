@@ -9,7 +9,7 @@ The plugin admin page is divided into 4 main tabs:
 **URL:** `wp-admin/admin.php?page=mf-quiz-importer&tab=import-quiz`
 
 **Features:**
-- Upload CSV, Excel, or JSON files
+- Upload CSV, XLSX, or JSON files
 - Import quizzes into LearnPress
 - View import results
 - File format guide
@@ -472,5 +472,5 @@ Potential improvements for future versions:
 
 ---
 
-**Version:** 1.0.0
+**Version:** 1.0.1
 **Last Updated:** November 2024

@@ -117,6 +117,20 @@
   border: none;
   margin: 0 auto;
 }
+.lp-toast.toastify.warning {
+  background-color: #FEF7E6;
+  color: #fb9422;
+  padding: 12px 20px;
+  border: none;
+  margin: 0 auto;
+}
+.lp-toast.toastify.info {
+  background-color: rgba(0, 122, 255, 0.1019607843);
+  color: #277afc;
+  padding: 12px 20px;
+  border: none;
+  margin: 0 auto;
+}
 
 /**
 * Style for the Tom Select
@@ -681,7 +695,7 @@ ul .clearfix {
 
 @font-face {
   font-family: "lp-icon";
-  src: url("../../src/css/vendor/fonts/lp-icon/lp-icon.woff2?v=165") format("woff2");
+  src: url("../../src/css/vendor/fonts/lp-icon/lp-icon.woff2?v=190") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -1482,6 +1496,21 @@ ul .clearfix {
   background-repeat: no-repeat;
 }
 
+.lp-icon-course-builder {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-color: currentColor;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.6422 16.0228C21.7413 16.1947 21.7682 16.3988 21.717 16.5905C21.6659 16.7822 21.5409 16.9458 21.3694 17.0456L12.3694 22.2956C12.2547 22.3624 12.1243 22.3977 11.9916 22.3977C11.8588 22.3977 11.7284 22.3624 11.6138 22.2956L2.61376 17.0456C2.44472 16.944 2.3225 16.7799 2.27354 16.5889C2.22459 16.3978 2.25284 16.1952 2.3522 16.0249C2.45155 15.8545 2.614 15.7301 2.80438 15.6787C2.99476 15.6272 3.19774 15.6528 3.36938 15.7499L11.9983 20.5004L20.6194 15.7499C20.7913 15.6509 20.9954 15.624 21.1871 15.6751C21.3788 15.7262 21.5425 15.8512 21.6422 16.0228ZM20.6194 11.2499L11.9916 16.0228L3.36938 11.2499C3.19861 11.1649 3.00186 11.1482 2.81917 11.2031C2.63648 11.258 2.48159 11.3805 2.38602 11.5456C2.29044 11.7107 2.26138 11.906 2.30473 12.0918C2.34809 12.2776 2.46061 12.4398 2.61938 12.5456L11.6194 17.7956C11.7341 17.8624 11.8644 17.8977 11.9972 17.8977C12.13 17.8977 12.2603 17.8624 12.375 17.7956L21.375 12.5456C21.4615 12.4967 21.5373 12.4311 21.5982 12.3526C21.6591 12.2741 21.7038 12.1844 21.7297 12.0885C21.7556 11.9926 21.7622 11.8925 21.7492 11.7941C21.7361 11.6956 21.7036 11.6007 21.6536 11.515C21.6035 11.4292 21.5369 11.3542 21.4577 11.2943C21.3784 11.2344 21.2881 11.1909 21.1919 11.1663C21.0957 11.1416 20.9955 11.1363 20.8972 11.1507C20.799 11.165 20.7045 11.1988 20.6194 11.2499ZM2.24438 7.39775C2.24468 7.26639 2.27948 7.13741 2.34529 7.02372C2.4111 6.91003 2.50562 6.81562 2.61938 6.74994L11.6194 1.49994C11.7341 1.43306 11.8644 1.39783 11.9972 1.39783C12.13 1.39783 12.2603 1.43306 12.375 1.49994L21.375 6.74994C21.4882 6.81599 21.5822 6.91056 21.6474 7.02423C21.7127 7.13789 21.7471 7.26668 21.7471 7.39775C21.7471 7.52883 21.7127 7.65762 21.6474 7.77128C21.5822 7.88494 21.4882 7.97951 21.375 8.04557L12.375 13.2956C12.2603 13.3624 12.13 13.3977 11.9972 13.3977C11.8644 13.3977 11.7341 13.3624 11.6194 13.2956L2.61938 8.04557C2.50562 7.97988 2.4111 7.88547 2.34529 7.77178C2.27948 7.6581 2.24468 7.52912 2.24438 7.39775ZM4.99439 7.39783L11.9944 11.5456L18.9944 7.39783L11.9944 3.39783L4.99439 7.39783Z' fill='black'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.6422 16.0228C21.7413 16.1947 21.7682 16.3988 21.717 16.5905C21.6659 16.7822 21.5409 16.9458 21.3694 17.0456L12.3694 22.2956C12.2547 22.3624 12.1243 22.3977 11.9916 22.3977C11.8588 22.3977 11.7284 22.3624 11.6138 22.2956L2.61376 17.0456C2.44472 16.944 2.3225 16.7799 2.27354 16.5889C2.22459 16.3978 2.25284 16.1952 2.3522 16.0249C2.45155 15.8545 2.614 15.7301 2.80438 15.6787C2.99476 15.6272 3.19774 15.6528 3.36938 15.7499L11.9983 20.5004L20.6194 15.7499C20.7913 15.6509 20.9954 15.624 21.1871 15.6751C21.3788 15.7262 21.5425 15.8512 21.6422 16.0228ZM20.6194 11.2499L11.9916 16.0228L3.36938 11.2499C3.19861 11.1649 3.00186 11.1482 2.81917 11.2031C2.63648 11.258 2.48159 11.3805 2.38602 11.5456C2.29044 11.7107 2.26138 11.906 2.30473 12.0918C2.34809 12.2776 2.46061 12.4398 2.61938 12.5456L11.6194 17.7956C11.7341 17.8624 11.8644 17.8977 11.9972 17.8977C12.13 17.8977 12.2603 17.8624 12.375 17.7956L21.375 12.5456C21.4615 12.4967 21.5373 12.4311 21.5982 12.3526C21.6591 12.2741 21.7038 12.1844 21.7297 12.0885C21.7556 11.9926 21.7622 11.8925 21.7492 11.7941C21.7361 11.6956 21.7036 11.6007 21.6536 11.515C21.6035 11.4292 21.5369 11.3542 21.4577 11.2943C21.3784 11.2344 21.2881 11.1909 21.1919 11.1663C21.0957 11.1416 20.9955 11.1363 20.8972 11.1507C20.799 11.165 20.7045 11.1988 20.6194 11.2499ZM2.24438 7.39775C2.24468 7.26639 2.27948 7.13741 2.34529 7.02372C2.4111 6.91003 2.50562 6.81562 2.61938 6.74994L11.6194 1.49994C11.7341 1.43306 11.8644 1.39783 11.9972 1.39783C12.13 1.39783 12.2603 1.43306 12.375 1.49994L21.375 6.74994C21.4882 6.81599 21.5822 6.91056 21.6474 7.02423C21.7127 7.13789 21.7471 7.26668 21.7471 7.39775C21.7471 7.52883 21.7127 7.65762 21.6474 7.77128C21.5822 7.88494 21.4882 7.97951 21.375 8.04557L12.375 13.2956C12.2603 13.3624 12.13 13.3977 11.9972 13.3977C11.8644 13.3977 11.7341 13.3624 11.6194 13.2956L2.61938 8.04557C2.50562 7.97988 2.4111 7.88547 2.34529 7.77178C2.27948 7.6581 2.24468 7.52912 2.24438 7.39775ZM4.99439 7.39783L11.9944 11.5456L18.9944 7.39783L11.9944 3.39783L4.99439 7.39783Z' fill='black'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
 @-moz-keyframes lp-spinner {
   100% {
     -moz-transform: rotate(-360deg);
@@ -1917,11 +1946,8 @@ ul .clearfix {
   margin-left: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  vertical-align: middle;
-  margin-top: -2px;
 }
 
 #wpfooter {
@@ -2091,6 +2117,9 @@ ul .clearfix {
   position: relative;
   margin-top: 20px;
 }
+.lp-admin-tabs.has-sections {
+  display: flex;
+}
 .lp-admin-tabs .lp-admin-tab-navs {
   display: none;
   float: right;
@@ -2191,6 +2220,10 @@ ul .clearfix {
 }
 .wrap #learn-press-uninstall-sample-data:hover {
   opacity: 1;
+}
+
+#adminmenu .wp-menu-image img {
+  width: 17px;
 }
 
 .learnpress .rwmb-field {
@@ -4370,11 +4403,11 @@ input[name=_lp_course_result]:checked ~ #passing-condition-quiz-result {
   background: #eee;
 }
 .post-type-lp_order #order_details .order-data-date .order-date {
-  width: 120px;
+  width: 130px;
 }
 .post-type-lp_order #order_details .order-data-date .order-hour,
 .post-type-lp_order #order_details .order-data-date .order-minute {
-  width: 50px;
+  width: 60px;
 }
 .post-type-lp_order #order_details .order-data-note {
   display: inline-block;
@@ -7390,11 +7423,8 @@ table.lp-material--table tr:nth-child(even) {
   margin-left: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  vertical-align: middle;
-  margin-top: -2px;
 }
 
 .button.lp-material--delete {
@@ -7836,11 +7866,8 @@ input[name=course-faqs-box-ratio]:checked + .course-faqs-box .course-faqs-box__t
   margin-left: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  vertical-align: middle;
-  margin-top: -2px;
 }
 .course-curriculum .section-header {
   display: table;
@@ -8065,11 +8092,8 @@ input[name=course-faqs-box-ratio]:checked + .course-faqs-box .course-faqs-box__t
   margin-left: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  vertical-align: middle;
-  margin-top: -2px;
 }
 
 body .content-item-summary .form-button-finish-course, body .lp-quiz-buttons .form-button-finish-course {
@@ -8562,11 +8586,8 @@ Breadcrumb
   margin-left: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  vertical-align: middle;
-  margin-top: -2px;
 }
 .lp-modal-dialog .lp-button:hover {
   border-color: var(--lp-primary-color, #ffb606);
@@ -8608,11 +8629,8 @@ Breadcrumb
   margin-left: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  vertical-align: middle;
-  margin-top: -2px;
 }
 
 /**
@@ -8725,11 +8743,9 @@ Breadcrumb
   margin-left: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle;
-  margin-top: -2px;
 }
 
 @media (min-width: 992px) {
@@ -10507,7 +10523,7 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   flex: 1;
 }
 .swal2-popup .swal2-actions button.swal2-confirm {
-  background-color: #E02200;
+  background-color: #e02200;
 }
 .swal2-popup .swal2-actions button.swal2-cancel {
   background-color: transparent;
@@ -10515,7 +10531,7 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
   color: inherit;
 }
 .swal2-popup .swal2-warning {
-  color: #E02200;
+  color: #e02200;
   border-color: transparent;
   background-color: rgba(223, 0, 0, 0.1019607843);
 }
@@ -10541,6 +10557,516 @@ a.block-editor-block-list__block.wp-block-learnpress-course-button:hover {
 .swal2-popup .lp-tom-select.ts-wrapper .ts-dropdown {
   max-height: 200px;
   overflow: hidden;
+}
+.swal2-popup .swal2-close {
+  background-color: unset !important;
+  outline: none !important;
+  color: rgb(204, 204, 204) !important;
+}
+.swal2-popup .swal2-close:hover {
+  color: #f27474 !important;
+}
+
+/**
+ * LP Table — Reusable Table Standard
+ *
+ * A shared table CSS system used by the "Enrolled Students" listing (and future tables).
+ * Provides card wrapper, header/body styling, avatars, progress bars, badges, toolbar, and pagination.
+ *
+ * @since 4.3.3
+ */
+.lp-enrolled-students-table-wrap {
+  margin-top: 15px;
+}
+.lp-enrolled-students-table-wrap .instructor-avatar {
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 50%;
+  background: #64748b;
+  overflow: hidden;
+}
+.lp-enrolled-students-table-wrap .instructor-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lp-enrolled-students-table-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 20px;
+  border: 1px solid var(--lp-border-color, #E2E0DB);
+  border-radius: 5px;
+  background: var(--lp-white-grey, #F7F7FB);
+  /*&__actions .button {
+  	min-width: 95px;
+  	height: 36px;
+  	padding: 0 18px;
+  	border-radius: 7px;
+  	font-size: 14px;
+  	font-weight: 600;
+  	line-height: 34px;
+  	border-color: #b9c3d2;
+  	color: #46546c;
+  	background: #fff;
+  }*/
+}
+.lp-enrolled-students-table-toolbar__row {
+  display: grid;
+  gap: 14px;
+}
+.lp-enrolled-students-table-toolbar__row--course {
+  grid-template-columns: minmax(0, 1fr);
+}
+.lp-enrolled-students-table-toolbar__row--filters {
+  grid-template-columns: minmax(0, 1fr) minmax(145px, 200px) minmax(145px, 150px) auto;
+  align-items: end;
+  max-width: 1000px;
+}
+.lp-enrolled-students-table-toolbar__field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.lp-enrolled-students-table-toolbar__field input {
+  border: 1px solid var(--lp-border-color, #E2E0DB);
+}
+.lp-enrolled-students-table-toolbar__label {
+  color: #3f4a5c;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 10px;
+  text-align: right;
+}
+.lp-enrolled-students-table-toolbar__input {
+  width: 100%;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #c6cfdb;
+  border-radius: 7px;
+  color: #2f3a4a;
+  background: #fff;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: none;
+}
+.lp-enrolled-students-table-toolbar__input:focus {
+  border-color: #2f75ff;
+  outline: none;
+  box-shadow: 0 0 0 1px #2f75ff;
+}
+.lp-enrolled-students-table-toolbar__actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+.lp-enrolled-students-table-toolbar__actions .button:hover, .lp-enrolled-students-table-toolbar__actions .button:focus {
+  border-color: #99a7bc;
+  color: #2f3a4a;
+  background: #f4f7fb;
+}
+@media (max-width: 1024px) {
+  .lp-enrolled-students-table-toolbar__row--filters {
+    grid-template-columns: minmax(0, 1fr) minmax(150px, 1fr) minmax(150px, 1fr);
+  }
+  .lp-enrolled-students-table-toolbar__actions {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 782px) {
+  .lp-enrolled-students-table-toolbar__row--filters {
+    grid-template-columns: 1fr 1fr;
+  }
+  .lp-enrolled-students-table-toolbar__field--student {
+    grid-column: 1/-1;
+  }
+  .lp-enrolled-students-table-toolbar__actions {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 640px) {
+  .lp-enrolled-students-table-toolbar__row--filters {
+    grid-template-columns: 1fr;
+  }
+  .lp-enrolled-students-table-toolbar__actions .button {
+    width: 100%;
+  }
+}
+
+/*.lp-enrolled-students-table {
+	width: 100%;
+	border: 0;
+	border-spacing: 0;
+	border-collapse: collapse;
+	font-size: 13px;
+
+	th,
+	td {
+		border: 0 !important;
+	}
+
+	thead {
+		th {
+			padding: 10px 16px;
+			border-bottom: 2px solid #e2e8f0 !important;
+			color: #64748b;
+			background: #f8fafc;
+			font-size: 12px;
+			font-weight: 600;
+			text-align: left;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+
+			&:first-child {
+				border-radius: 0;
+			}
+			&:last-child {
+				border-radius: 0;
+			}
+		}
+	}
+
+	tbody {
+		tr {
+			border-bottom: 1px solid #f1f5f9;
+			transition: background 0.15s;
+			text-align: left;
+
+			&:hover {
+				background: #f8fafc;
+			}
+
+			&:last-child {
+				border-bottom: none;
+			}
+		}
+
+		td {
+			padding: 12px 16px;
+			vertical-align: middle;
+			border: 0 !important;
+		}
+	}
+
+	tfoot {
+		tr,
+		td {
+			border: 0 !important;
+		}
+	}
+}*/
+.lp-cell-student {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/*.lp-avatar {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	color: #fff;
+	background: #64748b;
+	font-size: 13px;
+	font-weight: 600;
+	overflow: hidden;
+}
+
+.lp-avatar--image {
+	background: transparent;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}*/
+.lp-meta {
+  display: flex;
+  flex-direction: column;
+}
+.lp-meta .lp-name {
+  color: #1e293b;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.lp-meta .lp-email {
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.lp-cell-course a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+.lp-cell-course a:hover {
+  text-decoration: underline;
+}
+
+.lp-cell-progress {
+  min-width: 120px;
+}
+
+.lp-progress-bar {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  max-width: 120px;
+  height: 6px;
+  border-radius: 3px;
+  background: #e2e8f0;
+}
+.lp-progress-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(-90deg, #3b82f6, #60a5fa);
+  transition: width 0.3s ease;
+}
+
+.lp-progress-text {
+  display: inline-block;
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.lp-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.lp-badge--enrolled {
+  color: #475569;
+  background: #f1f5f9;
+}
+.lp-badge--in-progress, .lp-badge--learning {
+  color: #1e40af;
+  background: #dbeafe;
+}
+.lp-badge--finished {
+  color: #166534;
+  background: #dcfce7;
+}
+.lp-badge--passed {
+  color: #14532d;
+  background: #bbf7d0;
+}
+.lp-badge--failed {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.lp-enrolled-students-table-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid #e2e8f0;
+}
+.lp-enrolled-students-table-footer__count {
+  color: #64748b;
+  font-size: 13px;
+}
+
+#profile-content-enrolled-students .lp-enrolled-students-table-footer {
+  border-top: none;
+}
+
+.lp-enrolled-students-table-footer .learn-press-pagination {
+  margin: 0;
+  text-align: left;
+}
+.lp-enrolled-students-table-footer .learn-press-pagination ul.page-numbers {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lp-enrolled-students-table-footer .learn-press-pagination ul.page-numbers > li {
+  margin: 0;
+}
+.lp-enrolled-students-table-footer .learn-press-pagination a.page-numbers,
+.lp-enrolled-students-table-footer .learn-press-pagination span.page-numbers {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  padding: 0 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  color: #475569;
+  background: #fff;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.lp-enrolled-students-table-footer .learn-press-pagination a.page-numbers:hover:not(.current),
+.lp-enrolled-students-table-footer .learn-press-pagination span.page-numbers:hover:not(.current) {
+  border-color: #3b82f6;
+  color: #3b82f6 !important;
+  background: #eff6ff;
+}
+.lp-enrolled-students-table-footer .learn-press-pagination span.page-numbers.current {
+  border-color: #3b82f6;
+  color: #fff;
+  background: #3b82f6;
+  cursor: default;
+}
+.lp-enrolled-students-table-footer .learn-press-pagination span.page-numbers.dots {
+  min-width: auto;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+.lp-enrolled-students-table-footer .learn-press-pagination span.page-numbers.current,
+.lp-enrolled-students-table-footer .learn-press-pagination span.page-numbers.dots {
+  pointer-events: none;
+}
+
+.lp-enrolled-empty {
+  padding: 40px 20px;
+  color: #94a3b8;
+  text-align: center;
+}
+.lp-enrolled-empty p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.lp-enrolled-error {
+  padding: 15px 20px;
+  color: #dc2626;
+  font-size: 13px;
+}
+
+#lp-modal-enrolled-wrap {
+  position: relative;
+  /*tbody {
+  	display: block;
+  	max-height: 400px;
+  	overflow-y: auto;
+  }
+
+  thead, tbody tr {
+  	display: table;
+  	width: 100%;
+  	table-layout: fixed;
+  }*/
+}
+
+.lp-wrap-btn-view-course-students {
+  width: 100%;
+}
+.lp-wrap-btn-view-course-students button {
+  width: 100%;
+}
+
+.lp-students-enrolled-layout.learnpress_page_learn-press-students-enrolled .lp-enrolled-students-table-toolbar {
+  background: white;
+}
+.lp-students-enrolled-layout.learnpress_page_learn-press-students-enrolled .lp-list-table tbody {
+  background: white;
+}
+
+.lp-btn-view-students {
+  margin-top: 10px;
+  white-space: nowrap;
+  display: block;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+/**
+* Style for table LearnPress
+*/
+.lp-table-wrap {
+  border-radius: 5px;
+  width: 100%;
+  border: 1px solid var(--lp-border-color, #E2E0DB);
+  overflow-x: auto;
+}
+
+table.lp-list-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0;
+  min-width: 768px;
+}
+table.lp-list-table td {
+  padding: 0;
+}
+table.lp-list-table .learn-press-pagination {
+  text-align: right;
+}
+table.lp-list-table thead {
+  background-color: var(--lp-white-grey, #F7F7FB);
+  border: none;
+}
+table.lp-list-table thead tr {
+  border-bottom: 1px solid var(--lp-border-color, #E2E0DB);
+}
+table.lp-list-table thead th {
+  background: none;
+  border: none;
+  font-size: 1em;
+  padding: 10px 20px;
+  text-align: right;
+}
+table.lp-list-table thead th td {
+  border: none;
+  padding: 0;
+}
+table.lp-list-table tbody {
+  font-size: 14px;
+}
+table.lp-list-table tbody tr {
+  border: none;
+  border-bottom: 1px solid var(--lp-white-grey, #F7F7FB);
+}
+table.lp-list-table tbody tr:nth-child(even) td {
+  background: none;
+}
+table.lp-list-table tbody tr td {
+  border: none;
+  padding: 10px 20px;
+  text-align: right;
+}
+table.lp-list-table tfoot tr {
+  border: none;
+}
+table.lp-list-table tfoot tr td {
+  border: none;
+}
+table.lp-list-table tfoot tr td > div {
+  padding: 20px;
+}
+table.lp-list-table tfoot .pagination {
+  border: none;
+  padding: 0;
 }
 
 .button.disabled {
@@ -11116,4 +11642,8 @@ body.post-type-lp_question #button-new-question:hover div {
 }
 .lp-notify-action-wrapper .lp-notify-action__error.show {
   display: block;
+}
+
+#wp-admin-bar-lp-course-builder svg {
+  vertical-align: text-bottom;
 }

@@ -2,11 +2,11 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/apps/js/blocks/instructor-elements/instructor-background/edit.js":
+/***/ "./assets/src/apps/js/blocks/instructor-elements/instructor-background/edit.js"
 /*!*************************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/instructor-elements/instructor-background/edit.js ***!
   \*************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -95,13 +95,13 @@ const edit = props => {
   }))));
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/instructor-elements/instructor-background/save.js":
+/***/ "./assets/src/apps/js/blocks/instructor-elements/instructor-background/save.js"
 /*!*************************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/instructor-elements/instructor-background/save.js ***!
   \*************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -109,13 +109,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const save = props => null;
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/utilBlock.js":
+/***/ "./assets/src/apps/js/blocks/utilBlock.js"
 /*!************************************************!*\
   !*** ./assets/src/apps/js/blocks/utilBlock.js ***!
   \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -167,77 +167,77 @@ const checkTemplatesCanLoadBlock = (templates, metadata, callBack) => {
 };
 
 
-/***/ }),
+/***/ },
 
-/***/ "react":
+/***/ "react"
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["React"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/block-editor":
+/***/ "@wordpress/block-editor"
 /*!*************************************!*\
   !*** external ["wp","blockEditor"] ***!
   \*************************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["blockEditor"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/blocks":
+/***/ "@wordpress/blocks"
 /*!********************************!*\
   !*** external ["wp","blocks"] ***!
   \********************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["blocks"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/components":
+/***/ "@wordpress/components"
 /*!************************************!*\
   !*** external ["wp","components"] ***!
   \************************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["components"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/data":
+/***/ "@wordpress/data"
 /*!******************************!*\
   !*** external ["wp","data"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["data"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/i18n":
+/***/ "@wordpress/i18n"
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["i18n"];
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/instructor-elements/instructor-background/block.json":
+/***/ "./assets/src/apps/js/blocks/instructor-elements/instructor-background/block.json"
 /*!****************************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/instructor-elements/instructor-background/block.json ***!
   \****************************************************************************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"learnpress/instructor-background","title":"Instructor Background","category":"learnpress-course-elements","icon":"format-image","description":"Renders template Instructor Background PHP templates.","textdomain":"learnpress","keywords":["instructor background single","learnpress"],"ancestor":["learnpress/single-instructor"],"usesContext":[],"attributes":{"position":{"type":"string","default":"center"},"size":{"type":"string","default":"cover"},"repeat":{"type":"boolean","default":false}},"supports":{"inserter":true,"reusable":true,"reorder":true,"html":false,"multiple":false}}');
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -259,6 +259,12 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -308,6 +314,8 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!**************************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/instructor-elements/instructor-background/index.js ***!
   \**************************************************************************************/
@@ -340,6 +348,8 @@ const templatesName = [Number(lpDataAdmin?.single_instructor_id)];
   edit: _edit__WEBPACK_IMPORTED_MODULE_0__.edit,
   save: _save__WEBPACK_IMPORTED_MODULE_1__.save
 });
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=instructor-background.js.map

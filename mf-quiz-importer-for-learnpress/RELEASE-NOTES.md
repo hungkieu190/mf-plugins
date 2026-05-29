@@ -1,10 +1,22 @@
+# Quiz Importer for LearnPress v1.0.1
+
+## Stability And Compatibility Update
+
+- Fixed questions-only imports for LearnPress 4-compatible question answers and quiz relationships.
+- Removed misleading legacy XLS upload support; use CSV, XLSX, or JSON.
+- Improved CSV row handling for missing/extra columns and row-level errors.
+- Improved upload validation for CSV/JSON files with server-specific MIME types.
+- Added license checks to AJAX upload and import processing actions.
+
+---
+
 # Quiz Importer for LearnPress v1.0.0
 
 ## 🎉 Initial Release - November 14, 2024
 
 We're excited to announce the first stable release of **Quiz Importer for LearnPress**!
 
-This powerful plugin makes it easy to import quizzes and questions into LearnPress LMS from CSV, Excel, and JSON files.
+This powerful plugin makes it easy to import quizzes and questions into LearnPress LMS from CSV, XLSX, and JSON files.
 
 ---
 
@@ -166,7 +178,7 @@ The plugin includes 6 sample files to help you get started:
 
 We're already working on future enhancements:
 
-- Excel XLS (legacy) support
+- Legacy XLS import support
 - Export functionality
 - Question bank management
 - Import from other LMS platforms
@@ -208,6 +220,6 @@ If you find this plugin helpful:
 
 ---
 
-**Version:** 1.0.0  
-**Release Date:** November 14, 2024  
+**Version:** 1.0.1
+**Release Date:** May 29, 2026
 **License:** GPL v2 or later

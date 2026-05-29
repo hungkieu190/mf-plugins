@@ -2,11 +2,11 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/apps/js/blocks/courses/course-order-by/edit.js":
+/***/ "./assets/src/apps/js/blocks/courses/course-order-by/edit.js"
 /*!*******************************************************************!*\
   !*** ./assets/src/apps/js/blocks/courses/course-order-by/edit.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -65,13 +65,13 @@ const edit = props => {
   }, orderByLabel)))));
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/courses/course-order-by/save.js":
+/***/ "./assets/src/apps/js/blocks/courses/course-order-by/save.js"
 /*!*******************************************************************!*\
   !*** ./assets/src/apps/js/blocks/courses/course-order-by/save.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -79,57 +79,57 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const save = props => null;
 
-/***/ }),
+/***/ },
 
-/***/ "react":
+/***/ "react"
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["React"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/block-editor":
+/***/ "@wordpress/block-editor"
 /*!*************************************!*\
   !*** external ["wp","blockEditor"] ***!
   \*************************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["blockEditor"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/blocks":
+/***/ "@wordpress/blocks"
 /*!********************************!*\
   !*** external ["wp","blocks"] ***!
   \********************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["blocks"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/i18n":
+/***/ "@wordpress/i18n"
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["i18n"];
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/courses/course-order-by/block.json":
+/***/ "./assets/src/apps/js/blocks/courses/course-order-by/block.json"
 /*!**********************************************************************!*\
   !*** ./assets/src/apps/js/blocks/courses/course-order-by/block.json ***!
   \**********************************************************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"learnpress/course-order-by","title":"Course Sorting","category":"learnpress-course-elements","icon":"editor-alignleft","description":"Show sorting select box for courses.","textdomain":"learnpress","keywords":["sort","learnpress"],"usesContext":["lpCourseQuery"],"ancestor":["learnpress/list-courses"],"supports":{"inserter":true,"reusable":true,"reorder":true,"html":false,"multiple":true}}');
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -151,6 +151,12 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -200,6 +206,8 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!********************************************************************!*\
   !*** ./assets/src/apps/js/blocks/courses/course-order-by/index.js ***!
   \********************************************************************/
@@ -222,6 +230,8 @@ __webpack_require__.r(__webpack_exports__);
   edit: _edit__WEBPACK_IMPORTED_MODULE_0__.edit,
   save: _save__WEBPACK_IMPORTED_MODULE_1__.save
 });
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=course-order-by.js.map

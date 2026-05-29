@@ -2,11 +2,11 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/apps/js/blocks/course-elements/course-instructor/edit.js":
+/***/ "./assets/src/apps/js/blocks/course-elements/course-instructor/edit.js"
 /*!*****************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/course-elements/course-instructor/edit.js ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -78,13 +78,13 @@ const edit = props => {
   })))));
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/course-elements/course-instructor/save.js":
+/***/ "./assets/src/apps/js/blocks/course-elements/course-instructor/save.js"
 /*!*****************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/course-elements/course-instructor/save.js ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -92,13 +92,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const save = props => null;
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/utilBlock.js":
+/***/ "./assets/src/apps/js/blocks/utilBlock.js"
 /*!************************************************!*\
   !*** ./assets/src/apps/js/blocks/utilBlock.js ***!
   \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -150,77 +150,77 @@ const checkTemplatesCanLoadBlock = (templates, metadata, callBack) => {
 };
 
 
-/***/ }),
+/***/ },
 
-/***/ "react":
+/***/ "react"
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["React"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/block-editor":
+/***/ "@wordpress/block-editor"
 /*!*************************************!*\
   !*** external ["wp","blockEditor"] ***!
   \*************************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["blockEditor"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/blocks":
+/***/ "@wordpress/blocks"
 /*!********************************!*\
   !*** external ["wp","blocks"] ***!
   \********************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["blocks"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/components":
+/***/ "@wordpress/components"
 /*!************************************!*\
   !*** external ["wp","components"] ***!
   \************************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["components"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/data":
+/***/ "@wordpress/data"
 /*!******************************!*\
   !*** external ["wp","data"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["data"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/i18n":
+/***/ "@wordpress/i18n"
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["i18n"];
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/blocks/course-elements/course-instructor/block.json":
+/***/ "./assets/src/apps/js/blocks/course-elements/course-instructor/block.json"
 /*!********************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/course-elements/course-instructor/block.json ***!
   \********************************************************************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"learnpress/course-instructor","title":"Course Instructor","category":"learnpress-course-elements","description":"Renders template Instructor Course PHP templates.","textdomain":"learnpress","keywords":["instructor single course","learnpress"],"icon":"id","ancestor":["learnpress/single-course","learnpress/course-item-template"],"usesContext":["lpCourseData"],"attributes":{"showText":{"type":"boolean","default":true},"isLink":{"type":"boolean","default":true},"target":{"type":"boolean","default":false}},"supports":{"multiple":true,"align":["wide","full"],"html":false,"typography":{"fontSize":true,"lineHeight":false,"fontWeight":true,"__experimentalFontFamily":false,"__experimentalTextDecoration":false,"__experimentalFontStyle":false,"__experimentalFontWeight":true,"__experimentalLetterSpacing":false,"__experimentalTextTransform":true,"__experimentalDefaultControls":{"fontSize":true}},"color":{"background":false,"text":true,"link":true,"__experimentalDefaultControls":{"link":false,"text":true}}}}');
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -242,6 +242,12 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -291,6 +297,8 @@ module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/tru
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!******************************************************************************!*\
   !*** ./assets/src/apps/js/blocks/course-elements/course-instructor/index.js ***!
   \******************************************************************************/
@@ -323,6 +331,8 @@ const templatesName = ['learnpress/learnpress//single-lp_course', 'learnpress/le
   edit: _edit__WEBPACK_IMPORTED_MODULE_0__.edit,
   save: _save__WEBPACK_IMPORTED_MODULE_1__.save
 });
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=course-instructor.js.map

@@ -1,8 +1,8 @@
 # Quiz Importer for LearnPress
 
-A powerful and user-friendly WordPress plugin to import quizzes and questions into LearnPress LMS from CSV, JSON, and Excel files.
+A powerful and user-friendly WordPress plugin to import quizzes and questions into LearnPress LMS from CSV, JSON, and XLSX files.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.0.1-blue.svg)
 ![WordPress](https://img.shields.io/badge/wordpress-5.8%2B-blue.svg)
 ![PHP](https://img.shields.io/badge/php-7.4%2B-purple.svg)
 ![LearnPress](https://img.shields.io/badge/learnpress-4.0%2B-green.svg)
@@ -31,6 +31,7 @@ A powerful and user-friendly WordPress plugin to import quizzes and questions in
 - Support multiple correct answers
 - Question explanations
 - 20+ question type variations
+- LearnPress 4-compatible questions-only imports
 - UTF-8 encoding support
 - Real-time progress tracking
 
@@ -283,7 +284,7 @@ Configure default values for imported quizzes:
 ## 📈 Roadmap
 
 - [x] Excel (XLSX) import - ✅ Completed
-- [ ] Excel (XLS) legacy format support
+- [ ] Legacy XLS import support (currently unsupported; save as XLSX or CSV)
 - [ ] Export functionality
 - [ ] Bulk edit questions
 - [ ] Question bank management

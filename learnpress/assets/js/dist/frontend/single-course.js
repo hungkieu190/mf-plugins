@@ -1,11 +1,11 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/apps/js/frontend/material.js":
+/***/ "./assets/src/apps/js/frontend/material.js"
 /*!*************************************************!*\
   !*** ./assets/src/apps/js/frontend/material.js ***!
   \*************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -53,13 +53,13 @@ function lpMaterialsLoad() {
   });
 }
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/show-lp-overlay-complete-item.js":
+/***/ "./assets/src/apps/js/frontend/show-lp-overlay-complete-item.js"
 /*!**********************************************************************!*\
   !*** ./assets/src/apps/js/frontend/show-lp-overlay-complete-item.js ***!
   \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -113,13 +113,13 @@ const lpModalOverlayCompleteItem = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (lpModalOverlayCompleteItem);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-course/index.js":
+/***/ "./assets/src/apps/js/frontend/single-course/index.js"
 /*!************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-course/index.js ***!
   \************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -154,25 +154,25 @@ document.addEventListener('DOMContentLoaded', () => {
   run();
 });
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-course/store/index.js":
+/***/ "./assets/src/apps/js/frontend/single-course/store/index.js"
 /*!******************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-course/store/index.js ***!
   \******************************************************************/
-/***/ (() => {
+() {
 
 /**
  * Created by tu on 9/19/19.
  */
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/components/search.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/components/search.js"
 /*!****************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/components/search.js ***!
   \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -248,13 +248,13 @@ const searchCourseContent = () => {
   }
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/components/sidebar.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/components/sidebar.js"
 /*!*****************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/components/sidebar.js ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -330,13 +330,13 @@ const Sidebar = () => {
   });
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/scrolltoitem.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/scrolltoitem.js"
 /*!***********************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/scrolltoitem.js ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -383,13 +383,13 @@ const scrollToItemCurrent = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (scrollToItemCurrent);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/skeleton.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/skeleton.js"
 /*!*******************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/skeleton.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -724,13 +724,13 @@ function courseCurriculumSkeleton(courseID = '') {
   });
 }
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/tabs-scroll.js":
+/***/ "./assets/src/apps/js/frontend/tabs-scroll.js"
 /*!****************************************************!*\
   !*** ./assets/src/apps/js/frontend/tabs-scroll.js ***!
   \****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -776,13 +776,13 @@ function TabsDragScroll() {
   });
 }
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/utils/lp-modal-overlay.js":
+/***/ "./assets/src/apps/js/utils/lp-modal-overlay.js"
 /*!******************************************************!*\
   !*** ./assets/src/apps/js/utils/lp-modal-overlay.js ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -843,13 +843,13 @@ const lpModalOverlay = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (lpModalOverlay);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/frontend/copy-to-clipboard.js":
+/***/ "./assets/src/js/frontend/copy-to-clipboard.js"
 /*!*****************************************************!*\
   !*** ./assets/src/js/frontend/copy-to-clipboard.js ***!
   \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -930,17 +930,18 @@ function CopyToClipboard() {
   }
 }
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils.js":
+/***/ "./assets/src/js/utils.js"
 /*!********************************!*\
   !*** ./assets/src/js/utils.js ***!
   \********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   debounce: () => (/* binding */ debounce),
 /* harmony export */   eventHandlers: () => (/* binding */ eventHandlers),
 /* harmony export */   getDataOfForm: () => (/* binding */ getDataOfForm),
 /* harmony export */   getFieldKeysOfForm: () => (/* binding */ getFieldKeysOfForm),
@@ -964,7 +965,7 @@ __webpack_require__.r(__webpack_exports__);
  * @param data
  * @param functions
  * @since 4.2.5.1
- * @version 1.0.5
+ * @version 1.0.6
  */
 const lpClassName = {
   hidden: 'lp-hidden',
@@ -1258,13 +1259,46 @@ const eventHandlers = (eventName, eventHandlers) => {
   });
 };
 
-/***/ }),
+/**
+ * Debounce - delays function execution until after `wait` ms of inactivity.
+ *
+ * Each call resets the timer. Only the last call in a burst executes.
+ *
+ * USE CASES:
+ * - Search inputs, form validation, window resize
+ * - Multiple elements need independent timers
+ * - When you need to call with different arguments
+ *
+ * EXAMPLES:
+ * const debouncedSearch = debounce( (query) => fetchResults(query), 300 );
+ * searchInput.addEventListener('input', (e) => debouncedSearch(e.target.value));
+ *
+ * const debouncedResize = debounce( recalculateLayout, 250 );
+ * window.addEventListener('resize', debouncedResize);
+ *
+ * ⚠️ Create ONCE outside event handlers, not inside.
+ *
+ * @param {Function} func - Function to debounce (can be anonymous)
+ * @param {number}   wait - Milliseconds to wait (default: 500)
+ * @return {Function} Debounced wrapper function
+ * @since 4.3.7
+ * @version 1.0.0
+ */
+const debounce = (func, wait = 500) => {
+  let timer;
+  return args => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(args), wait);
+  };
+};
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/toastify-js/src/toastify.css":
+/***/ },
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/toastify-js/src/toastify.css"
 /*!*****************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/toastify-js/src/toastify.css ***!
   \*****************************************************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
+(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1370,13 +1404,13 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/*!
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/css-loader/dist/runtime/api.js":
+/***/ "./node_modules/css-loader/dist/runtime/api.js"
 /*!*****************************************************!*\
   !*** ./node_modules/css-loader/dist/runtime/api.js ***!
   \*****************************************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 
@@ -1465,13 +1499,13 @@ module.exports = function (cssWithMappingToString) {
   return list;
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/css-loader/dist/runtime/sourceMaps.js":
+/***/ "./node_modules/css-loader/dist/runtime/sourceMaps.js"
 /*!************************************************************!*\
   !*** ./node_modules/css-loader/dist/runtime/sourceMaps.js ***!
   \************************************************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 
@@ -1491,13 +1525,13 @@ module.exports = function (item) {
   return [content].join("\n");
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/toastify-js/src/toastify.css":
+/***/ "./node_modules/toastify-js/src/toastify.css"
 /*!***************************************************!*\
   !*** ./node_modules/toastify-js/src/toastify.css ***!
   \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1546,13 +1580,13 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
        /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_css_loader_dist_cjs_js_toastify_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _css_loader_dist_cjs_js_toastify_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _css_loader_dist_cjs_js_toastify_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
+/***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js"
 /*!****************************************************************************!*\
   !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
   \****************************************************************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 
@@ -1640,13 +1674,13 @@ module.exports = function (list, options) {
   };
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/style-loader/dist/runtime/insertBySelector.js":
+/***/ "./node_modules/style-loader/dist/runtime/insertBySelector.js"
 /*!********************************************************************!*\
   !*** ./node_modules/style-loader/dist/runtime/insertBySelector.js ***!
   \********************************************************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 
@@ -1684,13 +1718,13 @@ function insertBySelector(insert, style) {
 }
 module.exports = insertBySelector;
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/style-loader/dist/runtime/insertStyleElement.js":
+/***/ "./node_modules/style-loader/dist/runtime/insertStyleElement.js"
 /*!**********************************************************************!*\
   !*** ./node_modules/style-loader/dist/runtime/insertStyleElement.js ***!
   \**********************************************************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 
@@ -1704,13 +1738,13 @@ function insertStyleElement(options) {
 }
 module.exports = insertStyleElement;
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js":
+/***/ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js"
 /*!**********************************************************************************!*\
   !*** ./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js ***!
   \**********************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 
@@ -1724,13 +1758,13 @@ function setAttributesWithoutAttributes(styleElement) {
 }
 module.exports = setAttributesWithoutAttributes;
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/style-loader/dist/runtime/styleDomAPI.js":
+/***/ "./node_modules/style-loader/dist/runtime/styleDomAPI.js"
 /*!***************************************************************!*\
   !*** ./node_modules/style-loader/dist/runtime/styleDomAPI.js ***!
   \***************************************************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 
@@ -1795,13 +1829,13 @@ function domAPI(options) {
 }
 module.exports = domAPI;
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/style-loader/dist/runtime/styleTagTransform.js":
+/***/ "./node_modules/style-loader/dist/runtime/styleTagTransform.js"
 /*!*********************************************************************!*\
   !*** ./node_modules/style-loader/dist/runtime/styleTagTransform.js ***!
   \*********************************************************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 
@@ -1819,13 +1853,13 @@ function styleTagTransform(css, styleElement) {
 }
 module.exports = styleTagTransform;
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/toastify-js/src/toastify.js":
+/***/ "./node_modules/toastify-js/src/toastify.js"
 /*!**************************************************!*\
   !*** ./node_modules/toastify-js/src/toastify.js ***!
   \**************************************************/
-/***/ (function(module) {
+(module) {
 
 /*!
  * Toastify js 1.12.0
@@ -2274,51 +2308,51 @@ module.exports = styleTagTransform;
 });
 
 
-/***/ }),
+/***/ },
 
-/***/ "react":
+/***/ "react"
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["React"];
 
-/***/ }),
+/***/ },
 
-/***/ "@learnpress/quiz":
+/***/ "@learnpress/quiz"
 /*!******************************!*\
   !*** external ["LP","quiz"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["LP"]["quiz"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/element":
+/***/ "@wordpress/element"
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
   \*********************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["element"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/url":
+/***/ "@wordpress/url"
 /*!*****************************!*\
   !*** external ["wp","url"] ***!
   \*****************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["url"];
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -2340,6 +2374,12 @@ module.exports = window["wp"]["url"];
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -2394,7 +2434,7 @@ module.exports = window["wp"]["url"];
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";
 /*!******************************************************!*\

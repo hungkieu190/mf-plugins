@@ -5,26 +5,20 @@ namespace LearnPress\Models;
 /**
  * Class UserModel
  *
- * @version 1.0.2
+ * @version 1.0.3
  * @since 4.2.6.9
  */
 
 use Exception;
+use LearnPress\Databases\Course\CourseJsonDB;
 use LearnPress\Databases\UserItemsDB;
-use LearnPress\Filters\FilterBase;
+use LearnPress\Filters\Course\CourseJsonFilter;
 use LearnPress\Filters\UserItemsFilter;
-use LearnPress\Models\UserItems\UserCourseModel;
-use LearnPress\Models\UserItems\UserItemModel;
-use LearnPress\Models\UserItems\UserQuizModel;
+use LearnPress\Services\UserService;
 use LP_Cache;
-use LP_Course_DB;
-use LP_Course_Filter;
-use LP_Database;
 use LP_Debug;
-use LP_Profile;
-use LP_User;
-use LP_User_DB;
-use LP_User_Filter;
+use LearnPress\Databases\UserDB;
+use LearnPress\Filters\UserFilter;
 
 use LP_User_Items_DB;
 use LP_User_Items_Filter;
@@ -32,6 +26,7 @@ use LP_WP_Filesystem;
 use stdClass;
 use Throwable;
 use WP_Error;
+use WP_User;
 
 class UserModel {
 	/**
@@ -41,29 +36,29 @@ class UserModel {
 	 */
 	public $ID = 0;
 	/**
-	 * @var string author id, foreign key
+	 * @var string
 	 */
-	public $user_login = 0;
+	public $user_login = '';
 	/**
-	 * @var LP_User author model
+	 * @var string
 	 */
 	public $user_nicename;
 	/**
-	 * @var string post date
+	 * @var string
 	 */
 	public $user_email = null;
 	/**
-	 * @var string post date gmt
+	 * @var string
 	 */
 	public $user_url = null;
 	/**
-	 * @var string post content
+	 * @var string
 	 */
 	public $user_register = '';
 	/**
-	 * Item type (course, lesson, quiz ...)
+	 * Display name of user.
 	 *
-	 * @var string Item type
+	 * @var string
 	 */
 	public $display_name = '';
 	/**
@@ -78,7 +73,7 @@ class UserModel {
 	// Meta keys
 	const META_KEY_IMAGE       = '_lp_profile_picture';
 	const META_KEY_COVER_IMAGE = '_lp_profile_cover_image';
-
+	const META_KEY_USER_SLUG   = '_lp_user_slug';
 	// Roles
 	const ROLE_INSTRUCTOR    = LP_TEACHER_ROLE;
 	const ROLE_ADMINISTRATOR = 'administrator';
@@ -126,7 +121,7 @@ class UserModel {
 	 * @return false|static
 	 */
 	public static function find( int $user_id, bool $check_cache = false ) {
-		$filter_user     = new LP_User_Filter();
+		$filter_user     = new UserFilter();
 		$filter_user->ID = $user_id;
 		$key_cache       = "userModel/find/id/{$user_id}";
 		$lp_course_cache = new LP_Cache();
@@ -155,14 +150,14 @@ class UserModel {
 	 * If not exists, return false.
 	 * If exists, return CoursePostModel.
 	 *
-	 * @param LP_User_Filter $filter
+	 * @param UserFilter $filter
 	 *
 	 * @return UserModel|false|static
 	 * @since 4.2.6.9
 	 * @version 1.0.1
 	 */
-	public static function get_user_model_from_db( LP_User_Filter $filter ) {
-		$lp_user_db = LP_User_DB::instance();
+	public static function get_user_model_from_db( UserFilter $filter ) {
+		$lp_user_db = UserDB::getInstance();
 		$user_model = false;
 
 		try {
@@ -225,6 +220,80 @@ class UserModel {
 	public function set_meta_value_by_key( string $key, $value ) {
 		$this->meta_data->{$key} = $value;
 		update_user_meta( $this->ID, $key, $value );
+	}
+
+	/**
+	 * Retrieve the pretty slug used instead of user_name.
+	 *
+	 * This value is used to build links such as instructor links and user profile links.
+	 * If a pretty slug has not been generated yet, it falls back to user_name when
+	 * $fallback_to_username is true.
+	 *
+	 * @param bool $fallback_to_username Whether to fall back to username if no pretty slug exists.
+	 *
+	 * @return string
+	 */
+	/*public function get_pretty_slug( bool $fallback_to_username = true ): string {
+		$slug = sanitize_title( (string) $this->get_meta_value_by_key( self::META_KEY_USER_SLUG, '' ) );
+
+		if ( '' !== $slug || ! $fallback_to_username ) {
+			return $slug;
+		}
+
+		return $this->get_username();
+	}*/
+
+	/**
+	 * Get slug link of user.
+	 * Get from column user_nicename of table wp_users
+	 *
+	 * @return string
+	 * @since 4.3.6
+	 * @version 1.0.0
+	 */
+	public function get_slug_link(): string {
+		return (string) $this->user_nicename;
+	}
+
+	/**
+	 * Update pretty slug manually.
+	 *
+	 * @param string $slug
+	 *
+	 * @return string|WP_Error
+	 * @since 4.3.4
+	 * @version 1.0.1
+	 */
+	public function update_user_nicename( string $slug ) {
+		try {
+			$slug = sanitize_title( wp_unslash( $slug ) );
+
+			if ( empty( $slug ) ) {
+				throw new Exception( __( 'Cannot create a user with an empty nicename.' ) );
+			} elseif ( mb_strlen( $slug ) > 50 ) {
+				throw new Exception( __( 'Nicename may not be longer than 50 characters.' ) );
+			}
+
+			$userModelFind = UserService::instance()->get_user_by_slug_link( $slug );
+			// If not found any user with the slug, or found user is current user, update slug, else throw error.
+			if ( ! $userModelFind ) {
+				$this->user_nicename = $slug;
+				$this->save();
+			} elseif ( $userModelFind->get_id() !== $this->get_id() ) {
+				// Found another user with the slug, throw error.
+				throw new Exception(
+					sprintf(
+					/* translators: 1: user slug */
+						esc_html__( 'This user slug "%s" already exists.', 'learnpress' ),
+						$slug
+					)
+				);
+			}
+		} catch ( Throwable $e ) {
+			return new WP_Error( 'lp_user_slug_update_failed', $e->getMessage() );
+		}
+
+		return $slug;
 	}
 
 	/**
@@ -348,15 +417,15 @@ class UserModel {
 	 * @since 4.2.3
 	 */
 	public function get_url_instructor(): string {
+
 		$single_instructor_link = '';
 
 		try {
-			$user_name                 = $this->user_nicename ?? '';
+			$user_name                 = $this->get_slug_link();
 			$single_instructor_page_id = learn_press_get_page_id( 'single_instructor' );
 			if ( ! $single_instructor_page_id ) {
 				return $single_instructor_link;
 			}
-
 			$single_instructor_link = trailingslashit(
 				trailingslashit( get_page_link( $single_instructor_page_id ) ) . $user_name
 			);
@@ -483,16 +552,34 @@ class UserModel {
 	 *
 	 * If user_item_id is empty, insert new data, else update data.
 	 *
-	 * @return UserModel
 	 * @throws Exception
 	 * @since 4.2.5
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
-	public function save(): UserModel {
-		// Clear caches.
-		$this->clean_caches();
+	public function save( bool $force_save = false ) {
+		$data = get_object_vars( $this );
 
-		return $this;
+		// Check if exists user id.
+		if ( empty( $this->ID ) ) { // Insert data.
+			unset( $data['ID'] );
+			$user_id = wp_insert_user( $data );
+		} else { // Update data.
+			if ( ! $force_save ) {
+				if ( ! current_user_can( 'edit_user', $this->get_id() ) ) {
+					throw new Exception( __( 'Sorry, you are not allowed to edit this user.' ) );
+				}
+			}
+
+			$user_id = wp_update_user( $data );
+		}
+
+		if ( is_wp_error( $user_id ) ) {
+			throw new Exception( $user_id->get_error_message() );
+		} else {
+			$this->ID = $user_id;
+		}
+
+		$this->clean_caches();
 	}
 
 	/**
@@ -554,7 +641,7 @@ class UserModel {
 	 *
 	 * @return array
 	 * @since 4.1.6
-	 * @version 1.0.6
+	 * @version 1.0.7
 	 */
 	public function get_instructor_statistic( array $params = [] ): array {
 		$statistic = array(
@@ -575,15 +662,15 @@ class UserModel {
 
 			$user_id          = $this->get_id();
 			$lp_user_items_db = LP_User_Items_DB::getInstance();
-			$lp_course_db     = LP_Course_DB::getInstance();
+			$courseJsonDB     = CourseJsonDB::getInstance();
 
 			// Count total user completed course of author
-			$filter_course                      = new LP_Course_Filter();
+			$filter_course                      = new CourseJsonFilter();
 			$filter_course->only_fields         = array( 'ID' );
 			$filter_course->post_author         = $user_id;
 			$filter_course->post_status         = [ 'publish', 'private' ];
 			$filter_course->return_string_query = true;
-			$query_courses_str                  = LP_Course_DB::getInstance()->get_courses( $filter_course );
+			$query_courses_str                  = $courseJsonDB::getInstance()->get_courses( $filter_course );
 
 			$filter_count_users            = new LP_User_Items_Filter();
 			$filter_count_users->item_type = LP_COURSE_CPT;
@@ -596,16 +683,16 @@ class UserModel {
 			$count_users_attend_courses_of_author = $lp_user_items_db->get_user_courses( $filter_count_users );
 
 			// Get total courses publish of author
-			$filter_count_courses            = $lp_course_db->count_courses_of_author( $user_id, [ 'publish' ] );
-			$total_courses_publish_of_author = $lp_course_db->get_courses( $filter_count_courses );
+			$filter_count_courses            = $courseJsonDB->count_courses_of_author( $user_id, [ 'publish' ] );
+			$total_courses_publish_of_author = $courseJsonDB->get_courses( $filter_count_courses );
 
 			// Get total courses of author
-			$filter_count_courses    = $lp_course_db->count_courses_of_author( $user_id );
-			$total_courses_of_author = $lp_course_db->get_courses( $filter_count_courses );
+			$filter_count_courses    = $courseJsonDB->count_courses_of_author( $user_id );
+			$total_courses_of_author = $courseJsonDB->get_courses( $filter_count_courses );
 
 			// Get total courses pending of author
-			$filter_count_courses            = $lp_course_db->count_courses_of_author( $user_id, [ 'pending' ] );
-			$total_courses_pending_of_author = $lp_course_db->get_courses( $filter_count_courses );
+			$filter_count_courses            = $courseJsonDB->count_courses_of_author( $user_id, [ 'pending' ] );
+			$total_courses_pending_of_author = $courseJsonDB->get_courses( $filter_count_courses );
 
 			$statistic['total_course']        = $total_courses_of_author;
 			$statistic['published_course']    = $total_courses_publish_of_author;
@@ -619,7 +706,7 @@ class UserModel {
 			// Set cache first.
 			LP_Cache::cache_load_first( 'set', $key_cache_first, $statistic );
 		} catch ( Throwable $e ) {
-			error_log( __FUNCTION__ . ': ' . $e->getMessage() );
+			LP_Debug::error_log( $e );
 		}
 
 		return $statistic;
@@ -650,8 +737,8 @@ class UserModel {
 			$filter->user_id        = $user_id;
 			$count_status           = $lp_user_items_db->count_status_by_items( $filter );
 			$total_courses_enrolled = intval( $count_status->{LP_COURSE_PURCHASED} ?? 0 )
-				+ intval( $count_status->{LP_COURSE_ENROLLED} ?? 0 )
-				+ intval( $count_status->{LP_COURSE_FINISHED} ?? 0 );
+										+ intval( $count_status->{LP_COURSE_ENROLLED} ?? 0 )
+										+ intval( $count_status->{LP_COURSE_FINISHED} ?? 0 );
 
 			$statistic['enrolled_courses']   = $total_courses_enrolled;
 			$statistic['in_progress_course'] = $count_status->{LP_COURSE_GRADUATION_IN_PROGRESS} ?? 0;
@@ -670,11 +757,12 @@ class UserModel {
 	 *
 	 * @return bool
 	 * @since 4.2.7.6
-	 * @version 1.0.0
+	 * @version 1.0.1
 	 */
 	public function is_instructor(): bool {
-		return user_can( $this->get_id(), self::ROLE_INSTRUCTOR )
-			|| user_can( $this->get_id(), self::ROLE_ADMINISTRATOR );
+		$wp_user = new WP_User( $this );
+		return user_can( $wp_user, self::ROLE_INSTRUCTOR )
+				|| user_can( $wp_user, self::ROLE_ADMINISTRATOR );
 	}
 
 	/**
@@ -697,5 +785,17 @@ class UserModel {
 		$filter->ref_type  = LP_COURSE_CPT;
 
 		return $lp_db_user_items->get_user_items( $filter, $total_rows );
+	}
+
+	/**
+	 * Get roles of user.
+	 *
+	 * @return array
+	 * @since 4.3.6
+	 * @version 1.0.0
+	 */
+	public function get_roles(): array {
+		$user = new WP_User( $this );
+		return is_array( $user->roles ) ? $user->roles : [];
 	}
 }

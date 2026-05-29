@@ -208,7 +208,7 @@ You can also create files directly in Excel or Google Sheets:
 
 ### File Format
 - **XLSX (Excel 2007+):** ✅ Fully supported
-- **XLS (Excel 97-2003):** ⚠️ Limited support - please convert to XLSX or CSV
+- **XLS (Excel 97-2003):** Not supported in version 1.0.1 - please convert to XLSX or CSV
 
 ### Requirements
 - PHP ZipArchive extension (usually enabled by default)

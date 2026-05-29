@@ -201,11 +201,9 @@ p:last-child {
   margin-left: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle;
-  margin-top: -2px;
 }
 
 .lp-hidden {
@@ -444,11 +442,9 @@ p:last-child {
   margin-left: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle;
-  margin-top: -2px;
 }
 
 button.learnpress_avatar__button {
@@ -631,6 +627,7 @@ body .wp-site-blocks {
   display: none;
 }
 .lp-single-instructor .ul-instructor-courses .course-thumbnail {
+  position: relative;
   border-radius: var(--lp-border-radius, 5px) var(--lp-border-radius, 5px) 0 0;
   overflow: hidden;
 }

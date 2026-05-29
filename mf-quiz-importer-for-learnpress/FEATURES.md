@@ -190,7 +190,7 @@ Configure default values:
 ## 📈 Future Enhancements
 
 - [x] Excel (XLSX) import - ✅ Completed v1.0.3
-- [ ] Excel (XLS) legacy format
+- [ ] Legacy XLS import support (currently unsupported; save as XLSX or CSV)
 - [ ] Export functionality
 - [ ] Bulk edit questions
 - [ ] Question bank management
@@ -243,6 +243,6 @@ Configure default values:
 
 ---
 
-**Version:** 1.0.0
+**Version:** 1.0.1
 **Last Updated:** November 2024
 **Author:** MamFlow

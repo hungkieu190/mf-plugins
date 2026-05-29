@@ -12,6 +12,7 @@ use LearnPress\Helpers\Template;
 use LearnPress\Models\CourseModel;
 use LearnPress\Models\Courses;
 use LearnPress\Models\UserModel;
+use LearnPress\Services\UserService;
 use LearnPress\TemplateHooks\Profile\ProfileTemplate;
 use LearnPress\TemplateHooks\Course\ListCoursesTemplate;
 use LearnPress\TemplateHooks\UserTemplate;
@@ -44,6 +45,7 @@ class SingleInstructorTemplate extends UserTemplate {
 	 * Get html total courses of instructor.
 	 *
 	 * @param LP_User|UserModel $instructor
+	 * @param string $hidden
 	 *
 	 * @return string
 	 * @version 1.0.1
@@ -57,6 +59,9 @@ class SingleInstructorTemplate extends UserTemplate {
 				$instructor = UserModel::find( $instructor->get_id(), true );
 			}
 
+			/**
+			 * @var UserModel $instructor
+			 */
 			$instructor_statistic = $instructor->get_instructor_statistic();
 			$html                 = sprintf(
 				'%d %s',
@@ -98,6 +103,9 @@ class SingleInstructorTemplate extends UserTemplate {
 				$instructor = UserModel::find( $instructor->get_id(), true );
 			}
 
+			/**
+			 * @var UserModel $instructor
+			 */
 			$instructor_statistic = $instructor->get_instructor_statistic();
 			$html                 = sprintf(
 				'%d %s',
@@ -233,21 +241,19 @@ class SingleInstructorTemplate extends UserTemplate {
 	 *
 	 * @return false|UserModel
 	 * @since 4.2.3.4
-	 * @version 1.0.1
+	 * @version 1.0.4
 	 */
 	public function detect_instructor_by_page() {
 		$instructor = false;
 
 		try {
+			$userModelCurrent = UserModel::find( get_current_user_id(), true );
 			if ( get_query_var( 'is_single_instructor' ) ) {
 				$instructor_name = get_query_var( 'instructor_name' );
 				if ( $instructor_name && 'page' !== $instructor_name ) {
-					$user = get_user_by( 'slug', $instructor_name );
-					if ( $user ) {
-						$instructor = UserModel::find( $user->ID, true );
-					}
+					$instructor = UserService::instance()->get_user_by_slug_link( $instructor_name );
 				} else {
-					$instructor = UserModel::find( get_current_user_id(), true );
+					$instructor = $userModelCurrent;
 				}
 			}
 		} catch ( Throwable $e ) {

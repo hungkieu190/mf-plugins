@@ -146,7 +146,7 @@ class MF_Quiz_Creator {
      * @param array $question_data Question data
      * @return int|WP_Error Question ID or error
      */
-    private static function create_question($question_data) {
+    public static function create_question($question_data) {
         if (empty($question_data['title'])) {
             return new WP_Error('missing_question_title', __('Question title is required.', 'mf-quiz-importer-lp'));
         }
@@ -157,13 +157,30 @@ class MF_Quiz_Creator {
         // Map question types to LearnPress format
         $type_map = array(
             'single_choice' => 'single_choice',
+            'single' => 'single_choice',
+            'singlechoice' => 'single_choice',
+            'radio' => 'single_choice',
+            'one_choice' => 'single_choice',
             'multiple_choice' => 'multi_choice',
             'multi_choice' => 'multi_choice',
+            'multiplechoice' => 'multi_choice',
+            'multichoice' => 'multi_choice',
+            'multiple' => 'multi_choice',
+            'checkbox' => 'multi_choice',
+            'many_choice' => 'multi_choice',
             'true_or_false' => 'true_or_false',
             'true_false' => 'true_or_false',
+            'truefalse' => 'true_or_false',
+            'boolean' => 'true_or_false',
+            'bool' => 'true_or_false',
+            'fill_in_blanks' => 'fill_in_blanks',
+            'fill_in_blank' => 'fill_in_blanks',
+            'fillinblanks' => 'fill_in_blanks',
+            'fill_blanks' => 'fill_in_blanks',
+            'blanks' => 'fill_in_blanks',
         );
         
-        $question_type = isset($question_data['type']) ? $question_data['type'] : 'true_or_false';
+        $question_type = isset($question_data['type']) ? strtolower(trim($question_data['type'])) : 'true_or_false';
         $question_type = isset($type_map[$question_type]) ? $type_map[$question_type] : 'true_or_false';
         
         // Create question post
@@ -201,6 +218,8 @@ class MF_Quiz_Creator {
             $result = self::set_question_answers($question_id, $question_data['answers'], $question_type);
             if (is_wp_error($result)) {
                 error_log('MF Quiz Importer: Failed to set answers for question ' . $question_id . ' - ' . $result->get_error_message());
+                wp_delete_post($question_id, true);
+                return $result;
             }
         }
         
@@ -273,7 +292,7 @@ class MF_Quiz_Creator {
      * @param int $question_id Question ID
      * @return bool|int False on failure, insert ID on success
      */
-    private static function add_question_to_quiz($quiz_id, $question_id) {
+    public static function add_question_to_quiz($quiz_id, $question_id) {
         // Use LearnPress CURD to add question
         if (class_exists('LP_Quiz_CURD')) {
             $quiz_curd = new LP_Quiz_CURD();

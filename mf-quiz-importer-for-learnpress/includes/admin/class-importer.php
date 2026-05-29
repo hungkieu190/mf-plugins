@@ -30,12 +30,13 @@ class MF_Quiz_Importer {
             case 'csv':
                 return $this->import_from_csv($filepath, $import_type, $quiz_id);
             case 'xlsx':
-            case 'xls':
                 return $this->import_from_excel($filepath, $import_type, $quiz_id);
+            case 'xls':
+                return new WP_Error('xls_not_supported', __('Legacy XLS files are not supported. Please save the file as XLSX or CSV and try again.', 'mf-quiz-importer-lp'));
             case 'json':
                 return $this->import_from_json($filepath, $import_type, $quiz_id);
             default:
-                return new WP_Error('invalid_file', __('Unsupported file format.', 'mf-quiz-importer-lp'));
+                return new WP_Error('invalid_file', __('Unsupported file format. Supported formats: CSV, XLSX, JSON.', 'mf-quiz-importer-lp'));
         }
     }
     
@@ -60,16 +61,39 @@ class MF_Quiz_Importer {
         $imported = 0;
         $failed = 0;
         $header = fgetcsv($handle);
+        $errors = array();
+
+        if (!$this->is_valid_header($header)) {
+            fclose($handle);
+            return new WP_Error('invalid_csv_header', __('CSV header row is missing or empty.', 'mf-quiz-importer-lp'));
+        }
         
         if ($import_type === 'questions') {
             $questions = array();
+            $line_number = 1;
             while (($row = fgetcsv($handle)) !== false) {
-                $question_data = array_combine($header, $row);
-                $questions[] = $this->parse_question_from_csv($question_data);
+                $line_number++;
+                $question_data = $this->combine_csv_row($header, $row, $line_number, $errors);
+                if (empty($question_data)) {
+                    continue;
+                }
+
+                $question = $this->parse_question_from_csv($question_data);
+                if (empty($question['title'])) {
+                    $errors[] = sprintf(__('Row %d: Question title is required.', 'mf-quiz-importer-lp'), $line_number);
+                    $failed++;
+                    continue;
+                }
+
+                $questions[] = $question;
             }
             fclose($handle);
             
             $result = MF_Question_Importer::import_questions($quiz_id, $questions);
+            if (!empty($errors)) {
+                $result['errors'] = array_merge(isset($result['errors']) ? $result['errors'] : array(), $errors);
+                $result['failed'] = isset($result['failed']) ? $result['failed'] + $failed : $failed;
+            }
             return $result;
         } else {
             // Check if CSV has quiz with questions format
@@ -78,9 +102,21 @@ class MF_Quiz_Importer {
             if ($has_questions) {
                 // Group rows by quiz
                 $quizzes = array();
+                $line_number = 1;
                 while (($row = fgetcsv($handle)) !== false) {
-                    $data = array_combine($header, $row);
-                    $quiz_title = $data['quiz_title'];
+                    $line_number++;
+                    $data = $this->combine_csv_row($header, $row, $line_number, $errors);
+                    if (empty($data)) {
+                        continue;
+                    }
+
+                    $quiz_title = isset($data['quiz_title']) ? $data['quiz_title'] : '';
+
+                    if (empty($quiz_title)) {
+                        $errors[] = sprintf(__('Row %d: Quiz title is required.', 'mf-quiz-importer-lp'), $line_number);
+                        $failed++;
+                        continue;
+                    }
                     
                     if (!isset($quizzes[$quiz_title])) {
                         $quizzes[$quiz_title] = array(
@@ -102,21 +138,48 @@ class MF_Quiz_Importer {
                 
                 // Create quizzes with questions
                 foreach ($quizzes as $quiz_data) {
-                    if ($this->create_quiz($quiz_data)) {
+                    $result = $this->create_quiz($quiz_data);
+                    if ($result === true) {
                         $imported++;
                     } else {
                         $failed++;
+                        if (is_wp_error($result)) {
+                            $errors[] = sprintf(
+                                __('Quiz "%1$s": %2$s', 'mf-quiz-importer-lp'),
+                                isset($quiz_data['title']) ? $quiz_data['title'] : __('Untitled', 'mf-quiz-importer-lp'),
+                                $result->get_error_message()
+                            );
+                        }
                     }
                 }
             } else {
                 // Simple quiz CSV without questions
+                $line_number = 1;
                 while (($row = fgetcsv($handle)) !== false) {
-                    $quiz_data = array_combine($header, $row);
+                    $line_number++;
+                    $quiz_data = $this->combine_csv_row($header, $row, $line_number, $errors);
+                    if (empty($quiz_data)) {
+                        continue;
+                    }
+
+                    if (empty($quiz_data['title'])) {
+                        $errors[] = sprintf(__('Row %d: Quiz title is required.', 'mf-quiz-importer-lp'), $line_number);
+                        $failed++;
+                        continue;
+                    }
                     
-                    if ($this->create_quiz($quiz_data)) {
+                    $result = $this->create_quiz($quiz_data);
+                    if ($result === true) {
                         $imported++;
                     } else {
                         $failed++;
+                        if (is_wp_error($result)) {
+                            $errors[] = sprintf(
+                                __('Row %1$d: %2$s', 'mf-quiz-importer-lp'),
+                                $line_number,
+                                $result->get_error_message()
+                            );
+                        }
                     }
                 }
                 fclose($handle);
@@ -125,8 +188,79 @@ class MF_Quiz_Importer {
             return array(
                 'imported' => $imported,
                 'failed' => $failed,
+                'errors' => $errors,
             );
         }
+    }
+
+    /**
+     * Check whether CSV header row is usable.
+     *
+     * @param array|false $header Header row.
+     * @return bool
+     */
+    private function is_valid_header($header) {
+        if (!is_array($header) || empty($header)) {
+            return false;
+        }
+
+        foreach ($header as $column) {
+            if (trim((string) $column) !== '') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Normalize and combine a CSV row with its header without PHP warnings.
+     *
+     * @param array $header      CSV header row.
+     * @param array $row         CSV data row.
+     * @param int   $line_number Real CSV line number.
+     * @param array $errors      Collected row-level errors.
+     * @return array
+     */
+    private function combine_csv_row($header, $row, $line_number, &$errors) {
+        if (!is_array($row) || $this->is_empty_csv_row($row)) {
+            return array();
+        }
+
+        $header_count = count($header);
+        $row_count = count($row);
+
+        if ($row_count < $header_count) {
+            $row = array_pad($row, $header_count, '');
+        } elseif ($row_count > $header_count) {
+            $errors[] = sprintf(
+                __('Row %1$d: Extra columns were ignored. Expected %2$d columns, got %3$d.', 'mf-quiz-importer-lp'),
+                $line_number,
+                $header_count,
+                $row_count
+            );
+            $row = array_slice($row, 0, $header_count);
+        }
+
+        $combined = array_combine($header, $row);
+
+        return is_array($combined) ? $combined : array();
+    }
+
+    /**
+     * Determine if a CSV row is fully empty.
+     *
+     * @param array $row CSV row.
+     * @return bool
+     */
+    private function is_empty_csv_row($row) {
+        foreach ($row as $value) {
+            if (trim((string) $value) !== '') {
+                return false;
+            }
+        }
+
+        return true;
     }
     
     /**

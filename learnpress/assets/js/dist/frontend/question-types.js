@@ -2,11 +2,11 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/apps/js/frontend/question-types/components/index.js":
+/***/ "./assets/src/apps/js/frontend/question-types/components/index.js"
 /*!************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/components/index.js ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -27,13 +27,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/question-types/components/question-base/index.js":
+/***/ "./assets/src/apps/js/frontend/question-types/components/question-base/index.js"
 /*!**************************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/components/question-base/index.js ***!
   \**************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -281,13 +281,13 @@ class QuestionBase extends _wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Compo
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionBase);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/question-types/components/questions/fill-in-blanks/index.js":
+/***/ "./assets/src/apps/js/frontend/question-types/components/questions/fill-in-blanks/index.js"
 /*!*************************************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/components/questions/fill-in-blanks/index.js ***!
   \*************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -433,13 +433,13 @@ class QuestionFillInBlanks extends _question_base__WEBPACK_IMPORTED_MODULE_2__["
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionFillInBlanks);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/question-types/components/questions/multiple-choices/index.js":
+/***/ "./assets/src/apps/js/frontend/question-types/components/questions/multiple-choices/index.js"
 /*!***************************************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/components/questions/multiple-choices/index.js ***!
   \***************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -499,13 +499,13 @@ class QuestionMultipleChoices extends _question_base__WEBPACK_IMPORTED_MODULE_2_
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionMultipleChoices);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/question-types/components/questions/single-choice/index.js":
+/***/ "./assets/src/apps/js/frontend/question-types/components/questions/single-choice/index.js"
 /*!************************************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/components/questions/single-choice/index.js ***!
   \************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -537,13 +537,13 @@ class QuestionSingleChoice extends _question_base__WEBPACK_IMPORTED_MODULE_0__["
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionSingleChoice);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/question-types/components/questions/true-or-false/index.js":
+/***/ "./assets/src/apps/js/frontend/question-types/components/questions/true-or-false/index.js"
 /*!************************************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/components/questions/true-or-false/index.js ***!
   \************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -574,13 +574,13 @@ class QuestionTrueOrFalse extends _question_base__WEBPACK_IMPORTED_MODULE_0__["d
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (QuestionTrueOrFalse);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/question-types/index.js":
+/***/ "./assets/src/apps/js/frontend/question-types/index.js"
 /*!*************************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types/index.js ***!
   \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -663,57 +663,57 @@ class QuestionTypes extends _wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Comp
   return {};
 }))(QuestionTypes));
 
-/***/ }),
+/***/ },
 
-/***/ "react":
+/***/ "react"
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["React"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/compose":
+/***/ "@wordpress/compose"
 /*!*********************************!*\
   !*** external ["wp","compose"] ***!
   \*********************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["compose"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/data":
+/***/ "@wordpress/data"
 /*!******************************!*\
   !*** external ["wp","data"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["data"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/element":
+/***/ "@wordpress/element"
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
   \*********************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["element"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/i18n":
+/***/ "@wordpress/i18n"
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["i18n"];
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -735,6 +735,12 @@ module.exports = window["wp"]["i18n"];
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -784,6 +790,8 @@ module.exports = window["wp"]["i18n"];
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!*******************************************************!*\
   !*** ./assets/src/apps/js/frontend/question-types.js ***!
   \*******************************************************/
@@ -800,6 +808,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_question_types_index__WEBPACK_IMPORTED_MODULE_0__["default"]);
+})();
+
 (window.LP = window.LP || {}).questionTypes = __webpack_exports__;
 /******/ })()
 ;

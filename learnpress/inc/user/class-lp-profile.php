@@ -4,8 +4,10 @@ use LearnPress\Databases\UserItemsDB;
 use LearnPress\Filters\UserItemsFilter;
 use LearnPress\Helpers\Config;
 use LearnPress\Models\Courses;
+use LearnPress\Models\UserModel;
 use LearnPress\Models\UserItems\UserCourseModel;
 use LearnPress\Models\UserItems\UserItemModel;
+use LearnPress\Services\UserService;
 use LearnPress\TemplateHooks\Profile\ProfileOrdersTemplate;
 
 defined( 'ABSPATH' ) || exit;
@@ -261,12 +263,26 @@ if ( ! class_exists( 'LP_Profile' ) ) {
 			$user_of_profile = $this->get_user();
 			$tabs            = self::get_tabs_arr();
 
-			/*
-			 * Check if user not Admin/Instructor, will be hide tab Courses.
-			 */
-			if ( $user_of_profile instanceof LP_User
-				&& ! in_array( $user_of_profile->get_data( 'role' ), [ ADMIN_ROLE, LP_TEACHER_ROLE ] ) ) {
-				unset( $tabs['courses'] );
+			$userModelProfile = UserModel::find( $user_of_profile->get_id(), true );
+			if ( $userModelProfile ) {
+				$userModelProfileRoles = $userModelProfile->get_roles();
+
+				/*
+				 * Check if user not Admin/Instructor, will be hide tab Courses.
+				 */
+				if ( ! array_intersect( $userModelProfileRoles, [ UserModel::ROLE_ADMINISTRATOR, UserModel::ROLE_INSTRUCTOR ] ) ) {
+					unset( $tabs['courses'] );
+				}
+			}
+
+			// Filter tabs by role - only show tabs with role restriction to users with matching roles
+			$user_role = $user_of_profile instanceof LP_User ? $user_of_profile->get_data( 'role' ) : '';
+			foreach ( $tabs as $tab_key => $tab_data ) {
+				if ( ! empty( $tab_data['role'] ) && is_array( $tab_data['role'] ) ) {
+					if ( ! in_array( $user_role, $tab_data['role'] ) ) {
+						unset( $tabs[ $tab_key ] );
+					}
+				}
 			}
 
 			$tabs        = apply_filters( 'learn-press/get-profile-tabs', $tabs, $user_of_profile, $this->user_current );
@@ -325,12 +341,17 @@ if ( ! class_exists( 'LP_Profile' ) ) {
 		 */
 		public function get_tab_link( $tab = false, $with_section = false ) {
 			$user = $this->get_user();
-
 			if ( ! $user ) {
 				return '';
 			}
 
-			$url = $this->get_tabs()->get_tab_link( $tab, $with_section, $user->get_username() );
+			$userModel = UserModel::find( $user->get_id(), true );
+			if ( ! $userModel ) {
+				return '';
+			}
+
+			$user_pretty_slug = $userModel->get_slug_link();
+			$url              = $this->get_tabs()->get_tab_link( $tab, $with_section, $user_pretty_slug );
 
 			/**
 			 * @deprecated
@@ -498,7 +519,9 @@ if ( ! class_exists( 'LP_Profile' ) ) {
 
 			learn_press_set_message( $message );
 
-			if ( ! empty( $_REQUEST['redirect'] ) ) {
+			if ( 'basic-information' === $action && ! is_wp_error( $return ) ) {
+				$redirect = LP_Profile::instance( $user_id )->get_current_url();
+			} elseif ( ! empty( $_REQUEST['redirect'] ) ) {
 				$redirect = esc_url_raw( $_REQUEST['redirect'] );
 			} else {
 				$redirect = LP_Helper::getUrlCurrent();
@@ -663,7 +686,7 @@ if ( ! class_exists( 'LP_Profile' ) ) {
 				$query['pagination'] = learn_press_paging_nav(
 					array(
 						'num_pages' => $query['num_pages'],
-						'base'      => learn_press_user_profile_link( $this->get_user_data( 'id' ), LP_Settings::instance()->get( 'profile_endpoints.orders' ) ),
+						'base'      => $this->get_tab_link( LP_Settings::instance()->get( 'profile_endpoints.orders' ) ),
 						'format'    => $GLOBALS['wp_rewrite']->using_permalinks() ? user_trailingslashit( '%#%', '' ) : '?paged=%#%',
 						'echo'      => false,
 						'paged'     => $args['paged'],
@@ -748,13 +771,15 @@ if ( ! class_exists( 'LP_Profile' ) ) {
 					if ( empty( $args['status'] ) ) {
 						$args['status'] = [ 'publish', 'pending', 'private' ];
 					}
+
+					if ( ! is_array( $args['status'] ) ) {
+						$args['status'] = (array) $args['status'];
+					}
+
 					Courses::handle_params_for_query_courses( $filter, $args );
 					$filter->fields      = [ 'ID' ];
 					$filter->post_author = $this->get_user_data( 'id' );
-					$filter->post_status = ! empty( $args['status'] ) ? $args['status'] : array(
-						'publish',
-						'pending',
-					);
+					$filter->post_status = $args['status'];
 					$filter->page        = $args['paged'] ?? 1;
 					$filter->limit       = $args['limit'] ?? $filter->limit;
 					$total_rows          = 0;
@@ -1097,18 +1122,21 @@ if ( ! class_exists( 'LP_Profile' ) ) {
 		 * @param $user_id
 		 *
 		 * @return LP_Profile mixed
+		 * @throws Exception
+		 * @version 1.0.5
 		 * @since 3.0.0
-		 * @version 1.0.4
 		 */
 		public static function instance( $user_id = 0 ) {
 			$is_page_profile = LP_Page_Controller::page_is( 'profile' );
 
 			if ( $is_page_profile && empty( $user_id ) ) {
 				if ( empty( self::$_instance ) ) {
-					$user_name = get_query_var( 'user' );
-					if ( ! empty( $user_name ) ) {
-						$user    = get_user_by( 'login', urldecode( $user_name ) );
-						$user_id = $user ? $user->ID : 0;
+					$user_slug = (string) get_query_var( 'user' );
+					if ( ! empty( $user_slug ) ) {
+						$userModel = UserService::instance()->get_user_by_slug_link( $user_slug );
+						if ( $userModel ) {
+							$user_id = $userModel->get_id();
+						}
 					} else {
 						$user_id = get_current_user_id();
 					}

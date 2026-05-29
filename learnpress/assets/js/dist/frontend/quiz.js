@@ -1,11 +1,11 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/attempts/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/attempts/index.js"
 /*!***********************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/attempts/index.js ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -120,13 +120,13 @@ function timeDifference(earlierDate, laterDate) {
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Attempts);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/buttons/button-check.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/buttons/button-check.js"
 /*!*****************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/buttons/button-check.js ***!
   \*****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -229,13 +229,13 @@ class ButtonCheck extends _wordpress_element__WEBPACK_IMPORTED_MODULE_2__.Compon
   };
 }))(ButtonCheck));
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/buttons/button-hint.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/buttons/button-hint.js"
 /*!****************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/buttons/button-hint.js ***!
   \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -291,13 +291,13 @@ class ButtonHint extends _wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Compone
   };
 }))(ButtonHint));
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/buttons/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/buttons/index.js"
 /*!**********************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/buttons/index.js ***!
   \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -688,13 +688,13 @@ const MaybeShowButton = (0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_3__.compo
   };
 })])(Buttons));
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/content/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/content/index.js"
 /*!**********************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/content/index.js ***!
   \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -724,13 +724,13 @@ const Content = () => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Content);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/duration/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/duration/index.js"
 /*!***********************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/duration/index.js ***!
   \***********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -755,13 +755,13 @@ const formatDuration = seconds => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (formatDuration);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/index.js"
 /*!**************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/index.js ***!
   \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -795,13 +795,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/meta/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/meta/index.js"
 /*!*******************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/meta/index.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -871,13 +871,13 @@ const Meta = () => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Meta);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/questions/buttons.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/questions/buttons.js"
 /*!**************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/questions/buttons.js ***!
   \**************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -924,13 +924,13 @@ const Buttons = function Buttons(props) {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Buttons);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/questions/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/questions/index.js"
 /*!************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/questions/index.js ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1103,13 +1103,13 @@ class Questions extends _wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Componen
   };
 }))(Questions));
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/questions/question.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/questions/question.js"
 /*!***************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/questions/question.js ***!
   \***************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1348,13 +1348,13 @@ class Question extends _wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Component
   };
 })])(Question));
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/result/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/result/index.js"
 /*!*********************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/result/index.js ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1614,13 +1614,13 @@ const Result = () => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Result);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/status/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/status/index.js"
 /*!*********************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/status/index.js ***!
   \*********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1747,13 +1747,13 @@ const Status = () => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Status);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/timer/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/timer/index.js"
 /*!********************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/timer/index.js ***!
   \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1840,13 +1840,13 @@ const Timer = () => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Timer);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/components/title/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/components/title/index.js"
 /*!********************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/components/title/index.js ***!
   \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1861,13 +1861,13 @@ const Title = () => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Title);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/index.js"
 /*!***************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/index.js ***!
   \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -1973,13 +1973,13 @@ class Quiz extends _wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Component {
   };
 })])(Quiz));
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/store/actions.js":
+/***/ "./assets/src/apps/js/frontend/quiz/store/actions.js"
 /*!***********************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/store/actions.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -2338,13 +2338,13 @@ function sendKey(keyPressed) {
   };
 }
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/store/index.js":
+/***/ "./assets/src/apps/js/frontend/quiz/store/index.js"
 /*!*********************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/store/index.js ***!
   \*********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -2376,13 +2376,13 @@ const store = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.registerStore)('le
 (0,_middlewares__WEBPACK_IMPORTED_MODULE_4__["default"])(store);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/store/middlewares.js":
+/***/ "./assets/src/apps/js/frontend/quiz/store/middlewares.js"
 /*!***************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/store/middlewares.js ***!
   \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -2434,13 +2434,13 @@ function applyMiddlewares(store) {
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (applyMiddlewares);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/store/reducer.js":
+/***/ "./assets/src/apps/js/frontend/quiz/store/reducer.js"
 /*!***********************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/store/reducer.js ***!
   \***********************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -2721,13 +2721,13 @@ const blocks = flow(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.combineReducers
   userQuiz
 }));
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/quiz/store/selectors.js":
+/***/ "./assets/src/apps/js/frontend/quiz/store/selectors.js"
 /*!*************************************************************!*\
   !*** ./assets/src/apps/js/frontend/quiz/store/selectors.js ***!
   \*************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -2978,13 +2978,13 @@ function getUserMark(state) {
   return totalMark > 0 ? totalMark : 0;
 }
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/show-lp-overlay-complete-item.js":
+/***/ "./assets/src/apps/js/frontend/show-lp-overlay-complete-item.js"
 /*!**********************************************************************!*\
   !*** ./assets/src/apps/js/frontend/show-lp-overlay-complete-item.js ***!
   \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -3038,13 +3038,13 @@ const lpModalOverlayCompleteItem = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (lpModalOverlayCompleteItem);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/components/compatible.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/components/compatible.js"
 /*!********************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/components/compatible.js ***!
   \********************************************************************************/
-/***/ (() => {
+() {
 
 /**
  * Compatible with Page Builder.
@@ -3107,13 +3107,13 @@ LP.Hook.addAction('lp-question-compatible-builder', () => {
   }
 });
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/frontend/single-curriculum/components/items-progress.js":
+/***/ "./assets/src/apps/js/frontend/single-curriculum/components/items-progress.js"
 /*!************************************************************************************!*\
   !*** ./assets/src/apps/js/frontend/single-curriculum/components/items-progress.js ***!
   \************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -3171,13 +3171,13 @@ const getResponse = async ele => {
   _show_lp_overlay_complete_item__WEBPACK_IMPORTED_MODULE_1__["default"].init();
 };
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/utils/lp-modal-overlay.js":
+/***/ "./assets/src/apps/js/utils/lp-modal-overlay.js"
 /*!******************************************************!*\
   !*** ./assets/src/apps/js/utils/lp-modal-overlay.js ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -3238,13 +3238,13 @@ const lpModalOverlay = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (lpModalOverlay);
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/refx/refx.js":
+/***/ "./node_modules/refx/refx.js"
 /*!***********************************!*\
   !*** ./node_modules/refx/refx.js ***!
   \***********************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 
@@ -3297,90 +3297,90 @@ function refx( effects ) {
 module.exports = refx;
 
 
-/***/ }),
+/***/ },
 
-/***/ "react":
+/***/ "react"
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["React"];
 
-/***/ }),
+/***/ },
 
-/***/ "@learnpress/data-controls":
+/***/ "@learnpress/data-controls"
 /*!**************************************!*\
   !*** external ["LP","dataControls"] ***!
   \**************************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["LP"]["dataControls"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/compose":
+/***/ "@wordpress/compose"
 /*!*********************************!*\
   !*** external ["wp","compose"] ***!
   \*********************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["compose"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/data":
+/***/ "@wordpress/data"
 /*!******************************!*\
   !*** external ["wp","data"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["data"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/element":
+/***/ "@wordpress/element"
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
   \*********************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["element"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/i18n":
+/***/ "@wordpress/i18n"
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
   \******************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["i18n"];
 
-/***/ }),
+/***/ },
 
-/***/ "@wordpress/url":
+/***/ "@wordpress/url"
 /*!*****************************!*\
   !*** external ["wp","url"] ***!
   \*****************************/
-/***/ ((module) => {
+(module) {
 
 "use strict";
 module.exports = window["wp"]["url"];
 
-/***/ }),
+/***/ },
 
-/***/ "./node_modules/classnames/index.js":
+/***/ "./node_modules/classnames/index.js"
 /*!******************************************!*\
   !*** ./node_modules/classnames/index.js ***!
   \******************************************/
-/***/ ((module, exports) => {
+(module, exports) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	Copyright (c) 2018 Jed Watson.
@@ -3456,11 +3456,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 			return classNames;
 		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {}
+	} else // removed by dead control flow
+{}
 }());
 
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -3482,6 +3483,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -3531,7 +3538,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";
 /*!*********************************************!*\

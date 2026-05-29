@@ -2,11 +2,11 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/apps/js/admin/pages/tools/database/clean_database.js":
+/***/ "./assets/src/apps/js/admin/pages/tools/database/clean_database.js"
 /*!*************************************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools/database/clean_database.js ***!
   \*************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -134,13 +134,13 @@ const cleanDatabases = () => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (cleanDatabases);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/admin/pages/tools/database/create_indexs.js":
+/***/ "./assets/src/apps/js/admin/pages/tools/database/create_indexs.js"
 /*!************************************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools/database/create_indexs.js ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -267,13 +267,13 @@ const createIndexes = () => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createIndexes);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/admin/pages/tools/database/re-upgrade-db.js":
+/***/ "./assets/src/apps/js/admin/pages/tools/database/re-upgrade-db.js"
 /*!************************************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools/database/re-upgrade-db.js ***!
   \************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -335,13 +335,13 @@ const reUpgradeDB = () => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (reUpgradeDB);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/admin/pages/tools/database/upgrade.js":
+/***/ "./assets/src/apps/js/admin/pages/tools/database/upgrade.js"
 /*!******************************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools/database/upgrade.js ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -598,13 +598,13 @@ const getStepsUpgradeStatus = () => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getStepsUpgradeStatus);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/admin/pages/tools/reset-data/course.js":
+/***/ "./assets/src/apps/js/admin/pages/tools/reset-data/course.js"
 /*!*******************************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools/reset-data/course.js ***!
   \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -820,13 +820,13 @@ const ResetCourse = () => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ResetCourse);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/admin/pages/tools/reset-data/index.js":
+/***/ "./assets/src/apps/js/admin/pages/tools/reset-data/index.js"
 /*!******************************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools/reset-data/index.js ***!
   \******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -844,13 +844,13 @@ const resetData = () => {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (resetData);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/utils/handle-ajax-api.js":
+/***/ "./assets/src/apps/js/utils/handle-ajax-api.js"
 /*!*****************************************************!*\
   !*** ./assets/src/apps/js/utils/handle-ajax-api.js ***!
   \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -877,13 +877,13 @@ const handleAjax = function (url, params, functions) {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (handleAjax);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/apps/js/utils/lp-modal-overlay.js":
+/***/ "./assets/src/apps/js/utils/lp-modal-overlay.js"
 /*!******************************************************!*\
   !*** ./assets/src/apps/js/utils/lp-modal-overlay.js ***!
   \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -943,17 +943,17 @@ const lpModalOverlay = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (lpModalOverlay);
 
-/***/ }),
+/***/ },
 
-/***/ "react":
+/***/ "react"
 /*!************************!*\
   !*** external "React" ***!
   \************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["React"];
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -975,6 +975,12 @@ module.exports = window["React"];
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -1024,6 +1030,8 @@ module.exports = window["React"];
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!*************************************************!*\
   !*** ./assets/src/apps/js/admin/pages/tools.js ***!
   \*************************************************/
@@ -1147,6 +1155,8 @@ __webpack_require__.r(__webpack_exports__);
     $doc.on('click', '.lp-install-sample__install', installSampleCourse).on('click', '.lp-install-sample__uninstall', uninstallSampleCourse).on('click', '#learn-press-clear-cache', clearHardCache).on('click', 'input[name="enable_hard_cache"]', toggleHardCache).on('click', '.lp-install-sample__toggle-options', toggleOptions).on('change', 'input[name="section-range[]"]', formatValueInput).on('change', 'input[name="item-range[]"]', formatValueInput).on('change', 'input[name="question-range[]"]', formatValueInput).on('change', 'input[name="answer-range[]"]', formatValueInput).on('change', 'input[name="course-price"]', formatValueInput);
   });
 })(jQuery);
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=tools.js.map

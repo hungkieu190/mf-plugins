@@ -2,11 +2,11 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/js/api.js":
+/***/ "./assets/src/js/api.js"
 /*!******************************!*\
   !*** ./assets/src/js/api.js ***!
   \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -39,6 +39,7 @@ if ('undefined' !== typeof lpData) {
   lplistAPI.frontend = {
     apiWidgets: lp_rest_url + 'lp/v1/widgets/api',
     apiCourses: lp_rest_url + 'lp/v1/courses/archive-course',
+    // Deprecated API, don't load from v4.3.7
     apiAJAX: lp_rest_url + 'lp/v1/load_content_via_ajax/',
     // Deprecated since 4.3.0
     apiProfileCoverImage: lp_rest_url + 'lp/v1/profile/cover-image'
@@ -46,10 +47,12 @@ if ('undefined' !== typeof lpData) {
 }
 if (lp_rest_url) {
   lplistAPI.apiCourses = lp_rest_url + 'lp/v1/courses/';
+  lplistAPI.apiEditCoursesArchiveBlock = lp_rest_url + 'lp/v1/courses/edit-archive-block';
+  lplistAPI.apiCoursesSuggest = lp_rest_url + 'lp/v1/courses/courses-suggest';
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (lplistAPI);
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -71,6 +74,12 @@ if (lp_rest_url) {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -108,6 +117,8 @@ if (lp_rest_url) {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!***************************************!*\
   !*** ./assets/src/js/admin/addons.js ***!
   \***************************************/
@@ -281,8 +292,7 @@ document.addEventListener('click', e => {
   // Events actions: activate, deactivate.
   /*if ( el.classList.contains( 'lp-toggle-switch-label' ) ) {
   	//e.preventDefault();
-  
-  	const elAddonItem = el.closest( '.lp-addon-item' );
+  		const elAddonItem = el.closest( '.lp-addon-item' );
   	const idLabel = el.getAttribute( 'for' );
   	const elInput = document.querySelector( `#${ idLabel }` );
   	const action = elInput.getAttribute( 'data-action' );
@@ -310,8 +320,7 @@ document.addEventListener('click', e => {
   				label.style.display = 'inline-flex';
   			}
   		}
-  
-  		if ( status === 'success' ) {
+  			if ( status === 'success' ) {
   			if ( action === 'deactivate' ) {
   				elAddonItem.classList.remove( 'activated' );
   			}
@@ -442,6 +451,8 @@ document.addEventListener('input', e => {
     }
   }
 });
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=addons.js.map

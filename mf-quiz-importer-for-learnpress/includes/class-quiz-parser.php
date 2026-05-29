@@ -25,6 +25,10 @@ class MF_Quiz_Parser {
         $lines = explode("\n", $content);
         $header = str_getcsv(array_shift($lines));
         $data = array();
+
+        if (empty($header)) {
+            return $data;
+        }
         
         foreach ($lines as $line) {
             if (empty(trim($line))) {
@@ -32,8 +36,18 @@ class MF_Quiz_Parser {
             }
             
             $row = str_getcsv($line);
-            if (count($row) === count($header)) {
-                $data[] = array_combine($header, $row);
+            $header_count = count($header);
+            $row_count = count($row);
+
+            if ($row_count < $header_count) {
+                $row = array_pad($row, $header_count, '');
+            } elseif ($row_count > $header_count) {
+                $row = array_slice($row, 0, $header_count);
+            }
+
+            $combined = array_combine($header, $row);
+            if (is_array($combined)) {
+                $data[] = $combined;
             }
         }
         
@@ -246,6 +260,18 @@ class MF_Quiz_Parser {
         
         if (isset($question_data['answers']) && is_array($question_data['answers'])) {
             $sanitized['answers'] = $question_data['answers'];
+        }
+
+        if (isset($question_data['explanation'])) {
+            $sanitized['explanation'] = wp_kses_post($question_data['explanation']);
+        }
+
+        if (isset($question_data['hint'])) {
+            $sanitized['hint'] = wp_kses_post($question_data['hint']);
+        }
+
+        if (isset($question_data['mark'])) {
+            $sanitized['mark'] = absint($question_data['mark']);
         }
         
         if (isset($question_data['correct_answer'])) {

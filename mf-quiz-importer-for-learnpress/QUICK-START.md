@@ -237,6 +237,6 @@ Now you know how to:
 
 ---
 
-**Version:** 1.0.0
+**Version:** 1.0.1
 **Plugin:** Quiz Importer for LearnPress
 **Author:** MamFlow

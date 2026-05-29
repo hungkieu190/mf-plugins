@@ -4,11 +4,11 @@ Tags: learnpress, quiz, import, lms, education
 Requires at least: 5.8
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Import quizzes and questions into LearnPress LMS from CSV, Excel, and JSON files with ease.
+Import quizzes and questions into LearnPress LMS from CSV, XLSX, and JSON files with ease.
 
 == Description ==
 
@@ -99,7 +99,7 @@ Yes, the maximum file size is 10MB. This should be sufficient for most use cases
 
 = Can I import quizzes with questions in one file? =
 
-Yes! You can use the advanced CSV/Excel format that includes both quiz metadata and questions in a single file.
+Yes! You can use the advanced CSV/XLSX format that includes both quiz metadata and questions in a single file.
 
 = Where can I find sample files? =
 
@@ -107,7 +107,7 @@ Sample files are included in the plugin and can be downloaded from the Import Qu
 
 = Is Excel 97-2003 (XLS) supported? =
 
-Limited support. We recommend using XLSX (Excel 2007+) or CSV format for best compatibility.
+No. Legacy XLS files are not supported in version 1.0.1. Please save them as XLSX or CSV before importing.
 
 == Screenshots ==
 
@@ -119,6 +119,13 @@ Limited support. We recommend using XLSX (Excel 2007+) or CSV format for best co
 6. Success message with import statistics
 
 == Changelog ==
+
+= 1.0.1 - 2026-05-29 =
+* Fixed questions-only imports for LearnPress 4-compatible answers and quiz relationships.
+* Removed misleading legacy XLS upload support; supported formats are CSV, XLSX, and JSON.
+* Improved CSV row validation and row-level error messages.
+* Improved upload MIME handling for CSV and JSON files.
+* Added license checks to AJAX upload and import actions.
 
 = 1.0.0 - 2024-11-14 =
 * Initial release
@@ -132,6 +139,9 @@ Limited support. We recommend using XLSX (Excel 2007+) or CSV format for best co
 * 6 sample files included
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Stability update for LearnPress 4 question imports, file validation, CSV handling, and license enforcement.
 
 = 1.0.0 =
 Initial release of Quiz Importer for LearnPress. Install and start importing quizzes today!

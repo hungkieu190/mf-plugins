@@ -2,15 +2,15 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "@wordpress/api-fetch":
+/***/ "@wordpress/api-fetch"
 /*!**********************************!*\
   !*** external ["wp","apiFetch"] ***!
   \**********************************/
-/***/ ((module) => {
+(module) {
 
 module.exports = window["wp"]["apiFetch"];
 
-/***/ })
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -32,6 +32,12 @@ module.exports = window["wp"]["apiFetch"];
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -81,6 +87,8 @@ module.exports = window["wp"]["apiFetch"];
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!*********************************************!*\
   !*** ./assets/src/apps/js/data-controls.js ***!
   \*********************************************/
@@ -165,6 +173,8 @@ const controls = {
     return registry.dispatch(storeKey)[actionName](...args);
   })
 };
+})();
+
 (window.LP = window.LP || {}).dataControls = __webpack_exports__;
 /******/ })()
 ;

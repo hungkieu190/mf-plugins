@@ -72,7 +72,7 @@ Excel files work exactly like CSV files - same columns, same format!
 - PHP ZipArchive extension (usually enabled)
 - PHP SimpleXML extension (usually enabled)
 
-**Note:** XLS (Excel 97-2003) format has limited support. Please use XLSX or CSV instead.
+**Note:** XLS (Excel 97-2003) format is not supported in version 1.0.1. Please save legacy spreadsheets as XLSX or CSV before importing.
 
 See `samples/EXCEL-GUIDE.md` for detailed instructions on creating Excel files.
 

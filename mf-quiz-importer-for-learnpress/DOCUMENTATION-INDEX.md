@@ -306,15 +306,13 @@ Complete documentation and resources for Quiz Importer for LearnPress plugin.
 
 ## 🔄 Updates
 
-**Current Version:** 1.0.0
+**Current Version:** 1.0.1
 
 **Latest Changes:**
-- Added dual import modes
-- Support for 4 question types
-- 20+ question type variations
-- CSV with questions support
-- Modern UI with animations
-- Comprehensive documentation
+- Fixed LearnPress 4-compatible questions-only imports
+- Supported formats clarified as CSV, XLSX, and JSON
+- Improved CSV row validation and upload MIME handling
+- Added AJAX license enforcement
 
 See [Changelog](CHANGELOG.md) for complete history.
 
@@ -335,4 +333,4 @@ GPL v2 or later
 ---
 
 **Last Updated:** November 2024
-**Documentation Version:** 1.0.0
+**Documentation Version:** 1.0.1

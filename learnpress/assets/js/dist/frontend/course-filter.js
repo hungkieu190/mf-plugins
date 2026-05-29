@@ -2,11 +2,11 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./assets/src/js/api.js":
+/***/ "./assets/src/js/api.js"
 /*!******************************!*\
   !*** ./assets/src/js/api.js ***!
   \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -39,6 +39,7 @@ if ('undefined' !== typeof lpData) {
   lplistAPI.frontend = {
     apiWidgets: lp_rest_url + 'lp/v1/widgets/api',
     apiCourses: lp_rest_url + 'lp/v1/courses/archive-course',
+    // Deprecated API, don't load from v4.3.7
     apiAJAX: lp_rest_url + 'lp/v1/load_content_via_ajax/',
     // Deprecated since 4.3.0
     apiProfileCoverImage: lp_rest_url + 'lp/v1/profile/cover-image'
@@ -46,19 +47,22 @@ if ('undefined' !== typeof lpData) {
 }
 if (lp_rest_url) {
   lplistAPI.apiCourses = lp_rest_url + 'lp/v1/courses/';
+  lplistAPI.apiEditCoursesArchiveBlock = lp_rest_url + 'lp/v1/courses/edit-archive-block';
+  lplistAPI.apiCoursesSuggest = lp_rest_url + 'lp/v1/courses/courses-suggest';
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (lplistAPI);
 
-/***/ }),
+/***/ },
 
-/***/ "./assets/src/js/utils.js":
+/***/ "./assets/src/js/utils.js"
 /*!********************************!*\
   !*** ./assets/src/js/utils.js ***!
   \********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   debounce: () => (/* binding */ debounce),
 /* harmony export */   eventHandlers: () => (/* binding */ eventHandlers),
 /* harmony export */   getDataOfForm: () => (/* binding */ getDataOfForm),
 /* harmony export */   getFieldKeysOfForm: () => (/* binding */ getFieldKeysOfForm),
@@ -82,7 +86,7 @@ __webpack_require__.r(__webpack_exports__);
  * @param data
  * @param functions
  * @since 4.2.5.1
- * @version 1.0.5
+ * @version 1.0.6
  */
 const lpClassName = {
   hidden: 'lp-hidden',
@@ -376,7 +380,40 @@ const eventHandlers = (eventName, eventHandlers) => {
   });
 };
 
-/***/ })
+/**
+ * Debounce - delays function execution until after `wait` ms of inactivity.
+ *
+ * Each call resets the timer. Only the last call in a burst executes.
+ *
+ * USE CASES:
+ * - Search inputs, form validation, window resize
+ * - Multiple elements need independent timers
+ * - When you need to call with different arguments
+ *
+ * EXAMPLES:
+ * const debouncedSearch = debounce( (query) => fetchResults(query), 300 );
+ * searchInput.addEventListener('input', (e) => debouncedSearch(e.target.value));
+ *
+ * const debouncedResize = debounce( recalculateLayout, 250 );
+ * window.addEventListener('resize', debouncedResize);
+ *
+ * ⚠️ Create ONCE outside event handlers, not inside.
+ *
+ * @param {Function} func - Function to debounce (can be anonymous)
+ * @param {number}   wait - Milliseconds to wait (default: 500)
+ * @return {Function} Debounced wrapper function
+ * @since 4.3.7
+ * @version 1.0.0
+ */
+const debounce = (func, wait = 500) => {
+  let timer;
+  return args => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(args), wait);
+  };
+};
+
+/***/ }
 
 /******/ 	});
 /************************************************************************/
@@ -398,6 +435,12 @@ const eventHandlers = (eventName, eventHandlers) => {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
+/******/ 		if (!(moduleId in __webpack_modules__)) {
+/******/ 			delete __webpack_module_cache__[moduleId];
+/******/ 			var e = new Error("Cannot find module '" + moduleId + "'");
+/******/ 			e.code = 'MODULE_NOT_FOUND';
+/******/ 			throw e;
+/******/ 		}
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
@@ -435,12 +478,14 @@ const eventHandlers = (eventName, eventHandlers) => {
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry needs to be wrapped in an IIFE because it needs to be isolated against other modules in the chunk.
+(() => {
 /*!*************************************************!*\
   !*** ./assets/src/js/frontend/course-filter.js ***!
   \*************************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../api */ "./assets/src/js/api.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils.js */ "./assets/src/js/utils.js");
+/* harmony import */ var lpAssetsJsPath_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lpAssetsJsPath/api */ "./assets/src/js/api.js");
+/* harmony import */ var lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lpAssetsJsPath/utils.js */ "./assets/src/js/utils.js");
 
 
 const classCourseFilter = 'lp-form-course-filter';
@@ -535,10 +580,6 @@ window.lpCourseFilter = {
     }
     controller = new AbortController();
     signal = controller.signal;
-    let url = _api__WEBPACK_IMPORTED_MODULE_0__["default"].frontend.apiCourses + '?c_search=' + keyword + '&c_suggest=1';
-    if (lpData.urlParams.hasOwnProperty('lang')) {
-      url += '&lang=' + lpData.urlParams.lang;
-    }
     let paramsFetch = {
       method: 'GET'
     };
@@ -550,6 +591,13 @@ window.lpCourseFilter = {
         }
       };
     }
+    const paramsUrl = {
+      c_search: keyword
+    };
+    if (lpData.urlParams.hasOwnProperty('lang')) {
+      paramsUrl.lang = lpData.urlParams.lang;
+    }
+    const url = lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpAddQueryArgs(lpAssetsJsPath_api__WEBPACK_IMPORTED_MODULE_0__["default"].apiCoursesSuggest, paramsUrl);
     fetch(url, {
       ...paramsFetch,
       signal
@@ -581,7 +629,7 @@ window.lpCourseFilter = {
     }
     const widgetData = parent.dataset.widget ? JSON.parse(parent.dataset.widget) : '';
     const lang = lpData.urlParams.lang ? `?lang=${lpData.urlParams.lang}` : '';
-    const url = _api__WEBPACK_IMPORTED_MODULE_0__["default"].frontend.apiWidgets + lang;
+    const url = lpAssetsJsPath_api__WEBPACK_IMPORTED_MODULE_0__["default"].frontend.apiWidgets + lang;
     const formData = new FormData(widgetForm);
     const filterCourses = {
       paged: 1
@@ -635,9 +683,9 @@ window.lpCourseFilter = {
           const elBtnDone = widgetForm.querySelector('.course-filter-submit.lp-btn-done');
           if (elBtnDone) {
             if (window.outerWidth <= 991) {
-              (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpShowHideEl)(elBtnDone, 1);
+              lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpShowHideEl(elBtnDone, 1);
             } else {
-              (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpShowHideEl)(elBtnDone, 0);
+              lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpShowHideEl(elBtnDone, 0);
             }
           }
         } else if (message) {
@@ -657,7 +705,7 @@ window.lpCourseFilter = {
     };
 
     // Call API load widget
-    (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpFetchAPI)(url, paramsFetch, callBack);
+    lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpFetchAPI(url, paramsFetch, callBack);
   },
   submit: form => {
     const formData = new FormData(form); // Create a FormData object from the form
@@ -738,7 +786,7 @@ window.lpCourseFilter = {
       // Set url params to reload page.
       // Todo: need check allow set url params.
       lpData.urlParams = filterCourses;
-      window.history.pushState({}, '', (0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpAddQueryArgs)((0,_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpGetCurrentURLNoParam)(), lpData.urlParams));
+      window.history.pushState({}, '', lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpAddQueryArgs(lpAssetsJsPath_utils_js__WEBPACK_IMPORTED_MODULE_1__.lpGetCurrentURLNoParam(), lpData.urlParams));
       // End.
 
       // Load AJAX widget by params
@@ -874,6 +922,8 @@ window.lpCourseFilter = {
     body.classList.toggle(`${classShowCourseFilterMobile}`);
   }
 };
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=course-filter.js.map

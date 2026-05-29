@@ -111,6 +111,20 @@
   border: none;
   margin: 0 auto;
 }
+.lp-toast.toastify.warning {
+  background-color: #FEF7E6;
+  color: #fb9422;
+  padding: 12px 20px;
+  border: none;
+  margin: 0 auto;
+}
+.lp-toast.toastify.info {
+  background-color: rgba(0, 122, 255, 0.1019607843);
+  color: #277afc;
+  padding: 12px 20px;
+  border: none;
+  margin: 0 auto;
+}
 
 /**
 * Style for the popup select item to add in LearnPress
@@ -304,7 +318,7 @@
   flex: 1;
 }
 .swal2-popup .swal2-actions button.swal2-confirm {
-  background-color: #E02200;
+  background-color: #e02200;
 }
 .swal2-popup .swal2-actions button.swal2-cancel {
   background-color: transparent;
@@ -312,7 +326,7 @@
   color: inherit;
 }
 .swal2-popup .swal2-warning {
-  color: #E02200;
+  color: #e02200;
   border-color: transparent;
   background-color: rgba(223, 0, 0, 0.1019607843);
 }
@@ -338,6 +352,14 @@
 .swal2-popup .lp-tom-select.ts-wrapper .ts-dropdown {
   max-height: 200px;
   overflow: hidden;
+}
+.swal2-popup .swal2-close {
+  background-color: unset !important;
+  outline: none !important;
+  color: rgb(204, 204, 204) !important;
+}
+.swal2-popup .swal2-close:hover {
+  color: #f27474 !important;
 }
 
 #lp-course-edit-curriculum {

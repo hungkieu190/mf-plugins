@@ -1,7 +1,7 @@
 {
   "name": "mf-quiz-importer-for-learnpress",
-  "version": "1.0.0",
-  "description": "Import quizzes from CSV, Excel, or JSON files into LearnPress LMS",
+  "version": "1.0.1",
+  "description": "Import quizzes from CSV, XLSX, or JSON files into LearnPress LMS",
   "main": "index.js",
   "scripts": {
     "lint:js": "eslint 'assets/js/**/*.js'",

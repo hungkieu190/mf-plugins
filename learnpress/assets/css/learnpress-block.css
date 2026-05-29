@@ -116,6 +116,20 @@
   border: none;
   margin: 0 auto;
 }
+.lp-toast.toastify.warning {
+  background-color: #FEF7E6;
+  color: #fb9422;
+  padding: 12px 20px;
+  border: none;
+  margin: 0 auto;
+}
+.lp-toast.toastify.info {
+  background-color: rgba(0, 122, 255, 0.1019607843);
+  color: #277afc;
+  padding: 12px 20px;
+  border: none;
+  margin: 0 auto;
+}
 
 @keyframes lp-rotating {
   from {
@@ -729,11 +743,9 @@ input[name=course-faqs-box-ratio]:checked + .course-faqs-box .course-faqs-box__t
   margin-right: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle;
-  margin-top: -2px;
 }
 .course-curriculum .section-header {
   display: table;
@@ -958,11 +970,9 @@ input[name=course-faqs-box-ratio]:checked + .course-faqs-box .course-faqs-box__t
   margin-right: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle;
-  margin-top: -2px;
 }
 
 body .content-item-summary .form-button-finish-course, body .lp-quiz-buttons .form-button-finish-course {
@@ -1482,11 +1492,9 @@ Breadcrumb
   margin-right: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle;
-  margin-top: -2px;
 }
 .lp-modal-dialog .lp-button:hover {
   border-color: var(--lp-primary-color, #ffb606);
@@ -1528,11 +1536,9 @@ Breadcrumb
   margin-right: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle;
-  margin-top: -2px;
 }
 
 /**
@@ -1645,11 +1651,9 @@ Breadcrumb
   margin-right: 5px;
   font-variant: normal;
   text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle;
-  margin-top: -2px;
 }
 
 @media (min-width: 992px) {
@@ -2319,4 +2323,21 @@ ul.wp-block-learn-press-courses[data-layout=grid] {
 
 .lp-sidebar-toggle__open .js-block-sidebar {
   display: block;
+}
+
+.lp-button.loading {
+  pointer-events: none;
+  opacity: 0.8;
+}
+.lp-button.loading:before {
+  display: inline-block;
+  font-family: "lp-icon";
+  content: "\f110";
+  animation: lp-rotating 1s linear infinite;
+  margin-right: 5px;
+  font-variant: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  vertical-align: middle;
 }

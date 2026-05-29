@@ -108,7 +108,7 @@ class QuestionAnswerModel {
 		}
 
 		// Set cache
-		if ( $model instanceof QuestionPostModel ) {
+		if ( $model instanceof QuestionAnswerModel ) {
 			$cache->set_cache( $key_cache, $model );
 		}
 
@@ -216,12 +216,17 @@ class QuestionAnswerModel {
 
 	/**
 	 * @throws Exception
+	 *
+	 * @since 4.2.9
+	 * @version 1.0.1
 	 */
 	public function check_valid_before_delete() {
 		$questionPostModel = $this->get_question_post_model();
 		if ( ! $questionPostModel ) {
 			throw new Exception( __( 'Question not found', 'learnpress' ) );
 		}
+
+		$this->check_capabilities_update();
 
 		if ( $questionPostModel->get_type() === 'single_choice' || $questionPostModel->get_type() === 'multi_choice' ) {
 			// For single choice and multiple choice, at least two answer is required.
