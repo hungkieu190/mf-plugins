@@ -324,4 +324,4 @@ Before importing large files:
 ---
 
 **Last Updated:** November 2024
-**Plugin Version:** 1.0.3
+**Plugin Version:** 1.0.1

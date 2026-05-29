@@ -143,7 +143,9 @@ function copyFiles() {
     // Copy documentation files
     const docs = [
         'README.md',
-        'CHANGELOG.md'
+        'CHANGELOG.md',
+        'readme.txt',
+        'LICENSE'
     ];
 
     docs.forEach(doc => {

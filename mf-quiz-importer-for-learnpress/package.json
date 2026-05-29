@@ -4,7 +4,7 @@
   "description": "Import quizzes from CSV, XLSX, or JSON files into LearnPress LMS",
   "main": "index.js",
   "scripts": {
-    "lint:js": "eslint 'assets/js/**/*.js'",
+    "lint:js": "eslint \"assets/js/**/*.js\"",
     "format": "prettier --write 'assets/**/*.{js,css}'",
     "release": "node scripts/release.js",
     "push": "git add . && git commit -m \"update: $(date '+%Y-%m-%d %H:%M:%S')\" && git push"

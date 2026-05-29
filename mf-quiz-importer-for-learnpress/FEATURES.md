@@ -189,7 +189,7 @@ Configure default values:
 
 ## 📈 Future Enhancements
 
-- [x] Excel (XLSX) import - ✅ Completed v1.0.3
+- [x] Excel (XLSX) import - ✅ Completed v1.0.1
 - [ ] Legacy XLS import support (currently unsupported; save as XLSX or CSV)
 - [ ] Export functionality
 - [ ] Bulk edit questions

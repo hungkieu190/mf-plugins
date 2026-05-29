@@ -128,8 +128,8 @@ class MF_Quiz_Importer_Admin {
             wp_send_json_error(array('message' => __('This feature requires an active license. Please activate your license to import quizzes.', 'mf-quiz-importer-lp')));
         }
         
-        $filename = isset($_POST['file']) ? sanitize_text_field($_POST['file']) : '';
-        $import_type = isset($_POST['import_type']) ? sanitize_text_field($_POST['import_type']) : 'quiz';
+        $filename = isset($_POST['file']) ? sanitize_file_name(wp_unslash($_POST['file'])) : '';
+        $import_type = isset($_POST['import_type']) ? sanitize_text_field(wp_unslash($_POST['import_type'])) : 'quiz';
         $quiz_id = isset($_POST['quiz_id']) ? absint($_POST['quiz_id']) : null;
         
         if (empty($filename)) {
@@ -141,19 +141,24 @@ class MF_Quiz_Importer_Admin {
         }
         
         $upload_dir = wp_upload_dir();
-        $filepath = $upload_dir['basedir'] . '/mf-quiz-importer/temp/' . $filename;
-        
-        if (!file_exists($filepath)) {
+        $plugin_upload_dir = trailingslashit($upload_dir['basedir']) . 'mf-quiz-importer/temp';
+        $filepath = trailingslashit($plugin_upload_dir) . $filename;
+        $real_upload_dir = realpath($plugin_upload_dir);
+        $real_filepath = realpath($filepath);
+        $normalized_upload_dir = $real_upload_dir ? trailingslashit(wp_normalize_path($real_upload_dir)) : '';
+        $normalized_filepath = $real_filepath ? wp_normalize_path($real_filepath) : '';
+
+        if (!$real_upload_dir || !$real_filepath || strpos($normalized_filepath, $normalized_upload_dir) !== 0 || !file_exists($real_filepath)) {
             wp_send_json_error(array('message' => __('File not found.', 'mf-quiz-importer-lp')));
         }
         
         // Process the import
         require_once MF_QUIZ_IMPORTER_PLUGIN_DIR . 'includes/admin/class-importer.php';
         $importer = new MF_Quiz_Importer();
-        $result = $importer->import_from_file($filepath, $import_type, $quiz_id);
+        $result = $importer->import_from_file($real_filepath, $import_type, $quiz_id);
         
         // Clean up the temporary file
-        unlink($filepath);
+        unlink($real_filepath);
         
         if (is_wp_error($result)) {
             wp_send_json_error(array('message' => $result->get_error_message()));

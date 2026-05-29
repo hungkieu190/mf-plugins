@@ -35,7 +35,7 @@
                 const $quizInput = $('#mf-quiz-file');
                 
                 if ($quizUpload.length) {
-                    QuizImporter.setupDragDrop($quizUpload, $quizLabel, $quizInput, 'quiz');
+                    QuizImporter.setupDragDrop($quizUpload, $quizLabel, $quizInput);
                 }
                 
                 // Question upload area
@@ -44,11 +44,11 @@
                 const $questionInput = $('#mf-question-file');
                 
                 if ($questionUpload.length) {
-                    QuizImporter.setupDragDrop($questionUpload, $questionLabel, $questionInput, 'question');
+                    QuizImporter.setupDragDrop($questionUpload, $questionLabel, $questionInput);
                 }
             },
             
-            setupDragDrop: function($area, $label, $input, type) {
+            setupDragDrop: function($area, $label, $input) {
                 // Prevent default drag behaviors
                 $label.on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
                     e.preventDefault();
@@ -440,8 +440,8 @@
                 // Escape HTML first
                 const escapeHtml = (text) => {
                     return text.replace(/&/g, '&amp;')
-                              .replace(/</g, '&lt;')
-                              .replace(/>/g, '&gt;');
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
                 };
                 
                 // Process code blocks first (to preserve them)
@@ -490,12 +490,12 @@
                 for (let i = 0; i < lines.length; i++) {
                     const line = lines[i];
                     
-                    if (line.match(/^[\*\-] /)) {
+                    if (line.match(/^[*-] /)) {
                         if (!inList) {
                             listHtml += '<ul>';
                             inList = true;
                         }
-                        listHtml += '<li>' + line.replace(/^[\*\-] /, '') + '</li>';
+                        listHtml += '<li>' + line.replace(/^[*-] /, '') + '</li>';
                     } else {
                         if (inList) {
                             listHtml += '</ul>';
