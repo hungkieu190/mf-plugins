@@ -85,7 +85,7 @@ class Mamflow_License_Handler {
                 'license_key' => $key,
                 'status' => 'active',
                 'domain' => $domain,
-                'expires_at' => isset($body['expires_at']) ? $body['expires_at'] : null,
+                'expires_at' => isset($body['expires_at']) ? $this->normalize_expiration($body['expires_at']) : null,
                 'last_check' => current_time('timestamp'),
                 'activation_date' => current_time('mysql')
             ]);
@@ -131,19 +131,19 @@ class Mamflow_License_Handler {
         $body = json_decode(wp_remote_retrieve_body($response), true);
         return $body;
     }
-    
+
     /**
-     * Check license status (called by cron)
-     * 
-     * @return bool True if license is valid, false otherwise
+     * Check license status manually.
+     *
+     * @return bool True if license is valid, false otherwise.
      */
     public function check_license_status() {
         $license_data = get_option($this->option_key);
-        
+
         if (!$license_data || empty($license_data['license_key'])) {
             return false;
         }
-        
+
         $response = wp_remote_post($this->api_url . '/check', [
             'body' => wp_json_encode([
                 'license_key' => $license_data['license_key'],
@@ -152,25 +152,34 @@ class Mamflow_License_Handler {
             'headers' => ['Content-Type' => 'application/json'],
             'timeout' => 15
         ]);
-        
-        // On connection error, keep current status (don't disable)
+
         if (is_wp_error($response)) {
             return $license_data['status'] === 'active';
         }
-        
+
+        $status_code = wp_remote_retrieve_response_code($response);
         $body = json_decode(wp_remote_retrieve_body($response), true);
-        
-        // Update local cache
-        $license_data['status'] = (isset($body['valid']) && $body['valid']) ? 'active' : 'invalid';
-        $license_data['last_check'] = current_time('timestamp');
-        
-        if (isset($body['expires_at'])) {
-            $license_data['expires_at'] = $body['expires_at'];
+
+        if (200 !== $status_code || !is_array($body)) {
+            return $license_data['status'] === 'active';
         }
-        
+
+        $is_valid = $this->is_valid_api_response($body);
+
+        if (null === $is_valid) {
+            return $license_data['status'] === 'active';
+        }
+
+        $license_data['status'] = $is_valid ? 'active' : 'invalid';
+        $license_data['last_check'] = current_time('timestamp');
+
+        if (isset($body['expires_at'])) {
+            $license_data['expires_at'] = $this->normalize_expiration($body['expires_at']);
+        }
+
         update_option($this->option_key, $license_data);
-        
-        return isset($body['valid']) && $body['valid'];
+
+        return $is_valid;
     }
     
     /**
@@ -190,15 +199,6 @@ class Mamflow_License_Handler {
         // Check if status is active
         if (!isset($license_data['status']) || $license_data['status'] !== 'active') {
             return false;
-        }
-        
-        // Fallback: If last check > 72 hours, force re-check
-        $last_check = isset($license_data['last_check']) ? $license_data['last_check'] : 0;
-        $hours_since_check = (current_time('timestamp') - $last_check) / HOUR_IN_SECONDS;
-        
-        if ($hours_since_check > 72) {
-            // Re-check license status
-            return $this->check_license_status();
         }
         
         return true;
@@ -232,6 +232,60 @@ class Mamflow_License_Handler {
         
         return strtolower(trim($domain));
     }
+
+    /**
+     * Normalize lifetime/no-expiration values from the API.
+     *
+     * @param mixed $expires_at Raw expiration value.
+     * @return string|null
+     */
+    private function normalize_expiration($expires_at) {
+        if (empty($expires_at)) {
+            return null;
+        }
+
+        $value = strtolower(trim((string) $expires_at));
+
+        if (in_array($value, ['lifetime', 'never', 'none', 'null', '0000-00-00', '0000-00-00 00:00:00'], true)) {
+            return null;
+        }
+
+        return (string) $expires_at;
+    }
+
+    /**
+     * Interpret API validation responses while remaining compatible with older response shapes.
+     *
+     * @param array $body Decoded API response.
+     * @return bool|null True valid, false invalid, null inconclusive.
+     */
+    private function is_valid_api_response($body) {
+        if (isset($body['valid'])) {
+            return (bool) $body['valid'];
+        }
+
+        if (isset($body['success']) && true === (bool) $body['success']) {
+            return true;
+        }
+
+        if (isset($body['status'])) {
+            $status = strtolower((string) $body['status']);
+
+            if (in_array($status, ['active', 'valid'], true)) {
+                return true;
+            }
+
+            if (in_array($status, ['expired', 'invalid', 'not_found', 'refunded', 'banned', 'revoked', 'domain_mismatch'], true)) {
+                return false;
+            }
+        }
+
+        if (isset($body['message']) && false !== stripos((string) $body['message'], 'license is valid')) {
+            return true;
+        }
+
+        return null;
+    }
     
     /**
      * Get days until license expires
@@ -241,11 +295,13 @@ class Mamflow_License_Handler {
     public function get_days_until_expiration() {
         $license_data = $this->get_license_data();
         
-        if (!$license_data || empty($license_data['expires_at'])) {
+        $expires_at = isset($license_data['expires_at']) ? $this->normalize_expiration($license_data['expires_at']) : null;
+
+        if (!$license_data || empty($expires_at)) {
             return null; // Lifetime license
         }
         
-        $expires_timestamp = strtotime($license_data['expires_at']);
+        $expires_timestamp = strtotime($expires_at);
         $current_timestamp = current_time('timestamp');
         
         $days = floor(($expires_timestamp - $current_timestamp) / DAY_IN_SECONDS);
@@ -261,10 +317,12 @@ class Mamflow_License_Handler {
     public function is_expired() {
         $license_data = $this->get_license_data();
         
-        if (!$license_data || empty($license_data['expires_at'])) {
+        $expires_at = isset($license_data['expires_at']) ? $this->normalize_expiration($license_data['expires_at']) : null;
+
+        if (!$license_data || empty($expires_at)) {
             return false; // Lifetime license doesn't expire
         }
         
-        return strtotime($license_data['expires_at']) < current_time('timestamp');
+        return strtotime($expires_at) < current_time('timestamp');
     }
 }

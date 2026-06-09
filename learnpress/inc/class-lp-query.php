@@ -20,7 +20,7 @@ class LP_Query {
 			return;
 		}
 
-		add_action( 'init', array( $this, 'add_rewrite_tags' ), 1000 );
+		add_action( 'init', array( $this, 'add_rewrite_tags' ) );
 		add_action( 'init', array( $this, 'add_rewrite_endpoints' ) );
 		add_filter( 'option_rewrite_rules', [ $this, 'update_option_rewrite_rules' ], 1 );
 	}
@@ -296,6 +296,32 @@ class LP_Query {
 							CourseBuilder::QUERY_VAR_ITEM_ID
 						),
 				];
+
+				if ( empty( $args['sub_menu'] ) || ! is_array( $args['sub_menu'] ) ) {
+					continue;
+				}
+
+				foreach ( $args['sub_menu'] as $sub_menu_slug => $sub_menu_args ) {
+					if ( is_array( $sub_menu_args ) && ! empty( $sub_menu_args['slug'] ) ) {
+						$sub_menu_slug = $sub_menu_args['slug'];
+					}
+
+					if ( ! is_string( $sub_menu_slug ) || '' === $sub_menu_slug ) {
+						continue;
+					}
+
+					$rules[ $key_rule ][ $menu_slug . '_' . $sub_menu_slug ] = [
+						"^{$page}/{$menu_slug}/{$sub_menu_slug}/?$" =>
+							sprintf(
+								'index.php?%s=1&%s=%s&%s=%s',
+								CourseBuilder::QUERY_VAR_IS_COURSE_BUILDER,
+								CourseBuilder::QUERY_VAR_MENU_SLUG,
+								$menu_slug,
+								CourseBuilder::QUERY_VAR_ITEM_ID,
+								$sub_menu_slug
+							),
+					];
+				}
 			}
 		}
 

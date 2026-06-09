@@ -148,7 +148,7 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
                     '<div class="notice notice-warning inline" style="margin: 20px 0; padding: 15px;"><p><strong>%s</strong><br>%s</p><p><a href="%s" class="button button-primary">%s</a> <a href="%s" class="button" target="_blank">%s</a></p></div>',
                     esc_html__('⚠ License Activation Required', 'lp-sticky-notes'),
                     esc_html__('Please activate your license to access all plugin settings and features.', 'lp-sticky-notes'),
-                    esc_url(admin_url('admin.php?page=lp-sticky-notes-license')),
+                    esc_url(admin_url('admin.php?page=mamflow-license&tab=sticky-notes')),
                     esc_html__('Activate License', 'lp-sticky-notes'),
                     'https://mamflow.com/product/learnpress-notes-addon-lp-sticky-notes/',
                     esc_html__('Purchase License', 'lp-sticky-notes')
@@ -438,50 +438,12 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
     {
         $license_handler = LP_Sticky_Notes::instance()->get_license_handler();
 
-        // Handle form submissions
-        $message = '';
-        $message_type = '';
-
-        if (isset($_POST['mamflow_license_action'])) {
-            // Verify nonce
-            if (
-                !isset($_POST['mamflow_license_nonce']) ||
-                !wp_verify_nonce($_POST['mamflow_license_nonce'], 'mamflow_license_action')
-            ) {
-                $message = 'Security check failed. Please try again.';
-                $message_type = 'error';
-            } else {
-                $action = sanitize_text_field($_POST['mamflow_license_action']);
-
-                if ($action === 'activate') {
-                    $license_key = sanitize_text_field($_POST['license_key']);
-                    $result = $license_handler->activate_license($license_key);
-
-                    $message = $result['message'];
-                    $message_type = $result['success'] ? 'success' : 'error';
-
-                } elseif ($action === 'deactivate') {
-                    $result = $license_handler->deactivate_license();
-
-                    $message = $result['message'];
-                    $message_type = $result['success'] ? 'success' : 'error';
-                }
-            }
-        }
-
-        // Get current license data
-        $license_data = $license_handler->get_license_data();
         $is_active = $license_handler->is_feature_enabled();
+        $license_url = admin_url('admin.php?page=mamflow-license&tab=sticky-notes');
 
         // Build license HTML
         ob_start();
         ?>
-
-        <?php if ($message): ?>
-            <div class="notice notice-<?php echo esc_attr($message_type); ?> inline" style="margin: 20px 0;">
-                <p><?php echo esc_html($message); ?></p>
-            </div>
-        <?php endif; ?>
 
         <?php if ($is_active): ?>
             <div class="notice notice-success inline" style="margin: 20px 0;">
@@ -501,52 +463,25 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
                     }
                     ?>
                 </p>
-            </div>
-
-            <form method="post" action="">
-                <?php wp_nonce_field('mamflow_license_action', 'mamflow_license_nonce'); ?>
-                <input type="hidden" name="mamflow_license_action" value="deactivate">
                 <p>
-                    <button type="submit" class="button button-secondary"
-                        onclick="return confirm('Are you sure you want to deactivate this license?');">
-                        <?php echo esc_html__('Deactivate License', 'lp-sticky-notes'); ?>
-                    </button>
+                    <a href="<?php echo esc_url($license_url); ?>" class="button button-secondary">
+                        <?php echo esc_html__('Manage License', 'lp-sticky-notes'); ?>
+                    </a>
                 </p>
-            </form>
+            </div>
 
         <?php else: ?>
             <div class="notice notice-warning inline" style="margin: 20px 0;">
                 <p>
                     <strong><?php echo esc_html__('⚠ No Active License', 'lp-sticky-notes'); ?></strong><br>
-                    <?php echo esc_html__('Please enter your license key to activate this plugin and unlock all features.', 'lp-sticky-notes'); ?>
+                    <?php echo esc_html__('Please activate your license to unlock all plugin settings and features.', 'lp-sticky-notes'); ?>
+                </p>
+                <p>
+                    <a href="<?php echo esc_url($license_url); ?>" class="button button-primary">
+                        <?php echo esc_html__('Activate License', 'lp-sticky-notes'); ?>
+                    </a>
                 </p>
             </div>
-
-            <form method="post" action="">
-                <?php wp_nonce_field('mamflow_license_action', 'mamflow_license_nonce'); ?>
-                <input type="hidden" name="mamflow_license_action" value="activate">
-
-                <table class="form-table">
-                    <tr>
-                        <th scope="row">
-                            <label for="license_key"><?php echo esc_html__('License Key', 'lp-sticky-notes'); ?></label>
-                        </th>
-                        <td>
-                            <input type="text" id="license_key" name="license_key" class="regular-text"
-                                placeholder="XXXX-XXXX-XXXX-XXXX" required>
-                            <p class="description">
-                                <?php echo esc_html__('Enter your license key from your purchase confirmation email.', 'lp-sticky-notes'); ?>
-                            </p>
-                        </td>
-                    </tr>
-                </table>
-
-                <p class="submit">
-                    <button type="submit" class="button button-primary">
-                        <?php echo esc_html__('Activate License', 'lp-sticky-notes'); ?>
-                    </button>
-                </p>
-            </form>
         <?php endif; ?>
 
         <hr style="margin: 30px 0;">

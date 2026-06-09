@@ -59,7 +59,8 @@ function InstructorList() {
   			query = { paged: 1 };
   			getInstructors( query, true, function( res ) {
   				elUlListInstructors.innerHTML = res.data.content;
-  					if ( res.data.pagination !== undefined ) {
+  
+  				if ( res.data.pagination !== undefined ) {
   					el.insertAdjacentHTML( 'beforeend', res.data.pagination );
   				}
   			} );

@@ -387,6 +387,7 @@ $shortcode_link_color = LP_Sticky_Notes_Settings::get_setting('lp_sticky_notes_s
             exportBtn.addEventListener('click', function () {
                 var notesList = exportBtn.closest('.lp-shortcode-notes-list');
                 var printContainer = document.getElementById('lp-sn-shortcode-print-container');
+                var cleanupDone = false;
 
                 if (!notesList) {
                     window.print();
@@ -400,11 +401,44 @@ $shortcode_link_color = LP_Sticky_Notes_Settings::get_setting('lp_sticky_notes_s
                 }
 
                 printContainer.innerHTML = notesList.outerHTML;
-                window.print();
+
+                var cleanup = function () {
+                    if (cleanupDone) {
+                        return;
+                    }
+
+                    cleanupDone = true;
+                    printContainer.innerHTML = '';
+
+                    if (window.removeEventListener) {
+                        window.removeEventListener('afterprint', cleanup);
+                    }
+                };
+
+                if (window.addEventListener) {
+                    window.addEventListener('afterprint', cleanup);
+                }
+
+                if (window.matchMedia) {
+                    var mediaQueryList = window.matchMedia('print');
+                    var mediaCleanup = function (event) {
+                        if (!event.matches) {
+                            cleanup();
+                        }
+                    };
+
+                    if (mediaQueryList.addEventListener) {
+                        mediaQueryList.addEventListener('change', mediaCleanup, { once: true });
+                    } else if (mediaQueryList.addListener) {
+                        mediaQueryList.addListener(mediaCleanup);
+                    }
+                }
 
                 setTimeout(function () {
-                    printContainer.innerHTML = '';
-                }, 500);
+                    window.print();
+                }, 100);
+
+                setTimeout(cleanup, 60000);
             });
         }
     }());

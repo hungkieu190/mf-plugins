@@ -104,7 +104,7 @@ class LP_Sticky_Notes_Admin
                     <p><?php esc_html_e('This feature requires an active license to access student notes.', 'lp-sticky-notes'); ?>
                     </p>
                     <p>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=learn-press-settings&tab=sticky-notes&section=license')); ?>"
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=mamflow-license&tab=sticky-notes')); ?>"
                             class="button button-primary">
                             <?php esc_html_e('Activate License', 'lp-sticky-notes'); ?>
                         </a>

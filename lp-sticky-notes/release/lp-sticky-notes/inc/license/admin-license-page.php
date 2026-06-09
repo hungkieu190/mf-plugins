@@ -98,8 +98,8 @@ if (!function_exists('lp_sticky_notes_render_license_tab')) {
                             <td><strong>Expiration:</strong></td>
                             <td>
                                 <?php
-                                if ($license_data['expires_at']):
-                                    $days = $license_handler->get_days_until_expiration();
+                                $days = $license_handler->get_days_until_expiration();
+                                if (null !== $days):
                                     echo esc_html(date('F j, Y', strtotime($license_data['expires_at'])));
                                     echo ' <em>(' . $days . ' days remaining)</em>';
                                 else:
@@ -132,6 +132,7 @@ if (!function_exists('lp_sticky_notes_render_license_tab')) {
                                 Check License Status
                             </button>
                         </form>
+
                     </div>
                 </div>
 

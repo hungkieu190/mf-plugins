@@ -43,19 +43,24 @@
 
   /*const navPages = function navPages( e ) {
   	e.preventDefault();
-  		if ( ! checkForm( $setupForm ) ) {
+  
+  	if ( ! checkForm( $setupForm ) ) {
   		return;
   	}
-  		const loadUrl = $( this ).attr( 'href' );
-  		$main.addClass( 'loading' );
+  
+  	const loadUrl = $( this ).attr( 'href' );
+  
+  	$main.addClass( 'loading' );
   	$.post( {
   		url: loadUrl,
   		data: getFormData(),
   		success( res ) {
   			const $html = $( res );
   			replaceMainContent( $html.contents().filter( '#main' ) );
-  				LP.setUrl( loadUrl );
-  				$( '.learn-press-dropdown-pages' ).LP( 'DropdownPages' );
+  
+  			LP.setUrl( loadUrl );
+  
+  			$( '.learn-press-dropdown-pages' ).LP( 'DropdownPages' );
   			$( '.learn-press-tip' ).LP( 'QuickTip' );
   			$main.removeClass( 'loading' );
   		},

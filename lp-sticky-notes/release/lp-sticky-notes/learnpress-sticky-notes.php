@@ -4,7 +4,7 @@
  * Plugin URI: https://mamflow.com/product/learnpress-notes-addon-lp-sticky-notes/
  * Description: Allow students to take notes and highlight content for each lesson in LearnPress courses
  * Author: Mamflow
- * Version: 1.0.5
+ * Version: 1.0.6
  * Author URI: https://mamflow.com/
  * Requires at least: 6.0
  * Requires PHP: 7.4
@@ -18,7 +18,7 @@
 defined('ABSPATH') || exit();
 
 // Define constants
-define('LP_STICKY_NOTES_VERSION', '1.0.5');
+define('LP_STICKY_NOTES_VERSION', '1.0.6');
 define('LP_STICKY_NOTES_FILE', __FILE__);
 define('LP_STICKY_NOTES_PATH', plugin_dir_path(__FILE__));
 define('LP_STICKY_NOTES_URL', plugin_dir_url(__FILE__));
@@ -134,7 +134,6 @@ class LP_Sticky_Notes
 		require_once LP_STICKY_NOTES_PATH . 'inc/license/class-license-handler.php';
 		require_once LP_STICKY_NOTES_PATH . 'inc/license/shared-license-page.php';
 		require_once LP_STICKY_NOTES_PATH . 'inc/license/admin-license-page.php';
-		require_once LP_STICKY_NOTES_PATH . 'inc/license/cron-scheduler.php';
 
 		require_once LP_STICKY_NOTES_PATH . 'inc/class-lp-sticky-notes-database.php';
 		require_once LP_STICKY_NOTES_PATH . 'inc/class-lp-sticky-notes-ajax.php';
@@ -151,6 +150,7 @@ class LP_Sticky_Notes
 	{
 		add_action('plugins_loaded', array($this, 'check_learnpress'));
 		add_action('init', array($this, 'load_textdomain'));
+		add_action('init', array($this, 'maybe_clear_legacy_license_cron'));
 
 		// License admin menu
 		if (is_admin()) {
@@ -323,8 +323,7 @@ class LP_Sticky_Notes
 
 		LP_Sticky_Notes_Database::create_tables();
 
-		// Schedule license check
-		LP_Sticky_Notes_Cron::schedule_license_check();
+		$this->clear_license_cron();
 
 		flush_rewrite_rules();
 	}
@@ -334,10 +333,32 @@ class LP_Sticky_Notes
 	 */
 	public function deactivate()
 	{
-		// Clear license cron
-		LP_Sticky_Notes_Cron::clear_license_check();
+		$this->clear_license_cron();
 
 		flush_rewrite_rules();
+	}
+
+	/**
+	 * Clear any license cron events left by older plugin versions.
+	 */
+	private function clear_license_cron()
+	{
+		wp_clear_scheduled_hook('lp_sticky_notes_daily_license_check');
+	}
+
+	/**
+	 * Remove legacy license cron events once after update.
+	 */
+	public function maybe_clear_legacy_license_cron()
+	{
+		$cleanup_version = get_option('lp_sticky_notes_license_cron_removed');
+
+		if (LP_STICKY_NOTES_VERSION === $cleanup_version) {
+			return;
+		}
+
+		$this->clear_license_cron();
+		update_option('lp_sticky_notes_license_cron_removed', LP_STICKY_NOTES_VERSION);
 	}
 
 	/**

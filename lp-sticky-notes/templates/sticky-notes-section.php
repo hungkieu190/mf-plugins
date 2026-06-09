@@ -385,13 +385,47 @@ defined('ABSPATH') || exit();
 		?>
 		var originalTitle = document.title;
 		document.title = 'mynotes-<?php echo esc_js($username); ?>-<?php echo esc_js($domain); ?>';
+		var cleanupDone = false;
+		var cleanup = function () {
+			if (cleanupDone) {
+				return;
+			}
+
+			cleanupDone = true;
+			document.title = originalTitle;
+			printContainer.innerHTML = '';
+
+			if (window.removeEventListener) {
+				window.removeEventListener('afterprint', cleanup);
+			}
+		};
+
+		if (window.addEventListener) {
+			window.addEventListener('afterprint', cleanup);
+		}
+
+		if (window.matchMedia) {
+			var mediaQueryList = window.matchMedia('print');
+			var mediaCleanup = function (event) {
+				if (!event.matches) {
+					cleanup();
+				}
+			};
+
+			if (mediaQueryList.addEventListener) {
+				mediaQueryList.addEventListener('change', mediaCleanup, { once: true });
+			} else if (mediaQueryList.addListener) {
+				mediaQueryList.addListener(mediaCleanup);
+			}
+		}
 
 		/* Trigger print */
-		window.print();
+		setTimeout(function () {
+			window.print();
+		}, 100);
 
-		/* Restore title and clean up after dialog closes */
-		document.title  = originalTitle;
-		printContainer.innerHTML = '';
+		/* Fallback for browsers that do not fire afterprint reliably. */
+		setTimeout(cleanup, 60000);
 	});
 }());
 	</script>

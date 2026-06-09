@@ -318,18 +318,18 @@ const AdminUtilsFunctions = {
     	let i = 0;
     	const chunkedOptions = { ...options };
     	chunkedOptions.options = items_selected.slice( i, chunkSize );
-    		const tomSelect = new TomSelect( elTomSelect, chunkedOptions );
+    			const tomSelect = new TomSelect( elTomSelect, chunkedOptions );
     	i += chunkSize;
-    		const interval = setInterval( () => {
+    			const interval = setInterval( () => {
     		if ( i > ( length - 1 ) ) {
     			clearInterval( interval );
     		}
-    			const optionsSlice = items_selected.slice( i, i + chunkSize );
+    				const optionsSlice = items_selected.slice( i, i + chunkSize );
     		i += chunkSize;
     		tomSelect.addOptions( optionsSlice );
     		tomSelect.setValue( options.items );
     	}, 200 );
-    		return tomSelect;
+    			return tomSelect;
     }*/
 
     return new tom_select__WEBPACK_IMPORTED_MODULE_1__["default"](elTomSelect, options);
@@ -7182,13 +7182,13 @@ __webpack_require__.r(__webpack_exports__);
     	if ( ! el.length ) {
     		return;
     	}
-    		const id = el.attr( 'id' );
+    			const id = el.attr( 'id' );
     	if ( ! id ) {
     		return;
     	}
-    		const classHide = id.replace( 'learn_press_', '' );
+    			const classHide = id.replace( 'learn_press_', '' );
     	const elHide = $( `.show_if_${ classHide }` );
-    		if ( el.is( ':checked' ) ) {
+    			if ( el.is( ':checked' ) ) {
     		elHide.show();
     	} else {
     		elHide.hide();

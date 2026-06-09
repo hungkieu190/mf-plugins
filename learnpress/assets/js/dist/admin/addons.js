@@ -292,7 +292,8 @@ document.addEventListener('click', e => {
   // Events actions: activate, deactivate.
   /*if ( el.classList.contains( 'lp-toggle-switch-label' ) ) {
   	//e.preventDefault();
-  		const elAddonItem = el.closest( '.lp-addon-item' );
+  
+  	const elAddonItem = el.closest( '.lp-addon-item' );
   	const idLabel = el.getAttribute( 'for' );
   	const elInput = document.querySelector( `#${ idLabel }` );
   	const action = elInput.getAttribute( 'data-action' );
@@ -320,7 +321,8 @@ document.addEventListener('click', e => {
   				label.style.display = 'inline-flex';
   			}
   		}
-  			if ( status === 'success' ) {
+  
+  		if ( status === 'success' ) {
   			if ( action === 'deactivate' ) {
   				elAddonItem.classList.remove( 'activated' );
   			}

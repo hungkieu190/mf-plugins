@@ -553,7 +553,8 @@ const lpMetaboxExtraInfo = () => {
   /*document.querySelectorAll( '.lp_course_extra_meta_box__fields' ).forEach( ( ele ) => {
   	ele.addEventListener( 'keydown', ( e ) => {
   		const inputs = ele.querySelectorAll( '.lp_course_extra_meta_box__input' );
-  			if ( e.keyCode === 13 ) {
+  
+  		if ( e.keyCode === 13 ) {
   			e.preventDefault();
   			inputs.forEach( ( input ) => {
   				input.blur();
@@ -588,7 +589,8 @@ const lpMetaboxExtraInfo = () => {
   	ele.addEventListener( 'keydown', ( e ) => {
   		const inputs = ele.querySelectorAll( '.lp_course_faq_meta_box__field input' );
   		const textareas = ele.querySelectorAll( '.lp_course_faq_meta_box__field textarea' );
-  			if ( e.keyCode === 13 ) {
+  
+  		if ( e.keyCode === 13 ) {
   			e.preventDefault();
   			[ ...inputs, ...textareas ].forEach( ( input ) => {
   				input.blur();
@@ -1056,10 +1058,12 @@ const lpMetaboxsalePriceDate = () => {
   	const option = $( datepicker ).is( '#_lp_sale_start' ) ? 'minDate' : 'maxDate',
   		otherDateField = 'minDate' === option ? $( '#_lp_sale_end' ) : $( '#_lp_sale_start' ),
   		date = $( datepicker ).datetimepicker( 'getDate' );
-  		$( otherDateField ).datetimepicker( 'option', option, date );
+  
+  	$( otherDateField ).datetimepicker( 'option', option, date );
   	$( datepicker ).trigger( 'change' );
   };
-  	$( '.lp_sale_dates_fields' ).each( function() {
+  
+  $( '.lp_sale_dates_fields' ).each( function() {
   	$( this ).find( 'input' ).datetimepicker( {
   		timeFormat: 'HH:mm',
   		separator: ' ',
@@ -1069,7 +1073,8 @@ const lpMetaboxsalePriceDate = () => {
   			datePickerSelect( $( this ) );
   		},
   	} );
-  		$( this ).find( 'input' ).each( function() {
+  
+  	$( this ).find( 'input' ).each( function() {
   		datePickerSelect( $( this ) );
   	} );
   } );*/
