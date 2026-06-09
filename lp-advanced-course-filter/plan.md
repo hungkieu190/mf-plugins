@@ -214,4 +214,77 @@ lp-advanced-course-filter/
 - Chuẩn bị demo site riêng để khách thử
 
 ---
+## 11. Trang thai trien khai - cap nhat 09/06/2026
+
+### Da xong - Free MVP code
+- Scaffold plugin `lp-advanced-course-filter` da duoc tao.
+- Bootstrap plugin chinh: `lp-advanced-course-filter.php`.
+- Core classes da co:
+  - `LP_Advanced_Course_Filter`
+  - `LP_ACF_Query`
+  - `LP_ACF_Shortcode`
+  - `LP_ACF_Settings`
+  - `LP_ACF_Gutenberg`
+  - `LP_ACF_Elementor`
+  - `LP_ACF_Elementor_Widget`
+- Filter da implement:
+  - Category multi-select qua taxonomy `course_category`.
+  - Price: All / Free / Paid qua meta `_lp_price`.
+  - Level qua meta `_lp_level`.
+  - Rating >= 4 va >= 4.5 qua cac meta rating pho bien.
+  - Live search keyword.
+- AJAX da implement bang `admin-ajax.php` voi nonce.
+- Shortcode da co:
+  - `[lp_advanced_course_filter layout="sidebar" per_page="9" columns="3"]`
+  - Ho tro `layout="horizontal"`.
+- Gutenberg block da co, server-side render va editor script khong can build step.
+- Elementor widget da co, tu dong dang ky khi Elementor active.
+- UI frontend da co:
+  - Sidebar filter.
+  - Horizontal top filter.
+  - Course cards.
+  - Active filter tags co the xoa tung tag.
+  - Sort basic: Newest, Title A-Z, Price low/high.
+  - Load more.
+  - Reset filter.
+  - Responsive CSS co ban.
+- Readme plugin da co.
+- Kiem tra ky thuat da chay:
+  - PHP lint tat ca file PHP moi: OK.
+  - JS syntax check `frontend.js` va `block.js`: OK.
+
+### Chua xong - can lam truoc khi release Free
+- Chua test runtime trong WordPress admin/site that vi PHP CLI hien tai thieu extension `mysqli`, khong load duoc `wp-load.php`.
+- Can activate plugin trong WordPress admin va test thu cong:
+  - Shortcode render tren page.
+  - AJAX filter voi du lieu course that.
+  - Gutenberg block trong editor.
+  - Elementor widget trong editor.
+  - Layout mobile/tablet/desktop.
+  - Tuong thich theme Eduma/ThimPress va archive LearnPress.
+- Chua co package release zip rieng cho addon nay.
+- Chua co screenshot/demo/documentation day du cho marketplace.
+- Chua co file dich `.pot` / `.po`.
+- Rating filter can verify voi du lieu review that cua site, vi LearnPress/addon review co the luu rating bang meta/function khac nhau.
+
+### Chua lam - Pro va phase sau
+- Price range slider.
+- Duration slider.
+- Language filter.
+- Instructor multi-select voi avatar.
+- Tag/custom taxonomy filter.
+- Custom Fields ACF/Meta Box.
+- Progress status filter.
+- Date filter.
+- Collapsible filter groups.
+- Preset filters.
+- Dynamic filter theo category hien tai.
+- Sorting nang cao: Popular, Bestseller, Most Rated, Trending.
+- Geo-location filter.
+- Wishlist/Course Bundle integration.
+- Analytics.
+- AI Smart Filter.
+- Save & Share Filter URL.
+
+---
 **End of Document**
