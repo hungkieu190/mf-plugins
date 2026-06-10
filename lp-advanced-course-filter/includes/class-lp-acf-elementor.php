@@ -35,7 +35,28 @@ class LP_ACF_Elementor {
 	 * Constructor.
 	 */
 	private function __construct() {
+		add_action( 'elementor/elements/categories_registered', array( $this, 'register_category' ) );
 		add_action( 'elementor/widgets/register', array( $this, 'register_widget' ) );
+	}
+
+	/**
+	 * Register widget category.
+	 *
+	 * @param object $elements_manager Elementor elements manager.
+	 * @return void
+	 */
+	public function register_category( $elements_manager ) {
+		if ( ! method_exists( $elements_manager, 'add_category' ) ) {
+			return;
+		}
+
+		$elements_manager->add_category(
+			'learnpress',
+			array(
+				'title' => __( 'LearnPress', 'lp-advanced-course-filter' ),
+				'icon'  => 'fa fa-plug',
+			)
+		);
 	}
 
 	/**

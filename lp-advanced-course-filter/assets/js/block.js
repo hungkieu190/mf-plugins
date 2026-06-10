@@ -1,7 +1,8 @@
-(function (blocks, element, components, blockEditor, serverSideRender) {
+(function (blocks, element, components, blockEditor, serverSideRender, i18n) {
 	'use strict';
 
 	var el = element.createElement;
+	var __ = i18n.__;
 	var InspectorControls = blockEditor.InspectorControls;
 	var PanelBody = components.PanelBody;
 	var SelectControl = components.SelectControl;
@@ -9,7 +10,7 @@
 	var ServerSideRender = serverSideRender;
 
 	blocks.registerBlockType('lp-advanced-course-filter/filter', {
-		title: 'Advanced Course Filter',
+		title: __('Advanced Course Filter', 'lp-advanced-course-filter'),
 		icon: 'filter',
 		category: 'widgets',
 		attributes: {
@@ -35,20 +36,20 @@
 					{},
 					el(
 						PanelBody,
-						{ title: 'Filter settings', initialOpen: true },
+						{ title: __('Filter settings', 'lp-advanced-course-filter'), initialOpen: true },
 						el(SelectControl, {
-							label: 'Layout',
+							label: __('Layout', 'lp-advanced-course-filter'),
 							value: props.attributes.layout,
 							options: [
-								{ label: 'Sidebar', value: 'sidebar' },
-								{ label: 'Horizontal', value: 'horizontal' }
+								{ label: __('Sidebar', 'lp-advanced-course-filter'), value: 'sidebar' },
+								{ label: __('Horizontal', 'lp-advanced-course-filter'), value: 'horizontal' }
 							],
 							onChange: function (value) {
 								props.setAttributes({ layout: value });
 							}
 						}),
 						el(RangeControl, {
-							label: 'Courses per page',
+							label: __('Courses per page', 'lp-advanced-course-filter'),
 							value: props.attributes.perPage,
 							min: 1,
 							max: 48,
@@ -57,7 +58,7 @@
 							}
 						}),
 						el(RangeControl, {
-							label: 'Columns',
+							label: __('Columns', 'lp-advanced-course-filter'),
 							value: props.attributes.columns,
 							min: 1,
 							max: 4,
@@ -77,4 +78,4 @@
 			return null;
 		}
 	});
-})(window.wp.blocks, window.wp.element, window.wp.components, window.wp.blockEditor, window.wp.serverSideRender);
+})(window.wp.blocks, window.wp.element, window.wp.components, window.wp.blockEditor, window.wp.serverSideRender, window.wp.i18n);

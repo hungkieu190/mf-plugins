@@ -51,10 +51,14 @@ class LP_ACF_Gutenberg {
 		wp_register_script(
 			'lp-acf-block',
 			LP_ACF_URL . 'assets/js/block.js',
-			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor', 'wp-server-side-render' ),
+			array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor', 'wp-server-side-render', 'wp-i18n' ),
 			LP_ACF_VERSION,
 			true
 		);
+
+		if ( function_exists( 'wp_set_script_translations' ) ) {
+			wp_set_script_translations( 'lp-acf-block', 'lp-advanced-course-filter', LP_ACF_PATH . 'languages' );
+		}
 
 		register_block_type(
 			'lp-advanced-course-filter/filter',

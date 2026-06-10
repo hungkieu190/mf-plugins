@@ -50,6 +50,7 @@ class LP_Advanced_Course_Filter {
 		require_once LP_ACF_PATH . 'includes/class-lp-acf-settings.php';
 		require_once LP_ACF_PATH . 'includes/class-lp-acf-gutenberg.php';
 		require_once LP_ACF_PATH . 'includes/class-lp-acf-elementor.php';
+		require_once LP_ACF_PATH . 'includes/class-lp-acf-widget.php';
 	}
 
 	/**
@@ -86,6 +87,17 @@ class LP_Advanced_Course_Filter {
 		LP_ACF_Settings::instance();
 		LP_ACF_Gutenberg::instance();
 		LP_ACF_Elementor::instance();
+
+		add_action( 'widgets_init', array( $this, 'register_widget' ) );
+	}
+
+	/**
+	 * Register WordPress widget.
+	 *
+	 * @return void
+	 */
+	public function register_widget() {
+		register_widget( 'LP_ACF_Widget' );
 	}
 
 	/**

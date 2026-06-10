@@ -1,0 +1,161 @@
+# Copyright (C) 2026 Mamflow
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Advanced Course Filter for LearnPress 1.0.0\n"
+"Report-Msgid-Bugs-To: https://mamflow.com/\n"
+"POT-Creation-Date: 2026-06-10 00:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Codex\n"
+"X-Domain: lp-advanced-course-filter\n"
+
+msgid "Advanced Course Filter for LearnPress requires LearnPress 4.2 or newer."
+msgstr ""
+
+msgid "Loading courses..."
+msgstr ""
+
+msgid "Could not load courses. Please try again."
+msgstr ""
+
+msgid "LearnPress Advanced Course Filter"
+msgstr ""
+
+msgid "AJAX course filter for LearnPress course sidebars."
+msgstr ""
+
+msgid "Filter Courses"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "%d course found"
+msgid_plural "%d courses found"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Sort"
+msgstr ""
+
+msgid "Newest"
+msgstr ""
+
+msgid "Title A-Z"
+msgstr ""
+
+msgid "Price low to high"
+msgstr ""
+
+msgid "Price high to low"
+msgstr ""
+
+msgid "Search courses"
+msgstr ""
+
+msgid "Category"
+msgstr ""
+
+msgid "No categories yet."
+msgstr ""
+
+msgid "Price"
+msgstr ""
+
+msgid "All prices"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "Free"
+msgstr ""
+
+msgid "Paid"
+msgstr ""
+
+msgid "Level"
+msgstr ""
+
+msgid "Beginner"
+msgstr ""
+
+msgid "Intermediate"
+msgstr ""
+
+msgid "Expert"
+msgstr ""
+
+msgid "Rating"
+msgstr ""
+
+msgid "Any rating"
+msgstr ""
+
+msgid "Any"
+msgstr ""
+
+msgid "4 stars and up"
+msgstr ""
+
+msgid "4.5 stars and up"
+msgstr ""
+
+msgid "Apply"
+msgstr ""
+
+msgid "Reset"
+msgstr ""
+
+msgid "Load more"
+msgstr ""
+
+msgid "No courses found"
+msgstr ""
+
+msgid "Try changing your filters or search keyword."
+msgstr ""
+
+msgid "Advanced Course Filter"
+msgstr ""
+
+msgid "LearnPress"
+msgstr ""
+
+msgid "AJAX course filter for LearnPress."
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+msgid "Sidebar"
+msgstr ""
+
+msgid "Horizontal"
+msgstr ""
+
+msgid "Courses per page"
+msgstr ""
+
+msgid "Columns"
+msgstr ""
+
+msgid "Use the shortcode below on any page to render AJAX course filters."
+msgstr ""
+
+msgid "Set layout to \"horizontal\" for a top filter bar."
+msgstr ""
+
+msgid "Course"
+msgstr ""
+
+msgid "View course"
+msgstr ""
+
+msgid "Filter settings"
+msgstr ""
