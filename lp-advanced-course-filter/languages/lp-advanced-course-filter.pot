@@ -145,10 +145,16 @@ msgstr ""
 msgid "Columns"
 msgstr ""
 
+msgid "Course list target"
+msgstr ""
+
 msgid "Use the shortcode below on any page to render AJAX course filters."
 msgstr ""
 
 msgid "Set layout to \"horizontal\" for a top filter bar."
+msgstr ""
+
+msgid "Place it in the LearnPress archive sidebar to update the native LearnPress course list."
 msgstr ""
 
 msgid "Course"
@@ -158,4 +164,46 @@ msgid "View course"
 msgstr ""
 
 msgid "Filter settings"
+msgstr ""
+
+msgid "Category depth"
+msgstr ""
+
+msgid "Load widget via REST"
+msgstr ""
+
+msgid "Hide options with zero count"
+msgstr ""
+
+msgid "Enable keyword search suggestion"
+msgstr ""
+
+msgid "Fields"
+msgstr ""
+
+msgid "Keyword"
+msgstr ""
+
+msgid "Course Category"
+msgstr ""
+
+msgid "Course Tag"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Type (Online/Offline)"
+msgstr ""
+
+msgid "Button Submit"
+msgstr ""
+
+msgid "Button Reset"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
 msgstr ""

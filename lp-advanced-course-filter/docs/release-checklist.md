@@ -14,10 +14,12 @@ Use this checklist before tagging or uploading Advanced Course Filter for LearnP
 
 - Activate the plugin while LearnPress is active.
 - Deactivate LearnPress and confirm the admin notice appears without a fatal error.
-- Add `[lp_advanced_course_filter layout="sidebar" per_page="9" columns="3"]` to a page and confirm the initial course grid renders.
+- Add `[lp_advanced_course_filter layout="sidebar" target=".lp-list-courses-default"]` to a LearnPress archive/sidebar context and confirm it updates the native LearnPress course list.
+- Test the full shortcode options: `fields`, `category_depth`, `rest`, `hide_count_zero`, and `search_suggestion`.
 - Change `layout` to `horizontal` and confirm the top filter bar renders.
 - Add the "LearnPress Advanced Course Filter" widget to the course/archive sidebar and confirm it can replace the default filter widget.
-- Filter by category, price, level, rating, and keyword.
+- In the WordPress widget form, test category depth, REST loading, zero-count hiding, search suggestion, and field enable/disable controls.
+- Filter by category, price, tag, author, level, type, and keyword.
 - Combine multiple filters and confirm the result count updates.
 - Use active filter tags to remove individual filters.
 - Use Reset and confirm the default course list returns.
@@ -27,9 +29,9 @@ Use this checklist before tagging or uploading Advanced Course Filter for LearnP
 
 ## Editor Tests
 
-- Insert the Gutenberg block and change Layout, Courses per page, and Columns.
+- Insert the Gutenberg block and change Layout, category depth, REST loading, zero-count hiding, search suggestion, and field controls.
 - Confirm the server-side block preview renders in the editor and frontend.
-- Insert the Elementor widget and change Layout, Courses per page, and Columns.
+- Insert the Elementor widget and change Layout, category depth, REST loading, zero-count hiding, search suggestion, and field controls.
 - Confirm the Elementor widget renders in editor preview and frontend.
 
 ## Compatibility Checks

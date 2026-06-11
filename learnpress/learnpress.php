@@ -4,7 +4,7 @@
  * Plugin URI: https://thimpress.com/learnpress
  * Description: LearnPress is a WordPress complete solution for creating a Learning Management System (LMS). It can help you to create courses, lessons and quizzes.
  * Author: ThimPress
- * Version: 4.3.8
+ * Version: 4.3.9
  * Author URI: http://thimpress.com
  * Requires at least: 6.0
  * Requires PHP: 7.4
@@ -26,6 +26,7 @@ use LearnPress\Ajax\EditQuizAjax;
 use LearnPress\Ajax\ExportOrderCSVAjax;
 use LearnPress\Ajax\LessonAjax;
 use LearnPress\Ajax\LoadContentViaAjax;
+use LearnPress\Ajax\AI\AIAssistantAjax;
 use LearnPress\Ajax\MCP\McpApiKeysAjax;
 use LearnPress\Ajax\CourseBuilder\CBEditCourseAjax;
 use LearnPress\Ajax\SendEmailAjax;
@@ -85,6 +86,7 @@ use LearnPress\TemplateHooks\Profile\ProfileOrderTemplate;
 use LearnPress\TemplateHooks\Profile\ProfileQuizzesTemplate;
 use LearnPress\TemplateHooks\Profile\ProfileStudentEnrolledTemplate;
 use LearnPress\TemplateHooks\Profile\ProfileStudentStatisticsTemplate;
+use LearnPress\TemplateHooks\Course\CourseAIAssistantTemplate;
 use LearnPress\Widgets\LPRegisterWidget;
 use LearnPress\WPGDPR\ErasePersonalData;
 use LearnPress\WPGDPR\ExportPersonalData;
@@ -389,6 +391,7 @@ if ( ! class_exists( 'LearnPress' ) ) {
 			AdminEditQizTemplate::instance();
 			AdminEditQuestionTemplate::instance();
 			CourseMaterialTemplate::instance();
+			CourseAIAssistantTemplate::instance();
 			AdminOrderItemsTemplate::instance();
 			AdminOrderListTemplate::instance();
 			AdminCreateCourseAITemplate::instance();
@@ -716,7 +719,7 @@ if ( ! class_exists( 'LearnPress' ) ) {
 
 				$lp_addon_version = $lp_addon_info['Version'];
 
-				$addon                  = new Lp_Addon();
+				$addon                  = new LP_Addon();
 				$addon->version         = $lp_addon_version;
 				$addon->plugin_base     = $lp_addon;
 				$addon->require_version = $lp_addon_info['Require_LP_Version'];
@@ -753,6 +756,7 @@ if ( ! class_exists( 'LearnPress' ) ) {
 					SendEmailAjax::catch_lp_ajax();
 					CourseBuilderAjax::catch_lp_ajax();
 					OpenAiAjax::catch_lp_ajax();
+					AIAssistantAjax::catch_lp_ajax();
 					ExportOrderCSVAjax::catch_lp_ajax();
 					McpApiKeysAjax::catch_lp_ajax();
 					CBEditCourseAjax::catch_lp_ajax();

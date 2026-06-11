@@ -64,8 +64,8 @@ class LP_ACF_Settings {
 		<div class="wrap">
 			<h1><?php esc_html_e( 'Advanced Course Filter for LearnPress', 'lp-advanced-course-filter' ); ?></h1>
 			<p><?php esc_html_e( 'Use the shortcode below on any page to render AJAX course filters.', 'lp-advanced-course-filter' ); ?></p>
-			<code>[lp_advanced_course_filter layout="sidebar" per_page="9" columns="3"]</code>
-			<p><?php esc_html_e( 'Set layout to "horizontal" for a top filter bar.', 'lp-advanced-course-filter' ); ?></p>
+			<code>[lp_advanced_course_filter layout="sidebar" target=".lp-list-courses-default"]</code>
+			<p><?php esc_html_e( 'Place it in the LearnPress archive sidebar to update the native LearnPress course list.', 'lp-advanced-course-filter' ); ?></p>
 		</div>
 		<?php
 	}

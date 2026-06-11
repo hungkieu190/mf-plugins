@@ -34,10 +34,13 @@ class LP_ACF_Widget extends WP_Widget {
 	 * @return void
 	 */
 	public function widget( $args, $instance ) {
-		$title    = isset( $instance['title'] ) ? apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) : '';
-		$layout   = isset( $instance['layout'] ) && in_array( $instance['layout'], array( 'sidebar', 'horizontal' ), true ) ? $instance['layout'] : 'sidebar';
-		$per_page = isset( $instance['per_page'] ) ? max( 1, min( 48, absint( $instance['per_page'] ) ) ) : 9;
-		$columns  = isset( $instance['columns'] ) ? max( 1, min( 4, absint( $instance['columns'] ) ) ) : 3;
+		$title             = isset( $instance['title'] ) ? apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base ) : '';
+		$layout            = isset( $instance['layout'] ) && in_array( $instance['layout'], array( 'sidebar', 'horizontal' ), true ) ? $instance['layout'] : 'sidebar';
+		$fields            = $this->sanitize_fields( $instance['fields'] ?? $this->default_fields() );
+		$category_depth    = max( 1, absint( $instance['category_depth'] ?? 2 ) );
+		$show_in_rest      = ! empty( $instance['show_in_rest'] ) ? 1 : 0;
+		$hide_count_zero   = isset( $instance['hide_count_zero'] ) ? absint( $instance['hide_count_zero'] ) : 1;
+		$search_suggestion = isset( $instance['search_suggestion'] ) ? absint( $instance['search_suggestion'] ) : 1;
 
 		echo wp_kses_post( $args['before_widget'] );
 
@@ -47,10 +50,14 @@ class LP_ACF_Widget extends WP_Widget {
 
 		echo do_shortcode(
 			sprintf(
-				'[lp_advanced_course_filter layout="%1$s" per_page="%2$d" columns="%3$d"]',
+				'[lp_advanced_course_filter layout="%1$s" target="%2$s" fields="%3$s" category_depth="%4$d" rest="%5$d" hide_count_zero="%6$d" search_suggestion="%7$d"]',
 				esc_attr( $layout ),
-				$per_page,
-				$columns
+				'.lp-list-courses-default',
+				esc_attr( implode( ',', $fields ) ),
+				$category_depth,
+				$show_in_rest,
+				$hide_count_zero,
+				$search_suggestion
 			)
 		);
 
@@ -64,10 +71,13 @@ class LP_ACF_Widget extends WP_Widget {
 	 * @return void
 	 */
 	public function form( $instance ) {
-		$title    = isset( $instance['title'] ) ? $instance['title'] : __( 'Filter Courses', 'lp-advanced-course-filter' );
-		$layout   = isset( $instance['layout'] ) ? $instance['layout'] : 'sidebar';
-		$per_page = isset( $instance['per_page'] ) ? absint( $instance['per_page'] ) : 9;
-		$columns  = isset( $instance['columns'] ) ? absint( $instance['columns'] ) : 3;
+		$title             = isset( $instance['title'] ) ? $instance['title'] : __( 'Filter Courses', 'lp-advanced-course-filter' );
+		$layout            = isset( $instance['layout'] ) ? $instance['layout'] : 'sidebar';
+		$fields            = $this->sanitize_fields( $instance['fields'] ?? $this->default_fields() );
+		$category_depth    = max( 1, absint( $instance['category_depth'] ?? 2 ) );
+		$show_in_rest      = ! empty( $instance['show_in_rest'] );
+		$hide_count_zero   = ! isset( $instance['hide_count_zero'] ) || ! empty( $instance['hide_count_zero'] );
+		$search_suggestion = ! isset( $instance['search_suggestion'] ) || ! empty( $instance['search_suggestion'] );
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'lp-advanced-course-filter' ); ?></label>
@@ -81,13 +91,30 @@ class LP_ACF_Widget extends WP_Widget {
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'per_page' ) ); ?>"><?php esc_html_e( 'Courses per page', 'lp-advanced-course-filter' ); ?></label>
-			<input class="tiny-text" id="<?php echo esc_attr( $this->get_field_id( 'per_page' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'per_page' ) ); ?>" type="number" min="1" max="48" value="<?php echo esc_attr( $per_page ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'category_depth' ) ); ?>"><?php esc_html_e( 'Category depth', 'lp-advanced-course-filter' ); ?></label>
+			<input class="tiny-text" id="<?php echo esc_attr( $this->get_field_id( 'category_depth' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'category_depth' ) ); ?>" type="number" min="1" value="<?php echo esc_attr( (string) $category_depth ); ?>">
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'columns' ) ); ?>"><?php esc_html_e( 'Columns', 'lp-advanced-course-filter' ); ?></label>
-			<input class="tiny-text" id="<?php echo esc_attr( $this->get_field_id( 'columns' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'columns' ) ); ?>" type="number" min="1" max="4" value="<?php echo esc_attr( $columns ); ?>">
+			<input id="<?php echo esc_attr( $this->get_field_id( 'show_in_rest' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'show_in_rest' ) ); ?>" type="checkbox" value="1" <?php checked( $show_in_rest ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'show_in_rest' ) ); ?>"><?php esc_html_e( 'Load widget via REST', 'lp-advanced-course-filter' ); ?></label>
 		</p>
+		<p>
+			<input id="<?php echo esc_attr( $this->get_field_id( 'hide_count_zero' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'hide_count_zero' ) ); ?>" type="checkbox" value="1" <?php checked( $hide_count_zero ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'hide_count_zero' ) ); ?>"><?php esc_html_e( 'Hide options with zero count', 'lp-advanced-course-filter' ); ?></label>
+		</p>
+		<p>
+			<input id="<?php echo esc_attr( $this->get_field_id( 'search_suggestion' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'search_suggestion' ) ); ?>" type="checkbox" value="1" <?php checked( $search_suggestion ); ?>>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'search_suggestion' ) ); ?>"><?php esc_html_e( 'Enable keyword search suggestion', 'lp-advanced-course-filter' ); ?></label>
+		</p>
+		<fieldset>
+			<legend><?php esc_html_e( 'Fields', 'lp-advanced-course-filter' ); ?></legend>
+			<?php foreach ( $this->field_labels() as $field => $label ) : ?>
+				<p>
+					<input id="<?php echo esc_attr( $this->get_field_id( 'fields_' . $field ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'fields' ) ); ?>[]" type="checkbox" value="<?php echo esc_attr( $field ); ?>" <?php checked( in_array( $field, $fields, true ) ); ?>>
+					<label for="<?php echo esc_attr( $this->get_field_id( 'fields_' . $field ) ); ?>"><?php echo esc_html( $label ); ?></label>
+				</p>
+			<?php endforeach; ?>
+		</fieldset>
 		<?php
 	}
 
@@ -103,9 +130,62 @@ class LP_ACF_Widget extends WP_Widget {
 
 		$instance['title']    = isset( $new_instance['title'] ) ? sanitize_text_field( $new_instance['title'] ) : '';
 		$instance['layout']   = isset( $new_instance['layout'] ) && in_array( $new_instance['layout'], array( 'sidebar', 'horizontal' ), true ) ? $new_instance['layout'] : 'sidebar';
-		$instance['per_page'] = isset( $new_instance['per_page'] ) ? max( 1, min( 48, absint( $new_instance['per_page'] ) ) ) : 9;
-		$instance['columns']  = isset( $new_instance['columns'] ) ? max( 1, min( 4, absint( $new_instance['columns'] ) ) ) : 3;
+		unset( $instance['target'] );
+		$instance['category_depth']    = max( 1, absint( $new_instance['category_depth'] ?? 2 ) );
+		$instance['show_in_rest']      = ! empty( $new_instance['show_in_rest'] ) ? 1 : 0;
+		$instance['hide_count_zero']   = ! empty( $new_instance['hide_count_zero'] ) ? 1 : 0;
+		$instance['search_suggestion'] = ! empty( $new_instance['search_suggestion'] ) ? 1 : 0;
+		$instance['fields']            = $this->sanitize_fields( $new_instance['fields'] ?? array() );
 
 		return $instance;
+	}
+
+	/**
+	 * Get LearnPress native filter field labels.
+	 *
+	 * @return array
+	 */
+	private function field_labels() {
+		return array(
+			'search'     => __( 'Keyword', 'lp-advanced-course-filter' ),
+			'price'      => __( 'Price', 'lp-advanced-course-filter' ),
+			'category'   => __( 'Course Category', 'lp-advanced-course-filter' ),
+			'tag'        => __( 'Course Tag', 'lp-advanced-course-filter' ),
+			'author'     => __( 'Author', 'lp-advanced-course-filter' ),
+			'level'      => __( 'Level', 'lp-advanced-course-filter' ),
+			'type'       => __( 'Type (Online/Offline)', 'lp-advanced-course-filter' ),
+			'btn_submit' => __( 'Button Submit', 'lp-advanced-course-filter' ),
+			'btn_reset'  => __( 'Button Reset', 'lp-advanced-course-filter' ),
+		);
+	}
+
+	/**
+	 * Get default fields.
+	 *
+	 * @return array
+	 */
+	private function default_fields() {
+		return array_keys( $this->field_labels() );
+	}
+
+	/**
+	 * Sanitize enabled fields.
+	 *
+	 * @param array|string $fields Raw fields.
+	 * @return array
+	 */
+	private function sanitize_fields( $fields ) {
+		$fields  = is_array( $fields ) ? $fields : explode( ',', (string) $fields );
+		$allowed = $this->default_fields();
+		$clean   = array();
+
+		foreach ( $fields as $field ) {
+			$field = sanitize_key( $field );
+			if ( in_array( $field, $allowed, true ) && ! in_array( $field, $clean, true ) ) {
+				$clean[] = $field;
+			}
+		}
+
+		return $clean ? $clean : $allowed;
 	}
 }

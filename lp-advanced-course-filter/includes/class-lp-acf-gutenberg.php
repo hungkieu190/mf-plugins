@@ -74,13 +74,25 @@ class LP_ACF_Gutenberg {
 						'type'    => 'string',
 						'default' => 'sidebar',
 					),
-					'perPage' => array(
-						'type'    => 'number',
-						'default' => 9,
+					'fields'  => array(
+						'type'    => 'array',
+						'default' => array( 'search', 'price', 'category', 'tag', 'author', 'level', 'type', 'btn_submit', 'btn_reset' ),
 					),
-					'columns' => array(
+					'categoryDepth' => array(
 						'type'    => 'number',
-						'default' => 3,
+						'default' => 2,
+					),
+					'showInRest' => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'hideCountZero' => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
+					'searchSuggestion' => array(
+						'type'    => 'boolean',
+						'default' => true,
 					),
 				),
 				'render_callback' => array( $this, 'render_block' ),
@@ -95,17 +107,54 @@ class LP_ACF_Gutenberg {
 	 * @return string
 	 */
 	public function render_block( $attributes ) {
-		$layout   = isset( $attributes['layout'] ) ? sanitize_key( $attributes['layout'] ) : 'sidebar';
-		$per_page = isset( $attributes['perPage'] ) ? absint( $attributes['perPage'] ) : 9;
-		$columns  = isset( $attributes['columns'] ) ? absint( $attributes['columns'] ) : 3;
+		$layout            = isset( $attributes['layout'] ) ? sanitize_key( $attributes['layout'] ) : 'sidebar';
+		$fields            = $this->sanitize_fields( $attributes['fields'] ?? $this->default_fields() );
+		$category_depth    = max( 1, absint( $attributes['categoryDepth'] ?? 2 ) );
+		$show_in_rest      = ! empty( $attributes['showInRest'] ) ? 1 : 0;
+		$hide_count_zero   = ! isset( $attributes['hideCountZero'] ) || ! empty( $attributes['hideCountZero'] ) ? 1 : 0;
+		$search_suggestion = ! isset( $attributes['searchSuggestion'] ) || ! empty( $attributes['searchSuggestion'] ) ? 1 : 0;
 
 		return do_shortcode(
 			sprintf(
-				'[lp_advanced_course_filter layout="%1$s" per_page="%2$d" columns="%3$d"]',
+				'[lp_advanced_course_filter layout="%1$s" target="%2$s" fields="%3$s" category_depth="%4$d" rest="%5$d" hide_count_zero="%6$d" search_suggestion="%7$d"]',
 				esc_attr( $layout ),
-				$per_page,
-				$columns
+				'.lp-list-courses-default',
+				esc_attr( implode( ',', $fields ) ),
+				$category_depth,
+				$show_in_rest,
+				$hide_count_zero,
+				$search_suggestion
 			)
 		);
+	}
+
+	/**
+	 * Get default fields.
+	 *
+	 * @return array
+	 */
+	private function default_fields() {
+		return array( 'search', 'price', 'category', 'tag', 'author', 'level', 'type', 'btn_submit', 'btn_reset' );
+	}
+
+	/**
+	 * Sanitize fields.
+	 *
+	 * @param array|string $fields Raw fields.
+	 * @return array
+	 */
+	private function sanitize_fields( $fields ) {
+		$fields  = is_array( $fields ) ? $fields : explode( ',', (string) $fields );
+		$allowed = $this->default_fields();
+		$clean   = array();
+
+		foreach ( $fields as $field ) {
+			$field = sanitize_key( $field );
+			if ( in_array( $field, $allowed, true ) && ! in_array( $field, $clean, true ) ) {
+				$clean[] = $field;
+			}
+		}
+
+		return $clean ? $clean : $allowed;
 	}
 }

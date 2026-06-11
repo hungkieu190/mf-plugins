@@ -6,8 +6,20 @@
 	var InspectorControls = blockEditor.InspectorControls;
 	var PanelBody = components.PanelBody;
 	var SelectControl = components.SelectControl;
-	var RangeControl = components.RangeControl;
+	var ToggleControl = components.ToggleControl;
+	var CheckboxControl = components.CheckboxControl;
 	var ServerSideRender = serverSideRender;
+	var fieldOptions = [
+		{ label: __('Keyword', 'lp-advanced-course-filter'), value: 'search' },
+		{ label: __('Price', 'lp-advanced-course-filter'), value: 'price' },
+		{ label: __('Course Category', 'lp-advanced-course-filter'), value: 'category' },
+		{ label: __('Course Tag', 'lp-advanced-course-filter'), value: 'tag' },
+		{ label: __('Author', 'lp-advanced-course-filter'), value: 'author' },
+		{ label: __('Level', 'lp-advanced-course-filter'), value: 'level' },
+		{ label: __('Type (Online/Offline)', 'lp-advanced-course-filter'), value: 'type' },
+		{ label: __('Button Submit', 'lp-advanced-course-filter'), value: 'btn_submit' },
+		{ label: __('Button Reset', 'lp-advanced-course-filter'), value: 'btn_reset' }
+	];
 
 	blocks.registerBlockType('lp-advanced-course-filter/filter', {
 		title: __('Advanced Course Filter', 'lp-advanced-course-filter'),
@@ -18,16 +30,30 @@
 				type: 'string',
 				default: 'sidebar'
 			},
-			perPage: {
-				type: 'number',
-				default: 9
+			fields: {
+				type: 'array',
+				default: ['search', 'price', 'category', 'tag', 'author', 'level', 'type', 'btn_submit', 'btn_reset']
 			},
-			columns: {
+			categoryDepth: {
 				type: 'number',
-				default: 3
+				default: 2
+			},
+			showInRest: {
+				type: 'boolean',
+				default: false
+			},
+			hideCountZero: {
+				type: 'boolean',
+				default: true
+			},
+			searchSuggestion: {
+				type: 'boolean',
+				default: true
 			}
 		},
 		edit: function (props) {
+			var fields = props.attributes.fields || [];
+
 			return el(
 				element.Fragment,
 				{},
@@ -48,23 +74,54 @@
 								props.setAttributes({ layout: value });
 							}
 						}),
-						el(RangeControl, {
-							label: __('Courses per page', 'lp-advanced-course-filter'),
-							value: props.attributes.perPage,
-							min: 1,
-							max: 48,
+						el(components.TextControl, {
+							label: __('Category depth', 'lp-advanced-course-filter'),
+							type: 'number',
+							value: props.attributes.categoryDepth,
 							onChange: function (value) {
-								props.setAttributes({ perPage: value });
+								props.setAttributes({ categoryDepth: parseInt(value, 10) || 1 });
 							}
 						}),
-						el(RangeControl, {
-							label: __('Columns', 'lp-advanced-course-filter'),
-							value: props.attributes.columns,
-							min: 1,
-							max: 4,
+						el(ToggleControl, {
+							label: __('Load widget via REST', 'lp-advanced-course-filter'),
+							checked: !!props.attributes.showInRest,
 							onChange: function (value) {
-								props.setAttributes({ columns: value });
+								props.setAttributes({ showInRest: value });
 							}
+						}),
+						el(ToggleControl, {
+							label: __('Hide options with zero count', 'lp-advanced-course-filter'),
+							checked: props.attributes.hideCountZero !== false,
+							onChange: function (value) {
+								props.setAttributes({ hideCountZero: value });
+							}
+						}),
+						el(ToggleControl, {
+							label: __('Enable keyword search suggestion', 'lp-advanced-course-filter'),
+							checked: props.attributes.searchSuggestion !== false,
+							onChange: function (value) {
+								props.setAttributes({ searchSuggestion: value });
+							}
+						})
+					),
+					el(
+						PanelBody,
+						{ title: __('Fields', 'lp-advanced-course-filter'), initialOpen: false },
+						fieldOptions.map(function (field) {
+							return el(CheckboxControl, {
+								key: field.value,
+								label: field.label,
+								checked: fields.indexOf(field.value) !== -1,
+								onChange: function (checked) {
+									var nextFields = fields.filter(function (value) {
+										return value !== field.value;
+									});
+									if (checked) {
+										nextFields.push(field.value);
+									}
+									props.setAttributes({ fields: nextFields });
+								}
+							});
 						})
 					)
 				),

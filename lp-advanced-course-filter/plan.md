@@ -103,7 +103,7 @@ Addon nay se la bo loc khoa hoc premium cho LearnPress, tap trung vao:
 ### 2.4 Integration
 
 - Shortcode:
-  - `[lp_advanced_course_filter layout="sidebar" per_page="9" columns="3"]`
+  - `[lp_advanced_course_filter layout="sidebar" target=".lp-list-courses-default"]`
 - WordPress widget:
   - `LearnPress Advanced Course Filter`
   - Dung de thay widget filter mac dinh trong sidebar.
@@ -199,6 +199,11 @@ Muc tieu cua plan nay la dua plugin tu nen mong hien tai sang trang thai co the 
 
 Muc tieu: dam bao nhung gi da code hoat dong that tren WordPress.
 
+- Hoan thien widget thay the LearnPress native filter:
+  - Expose cac option native can thiet: title, REST loading, hide zero count, search suggestion, category depth.
+  - Expose fields enable/disable: keyword, price, category, tag, author, level, type, submit, reset.
+  - Dong bo option giua shortcode, WordPress widget, Gutenberg block, Elementor widget.
+  - Giu render/load ket qua bang LearnPress native filter logic.
 - Activate plugin tren site local co LearnPress.
 - Test shortcode tren page that.
 - Test WordPress widget trong sidebar/archive sidebar.
@@ -220,6 +225,7 @@ Muc tieu: dam bao nhung gi da code hoat dong that tren WordPress.
 Ket qua can co:
 
 - Plugin co the thay widget filter mac dinh.
+- Widget admin co du option can thiet de thay widget LearnPress native.
 - Khong co loi fatal/JS console trong flow chinh.
 - Co checklist QA da tick tren site local.
 
@@ -412,8 +418,8 @@ Bat buoc co truoc khi ban:
 - Shortcode hoat dong.
 - Gutenberg block hoat dong.
 - Elementor widget hoat dong.
-- AJAX filter chay voi du lieu course that.
-- Category, price, level, rating, search hoat dong.
+- AJAX filter chay voi native LearnPress course archive/list.
+- Category, price, tag, author, level, type, search hoat dong.
 - Bat buoc co it nhat 3 gia tri premium ro rang:
   - Price range slider.
   - Instructor filter.
