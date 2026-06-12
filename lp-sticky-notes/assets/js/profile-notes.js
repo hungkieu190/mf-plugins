@@ -50,9 +50,9 @@
 							self.showMessage(response.data.message || lpStickyNotesProfile.i18n.error, 'error');
 						}
 					},
-					error: function() {
+					error: function(xhr) {
 						$noteItem.removeClass('lp-loading');
-						self.showMessage(lpStickyNotesProfile.i18n.error, 'error');
+						self.showMessage(self.getAjaxErrorMessage(xhr), 'error');
 					}
 				});
 			}
@@ -85,6 +85,18 @@
 		showMessage: function(message, type) {
 			// Simple message display - you can enhance this with a proper notification system
 			alert(message);
+		},
+
+		getAjaxErrorMessage: function(xhr) {
+			if (xhr && xhr.responseJSON && xhr.responseJSON.data && xhr.responseJSON.data.message) {
+				return xhr.responseJSON.data.message;
+			}
+
+			if (xhr && xhr.status) {
+				return lpStickyNotesProfile.i18n.error + ' HTTP ' + xhr.status + '.';
+			}
+
+			return lpStickyNotesProfile.i18n.error;
 		}
 	};
 

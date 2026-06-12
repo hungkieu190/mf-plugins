@@ -47,8 +47,6 @@ class LP_Sticky_Notes_Hooks
 		// Delete notes when course is deleted
 		add_action('before_delete_post', array($this, 'delete_notes_on_course_delete'));
 
-		// Add localized script data
-		add_action('wp_footer', array($this, 'add_inline_script'));
 	}
 
 	/**
@@ -200,7 +198,7 @@ class LP_Sticky_Notes_Hooks
 		// Get existing notes
 		$lesson_id = get_the_ID();
 		$db = LP_Sticky_Notes_Database::instance();
-		$notes = $db->get_notes_by_lesson($lesson_id);
+		$notes = $db->get_notes_by_lesson($lesson_id, 0, $course_id);
 
 		$rendered = true;
 		include LP_STICKY_NOTES_PATH . 'templates/sticky-notes-section.php';
@@ -222,7 +220,7 @@ class LP_Sticky_Notes_Hooks
 				'<p style="margin: 10px 0 0 0;">' .
 				sprintf(
 					esc_html__('This feature requires an active license. %sPurchase a license%s to unlock sticky notes.', 'lp-sticky-notes'),
-					'<a href="https://mamflow.com/product/learnpress-notes-addon-lp-sticky-notes/" target="_blank">',
+					'<a href="' . esc_url(LP_STICKY_NOTES_PRODUCT_URL) . '" target="_blank">',
 					'</a>'
 				) .
 				'</p>' .
@@ -357,22 +355,6 @@ class LP_Sticky_Notes_Hooks
 
 		$db = LP_Sticky_Notes_Database::instance();
 		$db->delete_notes_by_course($post_id);
-	}
-
-	/**
-	 * Add inline script for highlight functionality
-	 */
-	public function add_inline_script()
-	{
-		// Check if we're on a LearnPress lesson page
-		$course_item = LP_Global::course_item();
-		if (!$course_item || !($course_item instanceof LP_Lesson) || !is_user_logged_in()) {
-			return;
-		}
-		?>
-		<script type="text/javascript">		jQuery(document).ready(function ($) {			// Debug: Check if highlight is working			console.log('LP Sticky Notes: Inline script loaded');		});
-		</script>
-		<?php
 	}
 
 	/**

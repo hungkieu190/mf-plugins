@@ -17,28 +17,49 @@ Muc tieu san pham: bien plugin tu cong cu ghi chu co ban trong lesson thanh mot 
 
 Muc tieu: sua cac loi anh huong truc tiep den hanh vi hien tai truoc khi them tinh nang moi.
 
-### Priority High
+### Completed For Changelog
 
-- Fix edit note bi tao note moi: frontend can goi `lp_sticky_notes_update` khi co `note_id` thay vi luon goi `lp_sticky_notes_add`.
-- Fix sidebar lesson notes bi lan giua cac course neu cung mot lesson duoc dung trong nhieu course: query can loc theo ca `course_id` va `lesson_id`.
-- Dong nhat license gate cho Profile tab `My Notes`: an tab hoac hien thong bao license required khi license chua active.
-- Fix instructor/admin menu capability: instructor dang duoc cho phep trong render page nhung co the khong thay menu vi submenu dung `manage_options`.
-- Chuan hoa cac URL license trong admin de tranh link chet hoac dan sai trang.
-
-### Priority Medium
-
-- Cai thien message loi AJAX de user biet nguyen nhan ro hon.
-- Kiem tra lai shortcode, modal View All va profile voi lesson duoc gan vao nhieu course.
-- Dam bao tat ca trang frontend/admin chi load CSS/JS khi thuc su can.
-
-### Technical
-
-- Them DB version option de ho tro migration cho cac phien ban sau.
-- Them composite indexes can thiet cho bang notes:
+- Rebuilt the `Student Notes` admin page UI to follow MamFlow backend design rules:
+  - clearer page header and context metrics
+  - structured filter panel
+  - table toolbar with current-page search
+  - improved empty state
+  - cleaner pagination
+- Replaced large `Student` and `Course` filter selects with searchable combobox controls.
+- Added AJAX search endpoints for student and course filters:
+  - `lp_sticky_notes_search_students`
+  - `lp_sticky_notes_search_courses`
+- Limited initial filter option loading to avoid rendering very large student/course lists in wp-admin.
+- Added separate count queries for `Students with notes` and `Courses with notes` so metrics stay accurate even when filter options are capped.
+- Added client-side sorting for the current admin notes table page by student, course, lesson, note type, and created date.
+- Added client-side search for the current notes table page.
+- Fixed admin filter layout issues where filter fields could collapse to a very narrow width in wp-admin.
+- Updated admin CSS/JS enqueue versions to include `filemtime()` so backend UI fixes are not blocked by browser cache.
+- Fixed license validation becoming invalid because license checks were being triggered too frequently.
+- Redesigned the license-required state on the Student Notes admin page.
+- Redesigned the Mamflow license tab UI for Sticky Notes with clearer status, actions, and support copy.
+- Cleaned broken encoding characters in backend UI copy.
+- Reduced backend inline styles and aligned admin UI colors, spacing, borders, and typography with MamFlow design rules.
+- Fixed editing an existing note so the frontend calls `lp_sticky_notes_update` when `note_id` exists instead of creating a duplicate note.
+- Fixed lesson sidebar notes being mixed between courses when the same lesson is reused by requiring `course_id` in lesson-note loading.
+- Updated database lesson-note queries to support filtering by both `lesson_id` and `course_id`.
+- Hid the LearnPress Profile `My Notes` tab when the license is inactive and added a fallback license-required message for direct access.
+- Fixed Student Notes admin menu visibility for instructors by changing the submenu capability and keeping backend permission checks in render/AJAX handlers.
+- Standardized the Mamflow product URL through `LP_STICKY_NOTES_PRODUCT_URL` to avoid duplicated hard-coded purchase links.
+- Improved AJAX error handling so users get clearer server/HTTP failure messages instead of only a generic error.
+- Verified shortcode, View All modal, and profile lesson links use the saved `course_id` and `lesson_id` context.
+- Removed an unnecessary frontend footer debug script hook.
+- Added DB schema version option `lp_sticky_notes_db_version` for future migrations.
+- Added composite indexes for larger note datasets:
   - `(user_id, course_id, lesson_id)`
   - `(user_id, created_at)`
   - `(course_id, lesson_id)`
-- Kiem tra release zip khong chua file dev khong can thiet.
+- Verified the existing release zip does not contain dev-only files such as `node_modules`, `scripts`, `release`, package files, Composer files, or PHPUnit config.
+
+### Release Checklist
+
+- Rebuild `release/lp-sticky-notes-1.0.6.zip` after changelog is finalized.
+- Smoke test add, edit, delete, sidebar load, View All modal, shortcode output, profile tab, admin Student Notes filters, and license inactive state.
 
 ## v1.1.0 - Search, Filter & Better Note Management
 

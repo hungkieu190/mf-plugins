@@ -308,10 +308,12 @@
 				success: function (response) {
 					if (response.success) {
 						self.renderNotes(response.data.notes);
+					} else {
+						self.showMessage(response.data.message || lpStickyNotes.i18n.error, 'error');
 					}
 				},
-				error: function () {
-					console.error(lpStickyNotes.i18n.error);
+				error: function (xhr) {
+					self.showMessage(self.getAjaxErrorMessage(xhr), 'error');
 				}
 			});
 		},
@@ -368,8 +370,10 @@
 			var self = this;
 			var $form = $('#lp-note-form');
 			var formData = new FormData($form[0]);
+			var noteId = $('#lp-note-id').val();
+			var action = noteId ? 'lp_sticky_notes_update' : 'lp_sticky_notes_add';
 
-			formData.append('action', 'lp_sticky_notes_add');
+			formData.append('action', action);
 			formData.append('lesson_id', lpStickyNotes.lessonId);
 			formData.append('course_id', lpStickyNotes.courseId);
 			formData.append('nonce', lpStickyNotes.nonce);
@@ -389,14 +393,14 @@
 					if (response.success) {
 						self.hideNoteForm();
 						self.loadNotes();
-						self.showMessage(lpStickyNotes.i18n.noteAdded, 'success');
+						self.showMessage(noteId ? lpStickyNotes.i18n.noteUpdated : lpStickyNotes.i18n.noteAdded, 'success');
 					} else {
 						self.showMessage(response.data.message || lpStickyNotes.i18n.error, 'error');
 					}
 				},
-				error: function () {
+				error: function (xhr) {
 					$form.removeClass('lp-loading');
-					self.showMessage(lpStickyNotes.i18n.error, 'error');
+					self.showMessage(self.getAjaxErrorMessage(xhr), 'error');
 				}
 			});
 		},
@@ -430,10 +434,12 @@
 						}
 
 						self.showNoteForm();
+					} else {
+						self.showMessage(response.data.message || lpStickyNotes.i18n.error, 'error');
 					}
 				},
-				error: function () {
-					self.showMessage(lpStickyNotes.i18n.error, 'error');
+				error: function (xhr) {
+					self.showMessage(self.getAjaxErrorMessage(xhr), 'error');
 				}
 			});
 		},
@@ -474,10 +480,10 @@
 							self.showMessage(response.data.message || lpStickyNotes.i18n.error, 'error');
 						}
 					},
-					error: function () {
+					error: function (xhr) {
 						// If error, show the note again
 						$noteElement.fadeIn(300);
-						self.showMessage(lpStickyNotes.i18n.error, 'error');
+						self.showMessage(self.getAjaxErrorMessage(xhr), 'error');
 					}
 				});
 			}
@@ -615,8 +621,8 @@
 						$modalBody.html('<div class="lp-no-notes"><p>' + (response.data.message || lpStickyNotes.i18n.error) + '</p></div>');
 					}
 				},
-				error: function () {
-					$modalBody.html('<div class="lp-no-notes"><p>' + lpStickyNotes.i18n.error + '</p></div>');
+				error: function (xhr) {
+					$modalBody.html('<div class="lp-no-notes"><p>' + self.getAjaxErrorMessage(xhr) + '</p></div>');
 				}
 			});
 		},
@@ -661,6 +667,18 @@
 
 			$sidebar.removeClass('open');
 			$toggle.show(); // Show toggle when sidebar is closed
+		},
+
+		getAjaxErrorMessage: function (xhr) {
+			if (xhr && xhr.responseJSON && xhr.responseJSON.data && xhr.responseJSON.data.message) {
+				return xhr.responseJSON.data.message;
+			}
+
+			if (xhr && xhr.status) {
+				return lpStickyNotes.i18n.error + ' HTTP ' + xhr.status + '.';
+			}
+
+			return lpStickyNotes.i18n.error;
 		}
 	};
 

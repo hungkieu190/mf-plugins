@@ -43,8 +43,10 @@ if (!function_exists('mamflow_render_license_page')) {
 
         ?>
         <div class="wrap mamflow-license-page">
-            <h1>Mamflow License Management</h1>
-            <p class="description">Manage licenses for all your Mamflow plugins in one place.</p>
+            <div class="mamflow-page-header">
+                <h1><?php esc_html_e('Mamflow License Management', 'mamflow'); ?></h1>
+                <p><?php esc_html_e('Manage licenses for Mamflow plugins installed on this LearnPress site.', 'mamflow'); ?></p>
+            </div>
 
             <?php if (!empty($tabs)): ?>
                 <!-- Tab Navigation -->
@@ -81,35 +83,195 @@ if (!function_exists('mamflow_render_license_page')) {
 
             <?php else: ?>
                 <div class="notice notice-warning">
-                    <p><strong>No Mamflow plugins registered.</strong></p>
-                    <p>Install and activate Mamflow plugins to manage their licenses here.</p>
+                    <p><strong><?php esc_html_e('No Mamflow plugins registered.', 'mamflow'); ?></strong></p>
+                    <p><?php esc_html_e('Install and activate a Mamflow plugin to manage its license here.', 'mamflow'); ?></p>
                 </div>
             <?php endif; ?>
         </div>
 
         <style>
             .mamflow-license-page {
-                margin-top: 20px;
+                max-width: 1200px;
+                color: #0f172a;
             }
 
-            .mamflow-license-page .description {
-                margin-bottom: 20px;
+            .mamflow-page-header {
+                padding: 24px 0 16px;
+            }
+
+            .mamflow-page-header h1 {
+                margin: 0;
+                color: #0f172a;
+                font-size: 24px;
+                line-height: 1.25;
+            }
+
+            .mamflow-page-header p,
+            .mamflow-license-heading p,
+            .mamflow-license-section p,
+            .mamflow-license-help p {
+                color: #475569;
                 font-size: 14px;
+                line-height: 1.6;
+            }
+
+            .mamflow-page-header p {
+                margin: 8px 0 0;
             }
 
             .mamflow-tab-content {
                 background: #fff;
-                border: 1px solid #ccd0d4;
+                border: 1px solid #e2e8f0;
                 border-top: none;
-                padding: 20px;
+                padding: 24px;
                 margin-top: -1px;
             }
 
-            .mamflow-tab-content .card {
-                border: none;
-                box-shadow: none;
-                background: transparent;
-                padding: 0;
+            .mamflow-license-page .nav-tab-wrapper {
+                border-bottom-color: #cbd5e1;
+            }
+
+            .mamflow-license-page .nav-tab {
+                border-color: #cbd5e1;
+                color: #475569;
+                font-size: 14px;
+            }
+
+            .mamflow-license-page .nav-tab-active {
+                border-bottom-color: #fff;
+                color: #2563eb;
+            }
+
+            .mamflow-license-panel {
+                max-width: 900px;
+            }
+
+            .mamflow-license-heading {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 24px;
+                margin-bottom: 24px;
+            }
+
+            .mamflow-license-heading h2,
+            .mamflow-license-section h3,
+            .mamflow-license-help h3 {
+                margin: 0;
+                color: #0f172a;
+            }
+
+            .mamflow-license-heading h2 {
+                font-size: 18px;
+            }
+
+            .mamflow-license-heading p {
+                margin: 8px 0 0;
+            }
+
+            .mamflow-status-badge {
+                display: inline-flex;
+                align-items: center;
+                min-height: 28px;
+                padding: 0 10px;
+                border: 1px solid #cbd5e1;
+                border-radius: 4px;
+                background: #fff;
+                color: #475569;
+                font-size: 12px;
+                font-weight: 600;
+                white-space: nowrap;
+            }
+
+            .mamflow-status-badge.is-success,
+            .mamflow-status-text.is-success {
+                color: #16a34a;
+            }
+
+            .mamflow-status-badge.is-warning {
+                border-color: #f59e0b;
+                color: #0f172a;
+                background: #ffffff;
+            }
+
+            .mamflow-license-section,
+            .mamflow-license-help {
+                border: 1px solid #e2e8f0;
+                border-radius: 4px;
+                background: #fff;
+                padding: 16px;
+                margin-bottom: 16px;
+            }
+
+            .mamflow-license-section h3,
+            .mamflow-license-help h3 {
+                font-size: 16px;
+            }
+
+            .mamflow-license-table {
+                margin-top: 16px;
+                border-color: #e2e8f0;
+            }
+
+            .mamflow-license-table th {
+                width: 180px;
+                color: #475569;
+                font-weight: 600;
+            }
+
+            .mamflow-license-table th,
+            .mamflow-license-table td {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .mamflow-license-actions {
+                display: flex;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin-top: 16px;
+            }
+
+            .mamflow-license-form {
+                display: grid;
+                gap: 8px;
+                max-width: 520px;
+                margin-top: 16px;
+            }
+
+            .mamflow-license-form label {
+                color: #475569;
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+            .mamflow-license-form input {
+                width: 100%;
+                min-height: 36px;
+                border-color: #cbd5e1;
+            }
+
+            .mamflow-license-page .button-primary {
+                background: #2563eb;
+                border-color: #2563eb;
+                color: #fff;
+            }
+
+            .mamflow-license-page .button-primary:hover,
+            .mamflow-license-page .button-primary:focus {
+                background: #2563eb;
+                border-color: #2563eb;
+            }
+
+            @media (max-width: 782px) {
+                .mamflow-license-heading {
+                    flex-direction: column;
+                    gap: 12px;
+                }
+
+                .mamflow-tab-content {
+                    padding: 16px;
+                }
             }
         </style>
         <?php

@@ -145,12 +145,12 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
                 'type' => 'title',
                 'title' => esc_html__('License Required', 'lp-sticky-notes'),
                 'desc' => sprintf(
-                    '<div class="notice notice-warning inline" style="margin: 20px 0; padding: 15px;"><p><strong>%s</strong><br>%s</p><p><a href="%s" class="button button-primary">%s</a> <a href="%s" class="button" target="_blank">%s</a></p></div>',
-                    esc_html__('⚠ License Activation Required', 'lp-sticky-notes'),
+                    '<div class="notice notice-warning inline" style="margin: 16px 0; padding: 16px; border-left-color: #f59e0b;"><p><strong>%s</strong><br>%s</p><p><a href="%s" class="button button-primary">%s</a> <a href="%s" class="button" target="_blank">%s</a></p></div>',
+                    esc_html__('License activation required', 'lp-sticky-notes'),
                     esc_html__('Please activate your license to access all plugin settings and features.', 'lp-sticky-notes'),
                     esc_url(admin_url('admin.php?page=mamflow-license&tab=sticky-notes')),
                     esc_html__('Activate License', 'lp-sticky-notes'),
-                    'https://mamflow.com/product/learnpress-notes-addon-lp-sticky-notes/',
+                    LP_STICKY_NOTES_PRODUCT_URL,
                     esc_html__('Purchase License', 'lp-sticky-notes')
                 ),
             ),
@@ -374,51 +374,51 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
                 'title' => esc_html__('Shortcode Guide', 'lp-sticky-notes'),
                 'desc' => '
                     <p><strong>' . esc_html__('Use this shortcode to display sticky notes on any page or post:', 'lp-sticky-notes') . '</strong></p>
-                    <div style="background: #f1f5f9; padding: 15px; border-radius: 6px; margin: 15px 0;">
-                        <code style="font-size: 14px; color: #334155;">[lp_sticky_notes]</code>
+                    <div style="background: #f8fafc; padding: 16px; border-radius: 4px; margin: 16px 0;">
+                        <code style="font-size: 14px; color: #0f172a;">[lp_sticky_notes]</code>
                     </div>
                     
                     <h4 style="margin-top: 20px;">' . esc_html__('Usage Examples:', 'lp-sticky-notes') . '</h4>
                     
                     <p><strong>1. ' . esc_html__('Display current user\'s notes (default):', 'lp-sticky-notes') . '</strong></p>
-                    <code style="background: #f1f5f9; padding: 8px; display: block; margin: 8px 0;">[lp_sticky_notes]</code>
+                    <code style="background: #f8fafc; padding: 8px; display: block; margin: 8px 0;">[lp_sticky_notes]</code>
                     
                     <p><strong>2. ' . esc_html__('Display notes from a specific course:', 'lp-sticky-notes') . '</strong></p>
-                    <code style="background: #f1f5f9; padding: 8px; display: block; margin: 8px 0;">[lp_sticky_notes course_id="123"]</code>
+                    <code style="background: #f8fafc; padding: 8px; display: block; margin: 8px 0;">[lp_sticky_notes course_id="123"]</code>
                     
                     <p><strong>3. ' . esc_html__('Display notes with all info (course + lesson names):', 'lp-sticky-notes') . '</strong></p>
-                    <code style="background: #f1f5f9; padding: 8px; display: block; margin: 8px 0;">[lp_sticky_notes show_course="yes" show_lesson="yes"]</code>
+                    <code style="background: #f8fafc; padding: 8px; display: block; margin: 8px 0;">[lp_sticky_notes show_course="yes" show_lesson="yes"]</code>
                     
                     <p><strong>4. ' . esc_html__('Display limited number of notes:', 'lp-sticky-notes') . '</strong></p>
-                    <code style="background: #f1f5f9; padding: 8px; display: block; margin: 8px 0;">[lp_sticky_notes limit="5"]</code>
+                    <code style="background: #f8fafc; padding: 8px; display: block; margin: 8px 0;">[lp_sticky_notes limit="5"]</code>
                     
                     <h4 style="margin-top: 20px;">' . esc_html__('Available Parameters:', 'lp-sticky-notes') . '</h4>
-                    <table class="form-table" style="margin-top: 10px;">
+                    <table class="form-table" style="margin-top: 12px;">
                         <tbody>
                             <tr>
-                                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><code>limit</code></td>
-                                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">' . esc_html__('Number of notes to display (default: 10)', 'lp-sticky-notes') . '</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><code>limit</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">' . esc_html__('Number of notes to display (default: 10)', 'lp-sticky-notes') . '</td>
                             </tr>
                             <tr>
-                                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><code>course_id</code></td>
-                                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">' . esc_html__('Filter notes by specific course ID', 'lp-sticky-notes') . '</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><code>course_id</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">' . esc_html__('Filter notes by specific course ID', 'lp-sticky-notes') . '</td>
                             </tr>
                             <tr>
-                                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><code>user_id</code></td>
-                                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">' . esc_html__('Display notes from specific user (defaults to current user)', 'lp-sticky-notes') . '</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><code>user_id</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">' . esc_html__('Display notes from specific user (defaults to current user)', 'lp-sticky-notes') . '</td>
                             </tr>
                             <tr>
-                                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><code>show_course</code></td>
-                                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">' . esc_html__('Show/hide course name (yes/no, default: yes)', 'lp-sticky-notes') . '</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><code>show_course</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">' . esc_html__('Show/hide course name (yes/no, default: yes)', 'lp-sticky-notes') . '</td>
                             </tr>
                             <tr>
-                                <td style="padding: 10px;"><code>show_lesson</code></td>
-                                <td style="padding: 10px;">' . esc_html__('Show/hide lesson name with link (yes/no, default: yes)', 'lp-sticky-notes') . '</td>
+                                <td style="padding: 12px;"><code>show_lesson</code></td>
+                                <td style="padding: 12px;">' . esc_html__('Show/hide lesson name with link (yes/no, default: yes)', 'lp-sticky-notes') . '</td>
                             </tr>
                         </tbody>
                     </table>
                     
-                    <p style="margin-top: 15px; padding: 12px; background: #dbeafe; border-left: 4px solid #2563eb; border-radius: 4px;">
+                    <p style="margin-top: 16px; padding: 12px; background: #f8fafc; border-left: 4px solid #2563eb; border-radius: 4px;">
                         <strong>' . esc_html__('Note:', 'lp-sticky-notes') . '</strong> ' . esc_html__('The shortcode displays notes in a responsive grid layout. Empty state will show when no notes are found.', 'lp-sticky-notes') . '
                     </p>
                 ',
@@ -446,9 +446,9 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
         ?>
 
         <?php if ($is_active): ?>
-            <div class="notice notice-success inline" style="margin: 20px 0;">
+            <div class="notice notice-success inline" style="margin: 16px 0;">
                 <p>
-                    <strong><?php echo esc_html__('✓ License Active', 'lp-sticky-notes'); ?></strong><br>
+                    <strong><?php echo esc_html__('License active', 'lp-sticky-notes'); ?></strong><br>
                     <?php
                     $days_remaining = $license_handler->get_days_until_expiration();
                     if ($days_remaining !== null) {
@@ -471,9 +471,9 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
             </div>
 
         <?php else: ?>
-            <div class="notice notice-warning inline" style="margin: 20px 0;">
+            <div class="notice notice-warning inline" style="margin: 16px 0;">
                 <p>
-                    <strong><?php echo esc_html__('⚠ No Active License', 'lp-sticky-notes'); ?></strong><br>
+                    <strong><?php echo esc_html__('No active license', 'lp-sticky-notes'); ?></strong><br>
                     <?php echo esc_html__('Please activate your license to unlock all plugin settings and features.', 'lp-sticky-notes'); ?>
                 </p>
                 <p>
@@ -484,12 +484,12 @@ class LP_Sticky_Notes_Settings extends LP_Abstract_Settings_Page
             </div>
         <?php endif; ?>
 
-        <hr style="margin: 30px 0;">
+        <hr style="margin: 32px 0;">
 
         <h3><?php echo esc_html__('Need Help?', 'lp-sticky-notes'); ?></h3>
         <p>
             <?php echo esc_html__('If you don\'t have a license key yet, you can purchase one from:', 'lp-sticky-notes'); ?>
-            <a href="https://mamflow.com/product/learnpress-notes-addon-lp-sticky-notes/" target="_blank">
+            <a href="<?php echo esc_url(LP_STICKY_NOTES_PRODUCT_URL); ?>" target="_blank">
                 <?php echo esc_html__('Mamflow Store', 'lp-sticky-notes'); ?>
             </a>
         </p>

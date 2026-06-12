@@ -27,6 +27,13 @@ class LP_Sticky_Notes_Database
 	public static $table_name = 'learnpress_sticky_notes';
 
 	/**
+	 * Database schema version.
+	 *
+	 * @var string
+	 */
+	const DB_VERSION = '1.0.6';
+
+	/**
 	 * LP_Sticky_Notes_Database constructor.
 	 */
 	protected function __construct()
@@ -59,11 +66,30 @@ class LP_Sticky_Notes_Database
 			KEY user_id (user_id),
 			KEY course_id (course_id),
 			KEY lesson_id (lesson_id),
-			KEY note_type (note_type)
+			KEY note_type (note_type),
+			KEY user_course_lesson (user_id, course_id, lesson_id),
+			KEY user_created (user_id, created_at),
+			KEY course_lesson (course_id, lesson_id)
 		) {$charset_collate};";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta($sql);
+
+		update_option('lp_sticky_notes_db_version', self::DB_VERSION);
+	}
+
+	/**
+	 * Run schema updates when plugin code is newer than the stored schema version.
+	 */
+	public static function maybe_update_schema()
+	{
+		$installed_version = get_option('lp_sticky_notes_db_version', '');
+
+		if (self::DB_VERSION === $installed_version) {
+			return;
+		}
+
+		self::create_tables();
 	}
 
 	/**
@@ -193,25 +219,34 @@ class LP_Sticky_Notes_Database
 	 *
 	 * @param int $lesson_id Lesson ID
 	 * @param int $user_id   User ID (optional, defaults to current user)
+	 * @param int $course_id Course ID (optional, recommended for reused lessons)
 	 * @return array
 	 */
-	public function get_notes_by_lesson($lesson_id, $user_id = 0)
+	public function get_notes_by_lesson($lesson_id, $user_id = 0, $course_id = 0)
 	{
 		global $wpdb;
 
 		$lesson_id = absint($lesson_id);
 		$user_id = $user_id ? absint($user_id) : get_current_user_id();
+		$course_id = absint($course_id);
 
 		if (!$lesson_id || !$user_id) {
 			return array();
 		}
 
+		$where = array('lesson_id = %d', 'user_id = %d');
+		$params = array($lesson_id, $user_id);
+
+		if ($course_id) {
+			$where[] = 'course_id = %d';
+			$params[] = $course_id;
+		}
+
 		$query = $wpdb->prepare(
 			"SELECT * FROM " . self::get_table_name() . "
-			WHERE lesson_id = %d AND user_id = %d
+			WHERE " . implode(' AND ', $where) . "
 			ORDER BY created_at ASC",
-			$lesson_id,
-			$user_id
+			$params
 		);
 
 		$results = $wpdb->get_results($query);
