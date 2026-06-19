@@ -1,0 +1,527 @@
+.belpcp-admin-page .belpcp-filter-bar {
+	background: #ffffff;
+	border: 1px solid #cbd5e1;
+	margin: 16px 0;
+	padding: 16px;
+}
+
+.belpcp-admin-page .belpcp-filter-grid {
+	display: grid;
+	gap: 12px;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.belpcp-admin-page .belpcp-filter-field {
+	min-width: 0;
+}
+
+.belpcp-admin-page .belpcp-filter-field label {
+	color: #475569;
+	display: block;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.4;
+	margin: 0 0 4px;
+}
+
+.belpcp-admin-page .belpcp-filter-field select,
+.belpcp-admin-page .belpcp-filter-field input[type="number"] {
+	margin: 0;
+	max-width: none;
+	min-height: 36px;
+	width: 100%;
+}
+
+.belpcp-admin-page select:focus,
+.belpcp-admin-page input[type="number"]:focus,
+.belpcp-admin-page button:focus,
+.belpcp-admin-page .button:focus,
+.belpcp-admin-page .button-link:focus,
+.belpcp-admin-page a:focus {
+	box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #2271b1;
+	outline: 2px solid transparent;
+}
+
+.belpcp-admin-page .belpcp-filter-field--price input[type="number"] {
+	min-width: 0;
+}
+
+.belpcp-admin-page .belpcp-filter-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 12px;
+}
+
+.belpcp-admin-page .belpcp-filter-actions .button,
+.belpcp-admin-page .belpcp-filter-actions .button-secondary {
+	margin: 0;
+	min-height: 36px;
+}
+
+.belpcp-admin-page .belpcp-course-load-message {
+	margin: 0 0 12px;
+}
+
+.belpcp-admin-page .belpcp-course-table-region {
+	position: relative;
+	transition: opacity 120ms ease-in-out;
+}
+
+.belpcp-admin-page .belpcp-course-table-region.is-loading {
+	opacity: 0.56;
+	pointer-events: none;
+}
+
+.belpcp-admin-page .belpcp-table-actionbar {
+	align-items: center;
+	background: #ffffff;
+	border: 1px solid #cbd5e1;
+	display: flex;
+	gap: 16px;
+	justify-content: space-between;
+	margin: 16px 0 8px;
+	padding: 12px 16px;
+}
+
+.belpcp-admin-page .belpcp-table-actionbar strong {
+	color: #0f172a;
+	display: block;
+	font-size: 14px;
+	line-height: 1.4;
+}
+
+.belpcp-admin-page .belpcp-table-actionbar span {
+	color: #475569;
+	font-size: 13px;
+}
+
+.belpcp-admin-page .belpcp-table-actionbar__hint {
+	color: #64748b;
+	font-size: 13px;
+	line-height: 1.4;
+	margin: 6px 0 0;
+}
+
+.belpcp-admin-page .belpcp-table-actionbar .button {
+	margin: 0;
+	min-height: 36px;
+}
+
+.belpcp-admin-page .belpcp-bulk-panel {
+	background: #ffffff;
+	border: 1px solid #cbd5e1;
+	margin: 16px 0 0;
+	padding: 16px;
+}
+
+.belpcp-admin-page .belpcp-modal--bulk-action .belpcp-bulk-panel {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.belpcp-admin-page .belpcp-bulk-panel__header {
+	align-items: flex-start;
+	border-bottom: 1px solid #e2e8f0;
+	display: flex;
+	gap: 16px;
+	justify-content: space-between;
+	margin: 0 0 16px;
+	padding: 0 0 12px;
+}
+
+.belpcp-admin-page .belpcp-bulk-panel__header h2,
+.belpcp-admin-page .belpcp-bulk-panel__header h3 {
+	color: #0f172a;
+	font-size: 18px;
+	line-height: 1.3;
+	margin: 0;
+}
+
+.belpcp-admin-page .belpcp-bulk-panel__header p {
+	color: #475569;
+	font-size: 13px;
+	margin: 0;
+}
+
+.belpcp-admin-page .belpcp-selected-count {
+	color: #0f172a;
+	font-weight: 600;
+}
+
+.belpcp-admin-page .belpcp-bulk-panel__controls {
+	align-items: end;
+	display: grid;
+	gap: 12px;
+	grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(160px, 1fr));
+}
+
+.belpcp-admin-page .belpcp-bulk-field {
+	min-width: 0;
+}
+
+.belpcp-admin-page .belpcp-bulk-field label {
+	color: #475569;
+	display: block;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.4;
+	margin: 0 0 4px;
+}
+
+.belpcp-admin-page .belpcp-bulk-field select,
+.belpcp-admin-page .belpcp-bulk-field input[type="number"],
+.belpcp-admin-page .belpcp-bulk-field input[type="datetime-local"] {
+	margin: 0;
+	max-width: none;
+	min-height: 36px;
+	width: 100%;
+}
+
+.belpcp-admin-page .belpcp-bulk-field.is-disabled {
+	opacity: 0.64;
+}
+
+.belpcp-admin-page .belpcp-bulk-field[hidden] {
+	display: none;
+}
+
+.belpcp-admin-page .belpcp-bulk-actions {
+	align-items: center;
+	border-top: 1px solid #e2e8f0;
+	display: flex;
+	gap: 16px;
+	justify-content: space-between;
+	margin-top: 16px;
+	padding-top: 16px;
+}
+
+.belpcp-admin-page .belpcp-bulk-actions__hint {
+	color: #475569;
+	font-size: 13px;
+	line-height: 1.5;
+	margin: 0;
+	max-width: 620px;
+}
+
+.belpcp-admin-page .belpcp-bulk-actions__buttons {
+	display: flex;
+	flex: 0 0 auto;
+	flex-wrap: wrap;
+	gap: 8px;
+	justify-content: flex-end;
+}
+
+.belpcp-admin-page .belpcp-bulk-actions__buttons .button {
+	margin: 0;
+	min-height: 36px;
+}
+
+.belpcp-admin-page .belpcp-bulk-message,
+.belpcp-admin-page .belpcp-bulk-preview,
+.belpcp-admin-page .belpcp-bulk-report {
+	margin: 12px 0 0;
+}
+
+.belpcp-admin-page .belpcp-bulk-preview,
+.belpcp-admin-page .belpcp-bulk-report {
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	padding: 12px;
+}
+
+.belpcp-admin-page .belpcp-bulk-report.notice-success {
+	background: #f0f6fc;
+	border-left-color: #00a32a;
+}
+
+.belpcp-admin-page .belpcp-bulk-report.notice-warning {
+	background: #fcf9e8;
+	border-left-color: #dba617;
+}
+
+.belpcp-admin-page .belpcp-bulk-preview h3,
+.belpcp-admin-page .belpcp-bulk-report h3 {
+	font-size: 16px;
+	margin: 0 0 8px;
+}
+
+.belpcp-admin-page .belpcp-bulk-preview p,
+.belpcp-admin-page .belpcp-bulk-report p {
+	color: #475569;
+	margin: 0;
+}
+
+.belpcp-admin-page .belpcp-preview-table-wrap {
+	margin-top: 12px;
+	max-height: 280px;
+	overflow: auto;
+}
+
+.belpcp-admin-page .belpcp-preview-table th,
+.belpcp-admin-page .belpcp-preview-table td {
+	padding: 8px 12px;
+	vertical-align: top;
+}
+
+.belpcp-admin-page .wp-list-table .column-title,
+.belpcp-admin-page .belpcp-preview-table td:first-child {
+	overflow-wrap: anywhere;
+	word-break: normal;
+}
+
+.belpcp-admin-page .belpcp-preview-table tr.is-updated td:last-child {
+	color: #007017;
+	font-weight: 600;
+}
+
+.belpcp-admin-page .belpcp-preview-table tr.is-skipped td:last-child,
+.belpcp-admin-page .belpcp-preview-table tr.has-warning td:last-child {
+	color: #8a6400;
+	font-weight: 600;
+}
+
+.belpcp-admin-page .belpcp-preview-table tr.is-failed td:last-child {
+	color: #b32d2e;
+	font-weight: 600;
+}
+
+body.belpcp-modal-open {
+	overflow: hidden;
+}
+
+.belpcp-admin-page .belpcp-modal[hidden] {
+	display: none;
+}
+
+.belpcp-admin-page .belpcp-modal {
+	align-items: center;
+	bottom: 0;
+	display: flex;
+	justify-content: center;
+	left: 0;
+	padding: 32px;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 100000;
+}
+
+.belpcp-admin-page .belpcp-modal__backdrop {
+	background: rgba(15, 23, 42, 0.48);
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.belpcp-admin-page .belpcp-modal__dialog {
+	background: #ffffff;
+	border: 1px solid #cbd5e1;
+	max-height: calc(100vh - 64px);
+	max-width: 920px;
+	overflow: auto;
+	position: relative;
+	width: min(920px, 100%);
+}
+
+.belpcp-admin-page .belpcp-modal__dialog--bulk-action {
+	max-width: 1040px;
+	width: min(1040px, 100%);
+}
+
+.belpcp-admin-page .belpcp-modal__dialog--history {
+	max-width: 1040px;
+	width: min(1040px, 100%);
+}
+
+.belpcp-admin-page .belpcp-modal__header,
+.belpcp-admin-page .belpcp-modal__footer {
+	align-items: center;
+	display: flex;
+	gap: 12px;
+	justify-content: space-between;
+	padding: 16px;
+}
+
+.belpcp-admin-page .belpcp-modal__header {
+	border-bottom: 1px solid #e2e8f0;
+}
+
+.belpcp-admin-page .belpcp-modal__footer {
+	border-top: 1px solid #e2e8f0;
+	justify-content: flex-start;
+}
+
+.belpcp-admin-page .belpcp-modal__header h2 {
+	color: #0f172a;
+	font-size: 18px;
+	line-height: 1.3;
+	margin: 0;
+}
+
+.belpcp-admin-page .belpcp-modal__close {
+	color: #475569;
+	font-size: 24px;
+	line-height: 1;
+	text-decoration: none;
+}
+
+.belpcp-admin-page .belpcp-modal__body {
+	padding: 16px;
+}
+
+.belpcp-admin-page .belpcp-modal__body > p {
+	color: #475569;
+	margin: 0 0 16px;
+}
+
+.belpcp-admin-page .belpcp-modal-summary {
+	display: grid;
+	gap: 12px;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	margin: 0 0 16px;
+}
+
+.belpcp-admin-page .belpcp-modal-summary div {
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	padding: 12px;
+}
+
+.belpcp-admin-page .belpcp-modal-summary dt {
+	color: #64748b;
+	font-size: 12px;
+	font-weight: 600;
+	margin: 0 0 4px;
+}
+
+.belpcp-admin-page .belpcp-modal-summary dd {
+	color: #0f172a;
+	font-size: 14px;
+	margin: 0;
+}
+
+.belpcp-admin-page .belpcp-modal-warning {
+	margin: 0 0 16px;
+}
+
+.belpcp-admin-page .belpcp-modal-preview h3 {
+	font-size: 16px;
+	margin: 0 0 8px;
+}
+
+.belpcp-admin-page .belpcp-history-empty {
+	color: #475569;
+	margin: 0;
+}
+
+.belpcp-admin-page .belpcp-history-table td {
+	white-space: nowrap;
+}
+
+@media screen and (max-width: 782px) {
+	.belpcp-admin-page .belpcp-filter-bar {
+		margin-right: 10px;
+		padding: 12px;
+	}
+
+	.belpcp-admin-page .belpcp-filter-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.belpcp-admin-page .belpcp-filter-actions {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+
+	.belpcp-admin-page .belpcp-filter-actions .button,
+	.belpcp-admin-page .belpcp-filter-actions .button-secondary {
+		text-align: center;
+		width: 100%;
+	}
+
+	.belpcp-admin-page .belpcp-table-actionbar {
+		align-items: stretch;
+		display: grid;
+		grid-template-columns: 1fr;
+		margin-right: 10px;
+		padding: 12px;
+	}
+
+	.belpcp-admin-page .belpcp-table-actionbar .button {
+		text-align: center;
+		width: 100%;
+	}
+
+	.belpcp-admin-page .belpcp-bulk-panel {
+		margin-right: 10px;
+		padding: 12px;
+	}
+
+	.belpcp-admin-page .belpcp-modal--bulk-action .belpcp-bulk-panel {
+		margin-right: 0;
+		padding: 0;
+	}
+
+	.belpcp-admin-page .belpcp-bulk-panel__header {
+		display: block;
+	}
+
+	.belpcp-admin-page .belpcp-bulk-panel__header p {
+		margin-top: 8px;
+	}
+
+	.belpcp-admin-page .belpcp-bulk-panel__controls {
+		grid-template-columns: 1fr;
+	}
+
+	.belpcp-admin-page .belpcp-bulk-actions {
+		align-items: stretch;
+		display: grid;
+		gap: 12px;
+		grid-template-columns: 1fr;
+	}
+
+	.belpcp-admin-page .belpcp-bulk-actions__buttons {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+
+	.belpcp-admin-page .belpcp-bulk-actions__buttons .button {
+		text-align: center;
+		width: 100%;
+	}
+
+	.belpcp-admin-page .belpcp-modal {
+		align-items: stretch;
+		padding: 12px;
+	}
+
+	.belpcp-admin-page .belpcp-modal__dialog {
+		max-height: calc(100vh - 24px);
+		width: 100%;
+	}
+
+	.belpcp-admin-page .belpcp-modal__header,
+	.belpcp-admin-page .belpcp-modal__footer,
+	.belpcp-admin-page .belpcp-modal__body {
+		padding: 12px;
+	}
+
+	.belpcp-admin-page .belpcp-modal-summary {
+		grid-template-columns: 1fr;
+	}
+
+	.belpcp-admin-page .belpcp-modal__footer {
+		display: grid;
+		grid-template-columns: 1fr;
+	}
+
+	.belpcp-admin-page .belpcp-modal__footer .button {
+		text-align: center;
+		width: 100%;
+	}
+}

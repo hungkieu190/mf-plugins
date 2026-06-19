@@ -41,10 +41,12 @@ Muc tieu: sua cac loi anh huong truc tiep den hanh vi hien tai truoc khi them ti
 - Cleaned broken encoding characters in backend UI copy.
 - Reduced backend inline styles and aligned admin UI colors, spacing, borders, and typography with MamFlow design rules.
 - Fixed editing an existing note so the frontend calls `lp_sticky_notes_update` when `note_id` exists instead of creating a duplicate note.
+- Fixed note creation/update timestamps using server database time instead of WordPress site time, which caused new notes to appear as several hours old in Profile > My Notes.
 - Fixed lesson sidebar notes being mixed between courses when the same lesson is reused by requiring `course_id` in lesson-note loading.
+- Fixed the lesson View All Notes modal so it only shows notes from the current course instead of all notes across courses.
 - Updated database lesson-note queries to support filtering by both `lesson_id` and `course_id`.
 - Hid the LearnPress Profile `My Notes` tab when the license is inactive and added a fallback license-required message for direct access.
-- Fixed Student Notes admin menu visibility for instructors by changing the submenu capability and keeping backend permission checks in render/AJAX handlers.
+- Scoped the Student Notes admin page by role: administrators can review all notes, while students can open the same page to view only their own notes.
 - Standardized the Mamflow product URL through `LP_STICKY_NOTES_PRODUCT_URL` to avoid duplicated hard-coded purchase links.
 - Improved AJAX error handling so users get clearer server/HTTP failure messages instead of only a generic error.
 - Verified shortcode, View All modal, and profile lesson links use the saved `course_id` and `lesson_id` context.

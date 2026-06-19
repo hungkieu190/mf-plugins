@@ -26,6 +26,7 @@ define('LP_STICKY_NOTES_BASENAME', plugin_basename(__FILE__));
 
 // License Product ID on mamflow.com
 define('LP_STICKY_NOTES_PRODUCT_ID', 47130);
+define('LP_STICKY_NOTES_PRODUCT_URL', 'https://mamflow.com/product/learnpress-notes-addon-lp-sticky-notes/');
 
 /**
  * Get the LearnPress course item URL for a lesson.
@@ -151,6 +152,7 @@ class LP_Sticky_Notes
 		add_action('plugins_loaded', array($this, 'check_learnpress'));
 		add_action('init', array($this, 'load_textdomain'));
 		add_action('init', array($this, 'maybe_clear_legacy_license_cron'));
+		add_action('init', array($this, 'maybe_update_database'));
 
 		// License admin menu
 		if (is_admin()) {
@@ -326,6 +328,18 @@ class LP_Sticky_Notes
 		$this->clear_license_cron();
 
 		flush_rewrite_rules();
+	}
+
+	/**
+	 * Update database schema after plugin updates.
+	 */
+	public function maybe_update_database()
+	{
+		if (!class_exists('LearnPress')) {
+			return;
+		}
+
+		LP_Sticky_Notes_Database::maybe_update_schema();
 	}
 
 	/**

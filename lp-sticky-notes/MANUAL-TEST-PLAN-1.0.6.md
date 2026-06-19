@@ -247,6 +247,20 @@ Expected:
 - Note appears in sidebar.
 - One row is inserted in database with correct `user_id`, `course_id`, `lesson_id`, `note_type=text`.
 
+## TC-018A Note Timestamp Uses Site Time
+
+Steps:
+1. Set WordPress timezone to the target site timezone, for example UTC+7 / Asia/Bangkok.
+2. Open a lesson as Student A.
+3. Create a new text note.
+4. Immediately open LearnPress Profile > My Notes.
+5. Check the same note in lesson sidebar, shortcode output, and Student Notes admin.
+
+Expected:
+- Profile date shows a fresh relative time such as seconds/minutes ago, not several hours ago.
+- Sidebar, shortcode, and Student Notes admin display the date/time according to WordPress site timezone.
+- Database `created_at` and `updated_at` are saved in WordPress local MySQL datetime format.
+
 ## TC-019 Add Highlight Note
 
 Steps:
@@ -362,6 +376,7 @@ Steps:
 Expected:
 - Notes are grouped by `course_id:lesson_id`.
 - Lesson links point to correct course context.
+- Only notes from the currently opened course are shown.
 
 ## TC-029 Shortcode With Course Filter
 
@@ -499,25 +514,29 @@ Expected:
 - Page loads.
 - Header, metrics, filters, table render correctly.
 
-## TC-042 Instructor Menu Access
+## TC-042 Student Sees Only Own Notes In Student Notes Admin
 
 Steps:
-1. Login as Instructor.
-2. Check LearnPress menu.
-3. Open Student Notes page.
+1. Login as Student A.
+2. Open `admin.php?page=lp-student-notes`.
+3. Apply Course filter if Student A has notes in multiple courses.
+4. Try changing `student_id` in the URL to Student B's user ID.
 
 Expected:
-- Instructor can see menu.
-- Page permission check allows instructor if `LP_TEACHER_ROLE` is valid.
+- Page loads with the same Student Notes UI.
+- Only Student A's notes are visible.
+- Student filter search returns only Student A.
+- Course filter search returns only courses where Student A has notes.
+- Changing `student_id` in the URL does not expose Student B's notes.
 
-## TC-043 Non-Instructor Access Blocked
+## TC-043 Logged Out Access Blocked
 
 Steps:
-1. Login as regular non-instructor user.
+1. Logout.
 2. Try `admin.php?page=lp-student-notes`.
 
 Expected:
-- Access denied.
+- Access is blocked by WordPress login/admin permissions.
 
 ## TC-044 Admin Metrics
 

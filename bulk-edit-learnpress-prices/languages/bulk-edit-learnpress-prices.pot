@@ -1,0 +1,676 @@
+# Copyright (C) 2026 Mamflow
+# This file is distributed under the same license as the Bulk Edit LearnPress Course Prices plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Bulk Edit LearnPress Course Prices 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/bulk-edit-learnpress-prices\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-06-19T09:16:21+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: bulk-edit-learnpress-prices\n"
+
+#. Plugin Name of the plugin
+#: bulk-edit-learnpress-prices.php
+#: includes/class-bulk-edit-lp-price.php:145
+#: includes/class-bulk-edit-lp-price.php:284
+msgid "Bulk Edit LearnPress Course Prices"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: bulk-edit-learnpress-prices.php
+msgid "https://mamflow.com/"
+msgstr ""
+
+#. Description of the plugin
+#: bulk-edit-learnpress-prices.php
+msgid "Powerful bulk editing tool for LearnPress course prices. Edit regular price and sale price of hundreds of courses in seconds."
+msgstr ""
+
+#. Author of the plugin
+#: bulk-edit-learnpress-prices.php
+msgid "Mamflow"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:135
+msgid "Bulk Edit LearnPress Course Prices requires LearnPress to manage course prices. Activate LearnPress to use this plugin."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:146
+msgid "Bulk Edit Prices"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:182
+msgid "Courses per page"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:247
+msgid "Preview is unavailable in this browser session."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:248
+msgid "Unable to generate preview. Refresh the page and try again."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:249
+msgid "Course loading is unavailable in this browser session."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:250
+#: templates/admin-page.php:151
+msgid "Unable to load courses. Refresh the page and try again."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:251
+msgid "Loading courses..."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:252
+msgid "Price history is unavailable in this browser session."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:253
+#: templates/admin-page.php:433
+msgid "Unable to load price history. Refresh the page and try again."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:254
+#: templates/admin-page.php:437
+msgid "No price changes have been recorded for this course yet."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:255
+msgid "change"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:256
+msgid "changes"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:257
+msgid "Sale schedule"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:258
+msgid "Updates are unavailable in this browser session."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:259
+msgid "Unable to apply updates. Refresh the page and try again."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:260
+msgid "updated"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:261
+msgid "failed"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:262
+msgid "ready"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:263
+msgid "skipped"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:264
+msgid "warnings"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:278
+#: includes/class-bulk-edit-lp-price.php:2007
+msgid "You do not have permission to manage LearnPress course prices."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:279
+msgid "Permission denied"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:327
+msgid "LearnPress is not available. Course filters and price editing will be enabled after LearnPress is active."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:340
+#: includes/class-bulk-edit-lp-price.php:1181
+msgid "Course prices were updated."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:344
+msgid "Course prices could not be updated. Review the selected courses and try again."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:495
+msgid "Minimum price cannot be greater than maximum price."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:816
+msgid "Set Regular Price"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:817
+msgid "Set Sale Price"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:818
+msgid "Schedule Sale Price"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:819
+msgid "Remove Sale Price"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:820
+msgid "Increase Price by Percentage"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:821
+msgid "Decrease Price by Percentage"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1051
+msgid "Course filters are invalid."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1065
+msgid "Courses loaded."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1071
+msgid "No LearnPress courses match the current filters."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1089
+msgid "Preview request is invalid."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1100
+msgid "Preview generated."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1124
+msgid "Choose a valid course before viewing price history."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1134
+msgid "Price history is available only for LearnPress courses."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1142
+msgid "You do not have permission to view this course price history."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1152
+msgid "Price history loaded."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1173
+msgid "Update request is invalid."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1184
+msgid "Course price update finished with items that need review."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1339
+#: includes/class-bulk-edit-lp-price.php:1825
+#: includes/class-bulk-edit-lp-price.php:1861
+msgid "Skipped"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1415
+msgid "Failed"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1416
+msgid "The price metadata could not be saved."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1421
+msgid "Updated"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1425
+#: includes/class-bulk-edit-lp-price.php:1691
+#: includes/class-bulk-edit-lp-price.php:1829
+#: includes/class-bulk-edit-lp-price.php:1835
+#: includes/class-bulk-edit-lp-price.php:1863
+#: includes/class-bulk-edit-lp-price.php:1865
+#: includes/class-bulk-edit-lp-price.php:1867
+#: includes/class-bulk-edit-lp-price.php:1869
+#: includes/functions.php:62
+#: templates/admin-page.php:218
+msgid "None"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1521
+msgid "Unknown user"
+msgstr ""
+
+#. translators: %s: sale price.
+#: includes/class-bulk-edit-lp-price.php:1564
+#, php-format
+msgid "Sale %s"
+msgstr ""
+
+#. translators: 1: sale start datetime, 2: sale end datetime.
+#: includes/class-bulk-edit-lp-price.php:1715
+#, php-format
+msgid "%1$s to %2$s"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1754
+msgid "Skipped: not a LearnPress course."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1761
+msgid "Skipped: you do not have permission to edit this course."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1802
+msgid "Skipped: unsupported action."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1807
+msgid "Skipped: sale price cannot be greater than regular price."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1811
+msgid "Skipped: sale schedule dates are invalid."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1815
+msgid "Existing sale price is greater than the previewed regular price."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1825
+msgid "Ready"
+msgstr ""
+
+#. translators: %d: course ID.
+#: includes/class-bulk-edit-lp-price.php:1856
+#, php-format
+msgid "Course #%d"
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:1999
+msgid "Security check failed. Refresh the page and try again."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:2036
+msgid "Select at least one course."
+msgstr ""
+
+#. translators: %d: maximum selected course count.
+#: includes/class-bulk-edit-lp-price.php:2042
+#: templates/admin-page.php:213
+#, php-format
+msgid "Select %d courses or fewer per update request."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:2048
+#: includes/class-bulk-edit-lp-price.php:2149
+msgid "Choose a valid bulk action."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:2131
+#: templates/admin-page.php:209
+msgid "Sale start date must be before sale end date."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:2165
+msgid "Enter a sale start date."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:2165
+msgid "Enter a sale end date."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:2170
+msgid "Enter sale schedule dates using the date and time fields."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:2180
+msgid "Enter a valid sale schedule date."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:2196
+msgid "Enter a value for the selected action."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:2200
+msgid "Enter a numeric value using a period for decimals."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:2206
+msgid "Value cannot be negative."
+msgstr ""
+
+#: includes/class-bulk-edit-lp-price.php:2230
+#: templates/admin-page.php:210
+msgid "Decrease percentage cannot be greater than 100."
+msgstr ""
+
+#: includes/class-lp-price-list-table.php:76
+msgid "Course ID"
+msgstr ""
+
+#: includes/class-lp-price-list-table.php:77
+msgid "Course Name"
+msgstr ""
+
+#: includes/class-lp-price-list-table.php:78
+msgid "Current Regular Price"
+msgstr ""
+
+#: includes/class-lp-price-list-table.php:79
+msgid "Current Sale Price"
+msgstr ""
+
+#: includes/class-lp-price-list-table.php:80
+msgid "Sale Schedule"
+msgstr ""
+
+#: includes/class-lp-price-list-table.php:81
+msgid "Price Changes"
+msgstr ""
+
+#: includes/class-lp-price-list-table.php:82
+#: templates/admin-page.php:128
+msgid "Status"
+msgstr ""
+
+#: includes/class-lp-price-list-table.php:83
+#: templates/admin-page.php:116
+msgid "Instructor"
+msgstr ""
+
+#: includes/class-lp-price-list-table.php:136
+msgid "(no title)"
+msgstr ""
+
+#. translators: %d: number of recorded price changes.
+#: includes/class-lp-price-list-table.php:195
+#: includes/class-lp-price-list-table.php:206
+#, php-format
+msgid "%d change"
+msgid_plural "%d changes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-lp-price-list-table.php:259
+msgid "No LearnPress courses match the current view."
+msgstr ""
+
+#: includes/class-lp-price-list-table.php:284
+msgid "The course query service is unavailable."
+msgstr ""
+
+#: templates/admin-page.php:37
+#: templates/admin-page.php:447
+msgid "Regular price"
+msgstr ""
+
+#: templates/admin-page.php:38
+#: templates/admin-page.php:39
+#: templates/admin-page.php:448
+msgid "Sale price"
+msgstr ""
+
+#: templates/admin-page.php:40
+msgid "Percentage increase"
+msgstr ""
+
+#: templates/admin-page.php:41
+msgid "Percentage decrease"
+msgstr ""
+
+#: templates/admin-page.php:42
+#: templates/admin-page.php:244
+#: templates/admin-page.php:371
+msgid "Value"
+msgstr ""
+
+#: templates/admin-page.php:52
+msgid "Review LearnPress courses and prepare bulk price updates from one admin screen."
+msgstr ""
+
+#: templates/admin-page.php:69
+msgid "Type"
+msgstr ""
+
+#: templates/admin-page.php:71
+msgid "All courses"
+msgstr ""
+
+#: templates/admin-page.php:72
+msgid "Paid courses"
+msgstr ""
+
+#: templates/admin-page.php:73
+msgid "Free courses"
+msgstr ""
+
+#: templates/admin-page.php:78
+msgid "Category"
+msgstr ""
+
+#: templates/admin-page.php:80
+msgid "All categories"
+msgstr ""
+
+#: templates/admin-page.php:90
+msgid "Min price"
+msgstr ""
+
+#: templates/admin-page.php:103
+msgid "Max price"
+msgstr ""
+
+#: templates/admin-page.php:118
+msgid "All instructors"
+msgstr ""
+
+#: templates/admin-page.php:130
+msgid "Any status"
+msgstr ""
+
+#: templates/admin-page.php:141
+msgid "Apply Filters"
+msgstr ""
+
+#: templates/admin-page.php:144
+msgid "Reset"
+msgstr ""
+
+#: templates/admin-page.php:159
+#: templates/admin-page.php:363
+msgid "Selected courses"
+msgstr ""
+
+#: templates/admin-page.php:162
+msgid "selected"
+msgstr ""
+
+#: templates/admin-page.php:165
+msgid "Select at least one course below to get started."
+msgstr ""
+
+#: templates/admin-page.php:169
+#: templates/admin-page.php:195
+msgid "Bulk price action"
+msgstr ""
+
+#: templates/admin-page.php:178
+msgid "The course table could not be loaded. Refresh the page and try again."
+msgstr ""
+
+#: templates/admin-page.php:196
+msgid "Close bulk price action dialog"
+msgstr ""
+
+#: templates/admin-page.php:205
+#: templates/admin-page.php:294
+msgid "Select at least one course before previewing changes."
+msgstr ""
+
+#: templates/admin-page.php:206
+msgid "Enter a value before previewing changes."
+msgstr ""
+
+#: templates/admin-page.php:207
+msgid "Enter a value of 0 or greater."
+msgstr ""
+
+#: templates/admin-page.php:208
+msgid "Enter both sale start and sale end dates."
+msgstr ""
+
+#: templates/admin-page.php:216
+msgid "courses ready for confirmation."
+msgstr ""
+
+#: templates/admin-page.php:217
+msgid "Sale price will be removed"
+msgstr ""
+
+#: templates/admin-page.php:221
+msgid "Pricing action"
+msgstr ""
+
+#: templates/admin-page.php:224
+msgid "courses selected"
+msgstr ""
+
+#: templates/admin-page.php:230
+#: templates/admin-page.php:367
+#: templates/admin-page.php:446
+msgid "Action"
+msgstr ""
+
+#: templates/admin-page.php:257
+msgid "Sale start"
+msgstr ""
+
+#: templates/admin-page.php:268
+msgid "Sale end"
+msgstr ""
+
+#: templates/admin-page.php:281
+msgid "Preview the selected course changes first. Apply Changes becomes available only after a valid preview is generated."
+msgstr ""
+
+#: templates/admin-page.php:285
+msgid "Preview Changes"
+msgstr ""
+
+#: templates/admin-page.php:288
+msgid "Apply Changes"
+msgstr ""
+
+#: templates/admin-page.php:298
+msgid "Preview summary"
+msgstr ""
+
+#: templates/admin-page.php:299
+msgid "Preview results will appear here before any course prices are updated."
+msgstr ""
+
+#: templates/admin-page.php:304
+#: templates/admin-page.php:322
+#: templates/admin-page.php:386
+msgid "Course"
+msgstr ""
+
+#: templates/admin-page.php:305
+#: templates/admin-page.php:387
+msgid "Current regular"
+msgstr ""
+
+#: templates/admin-page.php:306
+#: templates/admin-page.php:388
+msgid "Current sale"
+msgstr ""
+
+#: templates/admin-page.php:307
+#: templates/admin-page.php:389
+msgid "After preview"
+msgstr ""
+
+#: templates/admin-page.php:316
+msgid "Update report"
+msgstr ""
+
+#: templates/admin-page.php:317
+msgid "Final update results will appear here after changes are applied."
+msgstr ""
+
+#: templates/admin-page.php:323
+msgid "Previous regular"
+msgstr ""
+
+#: templates/admin-page.php:324
+msgid "Previous sale"
+msgstr ""
+
+#: templates/admin-page.php:325
+msgid "Current price"
+msgstr ""
+
+#: templates/admin-page.php:326
+msgid "Result"
+msgstr ""
+
+#: templates/admin-page.php:350
+msgid "Confirm bulk price update"
+msgstr ""
+
+#: templates/admin-page.php:351
+msgid "Close confirmation dialog"
+msgstr ""
+
+#: templates/admin-page.php:358
+msgid "Review the selected action and preview details before applying changes."
+msgstr ""
+
+#: templates/admin-page.php:377
+msgid "This will update LearnPress course price metadata after confirmation. Make sure the preview matches your intent."
+msgstr ""
+
+#: templates/admin-page.php:381
+msgid "Preview details"
+msgstr ""
+
+#: templates/admin-page.php:400
+msgid "Confirm Apply"
+msgstr ""
+
+#: templates/admin-page.php:403
+msgid "Cancel"
+msgstr ""
+
+#: templates/admin-page.php:421
+msgid "Price change history"
+msgstr ""
+
+#: templates/admin-page.php:422
+msgid "Close price history dialog"
+msgstr ""
+
+#: templates/admin-page.php:429
+msgid "Review recorded price changes for this course."
+msgstr ""
+
+#: templates/admin-page.php:444
+msgid "Date"
+msgstr ""
+
+#: templates/admin-page.php:445
+msgid "User"
+msgstr ""

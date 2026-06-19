@@ -5920,6 +5920,7 @@ body.confirm #popup_container.ready {
   flex-wrap: wrap;
 }
 .lp-courses-bar .courses-order-by {
+  margin-bottom: 0;
   border: 1px solid var(--lp-border-color, #E2E0DB);
   border-radius: var(--lp-border-radius, 5px);
   padding: 8px 16px;
@@ -5992,6 +5993,7 @@ body.confirm #popup_container.ready {
   line-height: 1.1;
   box-shadow: none;
   box-shadow: 0 0 0;
+  margin-bottom: 0;
 }
 .lp-courses-bar .search-courses button i {
   font-size: 1.2em;
@@ -8943,15 +8945,36 @@ table.lp-list-table tbody tr td {
 table.lp-list-table tfoot tr {
   border: none;
 }
-table.lp-list-table tfoot tr td {
+table.lp-list-table tfoot tr td, table.lp-list-table tfoot tr th {
   border: none;
 }
-table.lp-list-table tfoot tr td > div {
+table.lp-list-table tfoot tr td > div, table.lp-list-table tfoot tr th > div {
   padding: 20px;
 }
 table.lp-list-table tfoot .pagination {
   border: none;
   padding: 0;
+}
+table.lp-list-table.order-table-details tbody tr:last-child {
+  --lp-white-grey: var(--lp-border-color, #E2E0DB);
+}
+table.lp-list-table.order-table-details tfoot {
+  border-top: 1px solid var(--lp-border-color, #E2E0DB);
+}
+table.lp-list-table.order-table-details tfoot tr td, table.lp-list-table.order-table-details tfoot tr th {
+  padding: 10px 20px;
+  background-color: transparent;
+}
+table.lp-list-table.order-table-details tfoot tr:not(:last-child) td, table.lp-list-table.order-table-details tfoot tr:not(:last-child) th {
+  padding-bottom: 0;
+}
+
+.lp_profile_course_progress__nav {
+  margin-top: 1rem;
+}
+
+#profile-content-order-details .lp-table-wrap {
+  margin-bottom: 1rem;
 }
 
 /**

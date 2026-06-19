@@ -101,14 +101,12 @@ class LP_Sticky_Notes_Admin
     public function render_admin_page()
     {
         // Check permissions
-        $can_access = current_user_can('manage_options');
-        if (!$can_access && defined('LP_TEACHER_ROLE')) {
-            $can_access = current_user_can(LP_TEACHER_ROLE);
-        }
-
-        if (!$can_access) {
+        if (!is_user_logged_in() || !current_user_can('read')) {
             wp_die(__('You do not have permission to access this page.', 'lp-sticky-notes'));
         }
+
+        $is_admin = current_user_can('manage_options');
+        $scope_user_id = $is_admin ? 0 : get_current_user_id();
 
         // Check license
         $license_handler = LP_Sticky_Notes::instance()->get_license_handler();
@@ -142,26 +140,26 @@ class LP_Sticky_Notes_Admin
         }
 
         // Get filters from URL
-        $student_id = isset($_GET['student_id']) ? absint($_GET['student_id']) : 0;
+        $student_id = $is_admin && isset($_GET['student_id']) ? absint($_GET['student_id']) : $scope_user_id;
         $course_id = isset($_GET['course_id']) ? absint($_GET['course_id']) : 0;
         $lesson_id = isset($_GET['lesson_id']) ? absint($_GET['lesson_id']) : 0;
         $paged = isset($_GET['paged']) ? max(1, absint($_GET['paged'])) : 1;
         $per_page = 20; // Notes per page
 
         // Get filter options. Lists are capped; search loads more via AJAX.
-        $students = $this->get_students_with_notes('', 30, $student_id);
+        $students = $this->get_students_with_notes('', 30, $student_id, $scope_user_id);
 
         // Get courses with notes. Lists are capped; search loads more via AJAX.
-        $courses = $this->get_courses_with_notes('', 30, $course_id);
-        $student_count = $this->get_students_with_notes_count();
-        $course_count = $this->get_courses_with_notes_count();
+        $courses = $this->get_courses_with_notes('', 30, $course_id, $scope_user_id);
+        $student_count = $this->get_students_with_notes_count($scope_user_id);
+        $course_count = $this->get_courses_with_notes_count($scope_user_id);
 
         // Get total count for pagination
-        $total_notes = $this->get_filtered_notes_count($student_id, $course_id, $lesson_id);
+        $total_notes = $this->get_filtered_notes_count($student_id, $course_id, $lesson_id, $scope_user_id);
         $total_pages = ceil($total_notes / $per_page);
 
         // Get notes based on filters with pagination
-        $notes = $this->get_filtered_notes($student_id, $course_id, $lesson_id, $per_page, $paged);
+        $notes = $this->get_filtered_notes($student_id, $course_id, $lesson_id, $per_page, $paged, $scope_user_id);
 
         include LP_STICKY_NOTES_PATH . 'templates/admin-student-notes.php';
     }
@@ -174,7 +172,8 @@ class LP_Sticky_Notes_Admin
         $this->verify_filter_ajax_request();
 
         $search = isset($_GET['search']) ? sanitize_text_field(wp_unslash($_GET['search'])) : '';
-        $students = $this->get_students_with_notes($search, 30);
+        $scope_user_id = current_user_can('manage_options') ? 0 : get_current_user_id();
+        $students = $this->get_students_with_notes($search, 30, $scope_user_id, $scope_user_id);
 
         wp_send_json_success(
             array_map(
@@ -197,7 +196,8 @@ class LP_Sticky_Notes_Admin
         $this->verify_filter_ajax_request();
 
         $search = isset($_GET['search']) ? sanitize_text_field(wp_unslash($_GET['search'])) : '';
-        $courses = $this->get_courses_with_notes($search, 30);
+        $scope_user_id = current_user_can('manage_options') ? 0 : get_current_user_id();
+        $courses = $this->get_courses_with_notes($search, 30, 0, $scope_user_id);
 
         wp_send_json_success(
             array_map(
@@ -219,12 +219,7 @@ class LP_Sticky_Notes_Admin
     {
         check_ajax_referer('lp_sticky_notes_admin_filters', 'nonce');
 
-        $can_access = current_user_can('manage_options');
-        if (!$can_access && defined('LP_TEACHER_ROLE')) {
-            $can_access = current_user_can(LP_TEACHER_ROLE);
-        }
-
-        if (!$can_access) {
+        if (!is_user_logged_in() || !current_user_can('read')) {
             wp_send_json_error(array('message' => __('You do not have permission to search filters.', 'lp-sticky-notes')), 403);
         }
 
@@ -239,28 +234,41 @@ class LP_Sticky_Notes_Admin
      *
      * @return array
      */
-    private function get_students_with_notes($search = '', $limit = 30, $include_id = 0)
+    private function get_students_with_notes($search = '', $limit = 30, $include_id = 0, $scope_user_id = 0)
     {
         global $wpdb;
         $table = $wpdb->prefix . 'learnpress_sticky_notes';
         $where = array();
         $params = array();
+        $search_where = array();
+        $search_params = array();
+
+        if ($scope_user_id > 0) {
+            $where[] = 'u.ID = %d';
+            $params[] = absint($scope_user_id);
+        }
 
         if ($search !== '') {
             $like = '%' . $wpdb->esc_like($search) . '%';
-            $where[] = '(u.display_name LIKE %s OR u.user_email LIKE %s)';
-            $params[] = $like;
-            $params[] = $like;
+            $search_where[] = 'u.display_name LIKE %s';
+            $search_params[] = $like;
+            $search_where[] = 'u.user_email LIKE %s';
+            $search_params[] = $like;
         }
 
         if ($include_id > 0 && $search !== '') {
-            $where[] = 'u.ID = %d';
-            $params[] = $include_id;
+            $search_where[] = 'u.ID = %d';
+            $search_params[] = $include_id;
+        }
+
+        if (!empty($search_where)) {
+            $where[] = '(' . implode(' OR ', $search_where) . ')';
+            $params = array_merge($params, $search_params);
         }
 
         $where_sql = '';
         if (!empty($where)) {
-            $where_sql = 'WHERE (' . implode(' OR ', $where) . ')';
+            $where_sql = 'WHERE ' . implode(' AND ', $where);
         }
 
         $order_sql = 'ORDER BY u.display_name ASC';
@@ -288,21 +296,33 @@ class LP_Sticky_Notes_Admin
      *
      * @return array
      */
-    private function get_courses_with_notes($search = '', $limit = 30, $include_id = 0)
+    private function get_courses_with_notes($search = '', $limit = 30, $include_id = 0, $scope_user_id = 0)
     {
         global $wpdb;
         $table = $wpdb->prefix . 'learnpress_sticky_notes';
         $where = array("p.post_type = 'lp_course'");
         $params = array();
+        $search_where = array();
+        $search_params = array();
+
+        if ($scope_user_id > 0) {
+            $where[] = 'n.user_id = %d';
+            $params[] = absint($scope_user_id);
+        }
 
         if ($search !== '') {
-            $where[] = 'p.post_title LIKE %s';
-            $params[] = '%' . $wpdb->esc_like($search) . '%';
+            $search_where[] = 'p.post_title LIKE %s';
+            $search_params[] = '%' . $wpdb->esc_like($search) . '%';
         }
 
         if ($include_id > 0 && $search !== '') {
-            $where[] = 'p.ID = %d';
-            $params[] = $include_id;
+            $search_where[] = 'p.ID = %d';
+            $search_params[] = $include_id;
+        }
+
+        if (!empty($search_where)) {
+            $where[] = '(' . implode(' OR ', $search_where) . ')';
+            $params = array_merge($params, $search_params);
         }
 
         $order_sql = 'ORDER BY p.post_title ASC';
@@ -330,15 +350,21 @@ class LP_Sticky_Notes_Admin
      *
      * @return int
      */
-    private function get_students_with_notes_count()
+    private function get_students_with_notes_count($scope_user_id = 0)
     {
         global $wpdb;
         $table = $wpdb->prefix . 'learnpress_sticky_notes';
 
+        $where = '';
+        if ($scope_user_id > 0) {
+            $where = $wpdb->prepare(' WHERE u.ID = %d', absint($scope_user_id));
+        }
+
         return (int) $wpdb->get_var(
             "SELECT COUNT(DISTINCT u.ID)
             FROM {$table} n
-            INNER JOIN {$wpdb->users} u ON n.user_id = u.ID"
+            INNER JOIN {$wpdb->users} u ON n.user_id = u.ID
+            {$where}"
         );
     }
 
@@ -347,16 +373,21 @@ class LP_Sticky_Notes_Admin
      *
      * @return int
      */
-    private function get_courses_with_notes_count()
+    private function get_courses_with_notes_count($scope_user_id = 0)
     {
         global $wpdb;
         $table = $wpdb->prefix . 'learnpress_sticky_notes';
+
+        $where = array("p.post_type = 'lp_course'");
+        if ($scope_user_id > 0) {
+            $where[] = $wpdb->prepare('n.user_id = %d', absint($scope_user_id));
+        }
 
         return (int) $wpdb->get_var(
             "SELECT COUNT(DISTINCT p.ID)
             FROM {$table} n
             INNER JOIN {$wpdb->posts} p ON n.course_id = p.ID
-            WHERE p.post_type = 'lp_course'"
+            WHERE " . implode(' AND ', $where)
         );
     }
 
@@ -368,12 +399,15 @@ class LP_Sticky_Notes_Admin
      * @param int $lesson_id
      * @return int
      */
-    private function get_filtered_notes_count($student_id, $course_id, $lesson_id)
+    private function get_filtered_notes_count($student_id, $course_id, $lesson_id, $scope_user_id = 0)
     {
         global $wpdb;
         $table = $wpdb->prefix . 'learnpress_sticky_notes';
 
         $where = array('1=1');
+        if ($scope_user_id > 0) {
+            $where[] = $wpdb->prepare('n.user_id = %d', absint($scope_user_id));
+        }
         if ($student_id > 0) {
             $where[] = $wpdb->prepare('n.user_id = %d', $student_id);
         }
@@ -401,13 +435,18 @@ class LP_Sticky_Notes_Admin
      * @param int $paged
      * @return array
      */
-    private function get_filtered_notes($student_id = 0, $course_id = 0, $lesson_id = 0, $per_page = 20, $paged = 1)
+    private function get_filtered_notes($student_id = 0, $course_id = 0, $lesson_id = 0, $per_page = 20, $paged = 1, $scope_user_id = 0)
     {
         global $wpdb;
         $table = $wpdb->prefix . 'learnpress_sticky_notes';
 
         $where = array('1=1');
         $params = array();
+
+        if ($scope_user_id > 0) {
+            $where[] = 'n.user_id = %d';
+            $params[] = absint($scope_user_id);
+        }
 
         if ($student_id) {
             $where[] = 'n.user_id = %d';

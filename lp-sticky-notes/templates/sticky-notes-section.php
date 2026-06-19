@@ -144,7 +144,7 @@ defined('ABSPATH') || exit();
 								<?php echo $note->note_type === 'highlight' ? esc_html__('Highlight', 'lp-sticky-notes') : esc_html__('Text', 'lp-sticky-notes'); ?>
 							</span>
 							<span class="lp-note-date">
-								<?php echo esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($note->created_at))); ?>
+								<?php echo esc_html(mysql2date(get_option('date_format') . ' ' . get_option('time_format'), $note->created_at)); ?>
 							</span>
 						</div>
 

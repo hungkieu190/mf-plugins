@@ -1,0 +1,8 @@
+{
+  "name": "bulk-edit-learnpress-prices",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "release": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/release.ps1"
+  }
+}

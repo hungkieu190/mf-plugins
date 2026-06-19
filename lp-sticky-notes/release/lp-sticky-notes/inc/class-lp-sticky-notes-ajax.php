@@ -194,17 +194,17 @@ class LP_Sticky_Notes_Ajax
 		$lesson_id = isset($_POST['lesson_id']) ? absint($_POST['lesson_id']) : 0;
 		$course_id = isset($_POST['course_id']) ? absint($_POST['course_id']) : 0;
 
-		if (!$lesson_id) {
-			wp_send_json_error(array('message' => __('Invalid lesson ID.', 'lp-sticky-notes')));
+		if (!$lesson_id || !$course_id) {
+			wp_send_json_error(array('message' => __('Invalid lesson or course ID.', 'lp-sticky-notes')));
 		}
 
 		// Check if user is enrolled in the course
-		if ($course_id && !$this->user_can_access_course($course_id)) {
+		if (!$this->user_can_access_course($course_id)) {
 			wp_send_json_error(array('message' => __('You do not have access to this course.', 'lp-sticky-notes')));
 		}
 
 		$db = LP_Sticky_Notes_Database::instance();
-		$notes = $db->get_notes_by_lesson($lesson_id);
+		$notes = $db->get_notes_by_lesson($lesson_id, 0, $course_id);
 
 		wp_send_json_success(array('notes' => $notes));
 	}
@@ -253,8 +253,18 @@ class LP_Sticky_Notes_Ajax
 			wp_send_json_error(array('message' => __('You must be logged in to view notes.', 'lp-sticky-notes')));
 		}
 
+		$course_id = isset($_POST['course_id']) ? absint($_POST['course_id']) : 0;
+
+		if (!$course_id) {
+			wp_send_json_error(array('message' => __('Invalid course ID.', 'lp-sticky-notes')));
+		}
+
+		if (!$this->user_can_access_course($course_id)) {
+			wp_send_json_error(array('message' => __('You do not have access to this course.', 'lp-sticky-notes')));
+		}
+
 		$db = LP_Sticky_Notes_Database::instance();
-		$notes = $db->get_user_notes();
+		$notes = $db->get_user_notes(0, $course_id);
 
 		// Group notes by lesson
 		$grouped_notes = array();

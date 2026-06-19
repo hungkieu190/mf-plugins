@@ -1004,6 +1004,197 @@ const recoverOrder = () => {
 
 /***/ },
 
+/***/ "./assets/src/js/frontend/profile/order-refund.js"
+/*!********************************************************!*\
+  !*** ./assets/src/js/frontend/profile/order-refund.js ***!
+  \********************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   OrderRefund: () => (/* binding */ OrderRefund),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _lpToastify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../lpToastify */ "./assets/src/js/lpToastify.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils.js */ "./assets/src/js/utils.js");
+
+
+
+
+/**
+ * Order Refund Script
+ *
+ * Handle refund action on profile orders list.
+ *
+ * @since 4.3.5
+ * @version 1.0.0
+ */
+class OrderRefund {
+  constructor() {
+    this.isRequesting = false;
+  }
+  static selectors = {
+    actionRefund: '.lp-refund-order-action'
+  };
+  init() {
+    this.events();
+  }
+  events() {
+    if (OrderRefund._loadedEvents) {
+      return;
+    }
+    OrderRefund._loadedEvents = this;
+    _utils_js__WEBPACK_IMPORTED_MODULE_2__.eventHandlers('click', [{
+      selector: OrderRefund.selectors.actionRefund,
+      class: this,
+      callBack: this.handleRefundClick.name
+    }]);
+  }
+  getAjaxHandle() {
+    const ajaxHandle = window.lpAJAXG;
+    if (!ajaxHandle || typeof ajaxHandle.fetchAJAX !== 'function') {
+      return null;
+    }
+    return ajaxHandle;
+  }
+  setActionLoadingState(actionLink, isLoading) {
+    if (!actionLink) {
+      return;
+    }
+    if (isLoading) {
+      actionLink.dataset.refundSubmitting = 'yes';
+    } else {
+      delete actionLink.dataset.refundSubmitting;
+    }
+    _utils_js__WEBPACK_IMPORTED_MODULE_2__.lpSetLoadingEl(actionLink, isLoading ? 1 : 0);
+  }
+  getActionData(actionLink) {
+    const reasonMin = parseInt(actionLink.dataset.reasonMin || '10', 10);
+    return {
+      orderId: parseInt(actionLink.dataset.orderId || '0', 10),
+      requireReason: actionLink.dataset.requireReason === 'yes',
+      reasonMin: Number.isNaN(reasonMin) ? 10 : reasonMin,
+      reasonPrompt: actionLink.dataset.reasonPrompt || '',
+      reasonPlaceholder: actionLink.dataset.reasonPlaceholder || '',
+      reasonRequired: actionLink.dataset.reasonRequired || '',
+      confirmTitle: actionLink.dataset.confirmTitle || '',
+      confirmText: actionLink.dataset.confirmText || '',
+      confirmButton: actionLink.dataset.confirmButton || '',
+      cancelButton: actionLink.dataset.cancelButton || ''
+    };
+  }
+  openReasonModal(data) {
+    return sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+      title: data.reasonPrompt,
+      input: 'textarea',
+      inputPlaceholder: data.reasonPlaceholder,
+      inputAutoTrim: true,
+      showCancelButton: true,
+      confirmButtonText: data.confirmButton,
+      cancelButtonText: data.cancelButton,
+      inputValidator: value => {
+        const reason = (value || '').trim();
+        if (!reason.length) {
+          return data.reasonRequired;
+        }
+        return undefined;
+      }
+    });
+  }
+  openConfirmModal(data) {
+    return sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+      icon: 'warning',
+      title: data.confirmTitle,
+      text: data.confirmText,
+      showCancelButton: true,
+      confirmButtonText: data.confirmButton,
+      cancelButtonText: data.cancelButton
+    });
+  }
+  sendRefundRequest(actionLink, data, reason = '') {
+    const ajaxHandle = this.getAjaxHandle();
+    if (!ajaxHandle) {
+      _lpToastify__WEBPACK_IMPORTED_MODULE_1__.show('Refund action is unavailable right now.', 'error');
+      return;
+    }
+    if (!data.orderId) {
+      _lpToastify__WEBPACK_IMPORTED_MODULE_1__.show('Invalid order.', 'error');
+      return;
+    }
+    this.isRequesting = true;
+    this.setActionLoadingState(actionLink, true);
+    const dataSend = {
+      action: 'request_refund_order',
+      order_id: data.orderId,
+      reason
+    };
+    ajaxHandle.fetchAJAX(dataSend, {
+      success: response => {
+        const {
+          status,
+          message,
+          data
+        } = response;
+        if (status !== 'success') {
+          throw new Error(message);
+        }
+        _lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(message, 'success');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1200);
+      },
+      error: error => {
+        const message = error?.message || error || 'Refund request failed.';
+        _lpToastify__WEBPACK_IMPORTED_MODULE_1__.show(message, 'error');
+      },
+      completed: () => {
+        this.isRequesting = false;
+        this.setActionLoadingState(actionLink, false);
+      }
+    });
+  }
+  async handleRefundClick(args) {
+    const {
+      e,
+      target
+    } = args;
+    e.preventDefault();
+    const actionLink = target.closest(OrderRefund.selectors.actionRefund);
+    if (!actionLink) {
+      return;
+    }
+    if (this.isRequesting || actionLink.dataset.refundSubmitting === 'yes' || actionLink.classList.contains('loading')) {
+      return;
+    }
+    const actionData = this.getActionData(actionLink);
+    let reason = '';
+    if (actionData.requireReason) {
+      const reasonResult = await this.openReasonModal(actionData);
+      if (!reasonResult.isConfirmed) {
+        return;
+      }
+      reason = (reasonResult.value || '').trim();
+    }
+    const confirmResult = await this.openConfirmModal(actionData);
+    if (!confirmResult.isConfirmed) {
+      return;
+    }
+    this.sendRefundRequest(actionLink, actionData, reason);
+  }
+}
+const orderRefund = () => {
+  const orderRefundHandle = new OrderRefund();
+  _utils_js__WEBPACK_IMPORTED_MODULE_2__.lpOnElementReady(OrderRefund.selectors.actionRefund, () => {
+    orderRefundHandle.init();
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (orderRefund);
+
+/***/ },
+
 /***/ "./assets/src/js/frontend/profile/quiz.js"
 /*!************************************************!*\
   !*** ./assets/src/js/frontend/profile/quiz.js ***!
@@ -1132,6 +1323,60 @@ const courseStatistics = () => {
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (courseStatistics);
+
+/***/ },
+
+/***/ "./assets/src/js/lpToastify.js"
+/*!*************************************!*\
+  !*** ./assets/src/js/lpToastify.js ***!
+  \*************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   show: () => (/* binding */ show)
+/* harmony export */ });
+/* harmony import */ var toastify_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! toastify-js */ "./node_modules/toastify-js/src/toastify.js");
+/* harmony import */ var toastify_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(toastify_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var toastify_js_src_toastify_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! toastify-js/src/toastify.css */ "./node_modules/toastify-js/src/toastify.css");
+/**
+ * Utils functions
+ *
+ * @param url
+ * @param data
+ * @param functions
+ * @since 4.3.0
+ * @version 1.0.0
+ */
+
+
+const argsToastify = {
+  text: '',
+  gravity: lpData.toast.gravity,
+  // `top` or `bottom`
+  position: lpData.toast.position,
+  // `left`, `center` or `right`
+  className: `${lpData.toast.classPrefix}`,
+  close: lpData.toast.close == 1,
+  stopOnFocus: lpData.toast.stopOnFocus == 1,
+  duration: lpData.toast.duration
+};
+const show = (message, status = 'success', argsCustom) => {
+  let args = argsToastify;
+  if (argsCustom) {
+    args = {
+      ...args,
+      ...argsCustom
+    };
+  }
+  const toastify = new (toastify_js__WEBPACK_IMPORTED_MODULE_0___default())({
+    ...args,
+    text: message,
+    className: `${lpData.toast.classPrefix} ${status}`
+  });
+  toastify.showToast();
+};
 
 /***/ },
 
@@ -11193,7 +11438,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _profile_cover_image__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./profile/cover-image */ "./assets/src/js/frontend/profile/cover-image.js");
 /* harmony import */ var _profile_avatar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./profile/avatar */ "./assets/src/js/frontend/profile/avatar.js");
 /* harmony import */ var _profile_quiz__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./profile/quiz */ "./assets/src/js/frontend/profile/quiz.js");
-/* harmony import */ var _admin_courses_view_students_modal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../admin/courses/view-students-modal */ "./assets/src/js/admin/courses/view-students-modal.js");
+/* harmony import */ var _profile_order_refund__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./profile/order-refund */ "./assets/src/js/frontend/profile/order-refund.js");
+/* harmony import */ var _admin_courses_view_students_modal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../admin/courses/view-students-modal */ "./assets/src/js/admin/courses/view-students-modal.js");
+
 
 
 
@@ -11205,7 +11452,8 @@ __webpack_require__.r(__webpack_exports__);
 (0,_profile_quiz__WEBPACK_IMPORTED_MODULE_5__["default"])();
 (0,_profile_statistic__WEBPACK_IMPORTED_MODULE_1__["default"])();
 (0,_profile_order_recover__WEBPACK_IMPORTED_MODULE_2__["default"])();
-new _admin_courses_view_students_modal__WEBPACK_IMPORTED_MODULE_6__.ViewStudentsModal();
+(0,_profile_order_refund__WEBPACK_IMPORTED_MODULE_6__["default"])();
+new _admin_courses_view_students_modal__WEBPACK_IMPORTED_MODULE_7__.ViewStudentsModal();
 document.addEventListener('DOMContentLoaded', function (event) {
   (0,_profile_course_tab__WEBPACK_IMPORTED_MODULE_0__["default"])();
 });

@@ -121,6 +121,8 @@ class LP_Sticky_Notes_Database
 			'highlight_text' => null,
 			'position' => null,
 			'content' => '',
+			'created_at' => current_time('mysql'),
+			'updated_at' => current_time('mysql'),
 		);
 
 		$data = wp_parse_args($data, $defaults);
@@ -133,11 +135,13 @@ class LP_Sticky_Notes_Database
 		$data['highlight_text'] = !empty($data['highlight_text']) ? wp_kses_post($data['highlight_text']) : null;
 		$data['position'] = !empty($data['position']) ? wp_json_encode($data['position']) : null;
 		$data['content'] = wp_kses_post($data['content']);
+		$data['created_at'] = sanitize_text_field($data['created_at']);
+		$data['updated_at'] = sanitize_text_field($data['updated_at']);
 
 		$result = $wpdb->insert(
 			self::get_table_name(),
 			$data,
-			array('%d', '%d', '%d', '%s', '%s', '%s', '%s')
+			array('%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s')
 		);
 
 		if ($result) {
@@ -165,25 +169,32 @@ class LP_Sticky_Notes_Database
 
 		// Sanitize data
 		$update_data = array();
+		$update_formats = array();
 		if (isset($data['content'])) {
 			$update_data['content'] = wp_kses_post($data['content']);
+			$update_formats[] = '%s';
 		}
 		if (isset($data['highlight_text'])) {
 			$update_data['highlight_text'] = !empty($data['highlight_text']) ? wp_kses_post($data['highlight_text']) : null;
+			$update_formats[] = '%s';
 		}
 		if (isset($data['position'])) {
 			$update_data['position'] = !empty($data['position']) ? wp_json_encode($data['position']) : null;
+			$update_formats[] = '%s';
 		}
 
 		if (empty($update_data)) {
 			return false;
 		}
 
+		$update_data['updated_at'] = current_time('mysql');
+		$update_formats[] = '%s';
+
 		$result = $wpdb->update(
 			self::get_table_name(),
 			$update_data,
 			array('id' => $note_id),
-			array('%s'),
+			$update_formats,
 			array('%d')
 		);
 

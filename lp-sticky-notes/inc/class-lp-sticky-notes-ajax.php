@@ -253,8 +253,18 @@ class LP_Sticky_Notes_Ajax
 			wp_send_json_error(array('message' => __('You must be logged in to view notes.', 'lp-sticky-notes')));
 		}
 
+		$course_id = isset($_POST['course_id']) ? absint($_POST['course_id']) : 0;
+
+		if (!$course_id) {
+			wp_send_json_error(array('message' => __('Invalid course ID.', 'lp-sticky-notes')));
+		}
+
+		if (!$this->user_can_access_course($course_id)) {
+			wp_send_json_error(array('message' => __('You do not have access to this course.', 'lp-sticky-notes')));
+		}
+
 		$db = LP_Sticky_Notes_Database::instance();
-		$notes = $db->get_user_notes();
+		$notes = $db->get_user_notes(0, $course_id);
 
 		// Group notes by lesson
 		$grouped_notes = array();

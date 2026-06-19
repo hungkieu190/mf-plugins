@@ -58,7 +58,7 @@ $shortcode_link_color = LP_Sticky_Notes_Settings::get_setting('lp_sticky_notes_s
                                 : esc_html__('Text', 'lp-sticky-notes'); ?>
                         </span>
                         <span class="lp-note-date">
-                            <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($note->created_at))); ?>
+                            <?php echo esc_html(mysql2date(get_option('date_format'), $note->created_at)); ?>
                         </span>
                     </div>
 

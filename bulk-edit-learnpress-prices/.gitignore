@@ -1,0 +1,4 @@
+/release/
+/*.zip
+/.phpcs-cache
+/.phpunit.result.cache

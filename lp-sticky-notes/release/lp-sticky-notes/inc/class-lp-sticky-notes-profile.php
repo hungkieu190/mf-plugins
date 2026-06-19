@@ -43,6 +43,11 @@ class LP_Sticky_Notes_Profile {
 	 * @return array
 	 */
 	public function add_notes_tab( $tabs ) {
+		$license_handler = LP_Sticky_Notes::instance()->get_license_handler();
+		if ( ! $license_handler->is_feature_enabled() ) {
+			return $tabs;
+		}
+
 		$tabs['my-notes'] = array(
 			'title'    => __( 'My Notes', 'lp-sticky-notes' ),
 			'slug'     => 'my-notes',
@@ -58,6 +63,12 @@ class LP_Sticky_Notes_Profile {
 	 * Render My Notes tab content
 	 */
 	public function render_notes_tab() {
+		$license_handler = LP_Sticky_Notes::instance()->get_license_handler();
+		if ( ! $license_handler->is_feature_enabled() ) {
+			echo '<div class="lp-no-notes"><h3>' . esc_html__( 'License required', 'lp-sticky-notes' ) . '</h3><p>' . esc_html__( 'Activate a valid license to view saved notes.', 'lp-sticky-notes' ) . '</p></div>';
+			return;
+		}
+
 		$profile = LP_Profile::instance();
 		$user    = $profile->get_user();
 
@@ -111,6 +122,11 @@ class LP_Sticky_Notes_Profile {
 			return;
 		}
 
+		$license_handler = LP_Sticky_Notes::instance()->get_license_handler();
+		if ( ! $license_handler->is_feature_enabled() ) {
+			return;
+		}
+
 		// Check if we're on the my-notes tab
 		$profile = LP_Profile::instance();
 		if ( ! $profile || $profile->get_current_tab() !== 'my-notes' ) {
@@ -148,6 +164,8 @@ class LP_Sticky_Notes_Profile {
 					'viewLesson'    => __( 'View Lesson', 'lp-sticky-notes' ),
 					'deleteNote'    => __( 'Delete Note', 'lp-sticky-notes' ),
 					'editNote'      => __( 'Edit Note', 'lp-sticky-notes' ),
+					'noNotes'       => __( 'No notes found', 'lp-sticky-notes' ),
+					'startTakingNotes' => __( 'Start taking notes in your lessons to see them here!', 'lp-sticky-notes' ),
 				),
 			)
 		);

@@ -348,7 +348,7 @@ class Buttons extends _wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Component 
     	window.localStorage.removeItem( 'quiz_start_' + lpQuizSettings.id );
     	window.localStorage.removeItem( 'quiz_userdata_' + lpQuizSettings.id );
     	window.localStorage.setItem( 'quiz_start_' + lpQuizSettings.id, Date.now() );
-    			// Set retake to local.storage
+    		// Set retake to local.storage
     	const retakenNumber = window.localStorage.getItem( 'quiz_retake_' + lpQuizSettings.id );
     	if ( retakenNumber >= 1 ) {
     		window.localStorage.setItem( 'quiz_retake_' + lpQuizSettings.id, parseInt( retakenNumber ) + 1 );

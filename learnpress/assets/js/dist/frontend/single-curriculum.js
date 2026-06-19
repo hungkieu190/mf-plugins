@@ -471,22 +471,19 @@ const Sidebar = () => {
   /*$( '.section' ).each( function() {
   	const $section = $( this ),
   		$toggle = $section.find( '.section-left' );
-  
-  	$toggle.on( 'click', function() {
+  		$toggle.on( 'click', function() {
   		const isClose = $section.toggleClass( 'closed' ).hasClass( 'closed' );
   		const sections = LP.Cookies.get( 'closed-section-' + lpGlobalSettings.post_id ) || [];
   		const sectionId = parseInt( $section.data( 'section-id' ) );
   		const at = sections.findIndex( ( id ) => {
   			return id == sectionId;
   		} );
-  
-  		if ( isClose ) {
+  			if ( isClose ) {
   			sections.push( parseInt( $section.data( 'section-id' ) ) );
   		} else {
   			sections.splice( at, 1 );
   		}
-  
-  		LP.Cookies.remove( 'closed-section-(.*)' );
+  			LP.Cookies.remove( 'closed-section-(.*)' );
   		LP.Cookies.set( 'closed-section-' + lpGlobalSettings.post_id, [ ...new Set( sections ) ] );
   	} );
   } );*/

@@ -9930,26 +9930,10 @@ class EditQuestion {
     });
   }
   reInitTinymce(id) {
-    if (!window.tinymce || !id) {
-      return;
-    }
-    const elTextarea = document.getElementById(id);
-    if (!elTextarea) {
-      return;
-    }
-    this.reInitQuicktags(id);
-    const editor = window.tinymce.get(id);
-    const editorContainer = editor?.getContainer?.();
-    const isEditorAttached = editor && (editor.targetElm === elTextarea || editor.getElement?.() === elTextarea || editorContainer?.contains(elTextarea));
-    if (isEditorAttached) {
-      this.setDefaultEditorTab(id);
-      return;
-    }
     window.tinymce.execCommand('mceRemoveEditor', true, id);
     window.tinymce.execCommand('mceAddEditor', true, id);
-    this.setDefaultEditorTab(id);
   }
-  reInitQuicktags(id) {
+  reInitQuickTags(id) {
     const toolbar = document.getElementById(`qt_${id}_toolbar`);
     if (!toolbar || toolbar.children.length || !window.quicktags) {
       return;
@@ -9969,6 +9953,10 @@ class EditQuestion {
     }
     if (wrapEditor.classList.contains('html-active') && window.switchEditors?.go) {
       window.switchEditors.go(id, 'tmce');
+      const elTextarea = document.getElementById(id);
+      if (elTextarea) {
+        elTextarea.style.visibility = '';
+      }
     }
     wrapEditor.classList.add('tmce-active');
     wrapEditor.classList.remove('html-active');
@@ -9989,7 +9977,6 @@ class EditQuestion {
       if (id === 'content') {
         return;
       }
-      this.setDefaultEditorTab(id);
       const elTextarea = document.getElementById(id);
       if (!elTextarea) {
         return;
@@ -10011,6 +9998,9 @@ class EditQuestion {
       editor.settings.convert_urls = true;
       editor.settings.document_base_url = lpData.site_url;
       // End config use absolute url
+
+      // Add quick tags
+      this.reInitQuickTags(id);
 
       // Events focus in TinyMCE editor
       editor.on('change keyup', e => {
@@ -10035,7 +10025,10 @@ class EditQuestion {
 					border: 1px dashed rebeccapurple;
 					padding: 5px;
 				}
-			`);
+				`);
+
+        // Set default tab visual
+        this.setDefaultEditorTab(id);
       });
       editor.on('setcontent', e => {
         const uniquid = this.randomString();

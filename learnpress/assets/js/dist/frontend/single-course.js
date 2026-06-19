@@ -305,22 +305,19 @@ const Sidebar = () => {
   /*$( '.section' ).each( function() {
   	const $section = $( this ),
   		$toggle = $section.find( '.section-left' );
-  
-  	$toggle.on( 'click', function() {
+  		$toggle.on( 'click', function() {
   		const isClose = $section.toggleClass( 'closed' ).hasClass( 'closed' );
   		const sections = LP.Cookies.get( 'closed-section-' + lpGlobalSettings.post_id ) || [];
   		const sectionId = parseInt( $section.data( 'section-id' ) );
   		const at = sections.findIndex( ( id ) => {
   			return id == sectionId;
   		} );
-  
-  		if ( isClose ) {
+  			if ( isClose ) {
   			sections.push( parseInt( $section.data( 'section-id' ) ) );
   		} else {
   			sections.splice( at, 1 );
   		}
-  
-  		LP.Cookies.remove( 'closed-section-(.*)' );
+  			LP.Cookies.remove( 'closed-section-(.*)' );
   		LP.Cookies.set( 'closed-section-' + lpGlobalSettings.post_id, [ ...new Set( sections ) ] );
   	} );
   } );*/
@@ -2742,44 +2739,52 @@ const retakeCourse = () => {
 };
 
 // Rest API load content course progress - Nhamdv.
-const courseProgress = () => {
-  const elements = document.querySelectorAll('.lp-course-progress-wrapper');
-  if (!elements.length) {
-    return;
-  }
-  if ('IntersectionObserver' in window) {
-    const eleObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const ele = entry.target;
-          setTimeout(function () {
-            getResponse(ele);
-          }, 600);
-          eleObserver.unobserve(ele);
-        }
-      });
-    });
-    [...elements].map(ele => eleObserver.observe(ele));
-  }
-  const getResponse = async ele => {
-    let url = 'lp/v1/lazy-load/course-progress';
-    if (lpData.urlParams.hasOwnProperty('lang')) {
-      url += '?lang=' + lpData.urlParams.lang;
-    }
-    const response = await wp.apiFetch({
-      path: url,
-      method: 'POST',
-      data: {
-        courseId: lpGlobalSettings.post_id || '',
-        userId: lpData.user_id || ''
-      }
-    });
-    const {
-      data
-    } = response;
-    ele.innerHTML = data;
-  };
-};
+/*const courseProgress = () => {
+	const elements = document.querySelectorAll( '.lp-course-progress-wrapper' );
+
+	if ( ! elements.length ) {
+		return;
+	}
+
+	if ( 'IntersectionObserver' in window ) {
+		const eleObserver = new IntersectionObserver( ( entries, observer ) => {
+			entries.forEach( ( entry ) => {
+				if ( entry.isIntersecting ) {
+					const ele = entry.target;
+
+					setTimeout( function() {
+						getResponse( ele );
+					}, 600 );
+
+					eleObserver.unobserve( ele );
+				}
+			} );
+		} );
+
+		[ ...elements ].map( ( ele ) => eleObserver.observe( ele ) );
+	}
+
+	const getResponse = async ( ele ) => {
+		let url = 'lp/v1/lazy-load/course-progress';
+		if ( lpData.urlParams.hasOwnProperty( 'lang' ) ) {
+			url += '?lang=' + lpData.urlParams.lang;
+		}
+
+		const response = await wp.apiFetch( {
+			path: url,
+			method: 'POST',
+			data: {
+				courseId: lpGlobalSettings.post_id || '',
+				userId: lpData.user_id || '',
+			},
+		} );
+
+		const { data } = response;
+
+		ele.innerHTML = data;
+	};
+};*/
+
 const accordionExtraTab = () => {
   const elements = document.querySelectorAll('.course-extra-box');
   [...elements].map(ele => {
@@ -2840,7 +2845,7 @@ document.addEventListener('DOMContentLoaded', function () {
   enrollCourse();
   purchaseCourse();
   retakeCourse();
-  courseProgress();
+  //courseProgress();
   courseContinue();
   _show_lp_overlay_complete_item__WEBPACK_IMPORTED_MODULE_2__["default"].init();
   (0,_material__WEBPACK_IMPORTED_MODULE_5__["default"])();

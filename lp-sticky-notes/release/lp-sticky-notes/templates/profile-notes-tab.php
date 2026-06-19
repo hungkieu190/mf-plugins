@@ -61,6 +61,11 @@ defined( 'ABSPATH' ) || exit();
 			<?php
 			$current_course = '';
 			foreach ( $notes as $note ) :
+				$note_created_timestamp = mysql2date( 'U', $note->created_at );
+				if ( ! $note_created_timestamp ) {
+					$note_created_timestamp = current_time( 'timestamp' );
+				}
+
 				// Group by course
 				if ( $current_course !== $note->course_title ) :
 					if ( $current_course !== '' ) :
@@ -86,7 +91,7 @@ defined( 'ABSPATH' ) || exit();
 							<?php echo esc_html( $note->lesson_title ); ?>
 						</span>
 						<span class="lp-note-date">
-							<?php echo esc_html( human_time_diff( strtotime( $note->created_at ), current_time( 'timestamp' ) ) ); ?>
+							<?php echo esc_html( human_time_diff( $note_created_timestamp, current_time( 'timestamp' ) ) ); ?>
 							<?php esc_html_e( 'ago', 'lp-sticky-notes' ); ?>
 						</span>
 					</div>

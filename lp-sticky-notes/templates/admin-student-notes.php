@@ -186,6 +186,12 @@ foreach ($courses as $course) {
             </thead>
             <tbody>
                 <?php foreach ($notes as $note): ?>
+                    <?php
+                    $note_created_timestamp = mysql2date('U', $note->created_at);
+                    if (!$note_created_timestamp) {
+                        $note_created_timestamp = 0;
+                    }
+                    ?>
                     <tr class="lp-note-row">
                         <td data-sort-value="<?php echo esc_attr($note->student_name); ?>">
                             <strong><?php echo esc_html($note->student_name); ?></strong>
@@ -218,8 +224,8 @@ foreach ($courses as $course) {
                                 <?php esc_html_e('View full', 'lp-sticky-notes'); ?>
                             </button>
                         </td>
-                        <td data-sort-value="<?php echo esc_attr(strtotime($note->created_at)); ?>">
-                            <?php echo esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($note->created_at))); ?>
+                        <td data-sort-value="<?php echo esc_attr($note_created_timestamp); ?>">
+                            <?php echo esc_html(mysql2date(get_option('date_format') . ' ' . get_option('time_format'), $note->created_at)); ?>
                         </td>
                         <td>
                             <a href="<?php echo esc_url(lp_sticky_notes_get_lesson_url($note->lesson_id, $note->course_id)); ?>" class="button button-small" target="_blank">

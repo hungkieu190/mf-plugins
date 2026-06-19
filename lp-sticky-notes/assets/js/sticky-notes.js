@@ -526,7 +526,13 @@
 		},
 
 		formatDate: function (dateString) {
-			var date = new Date(dateString);
+			var normalizedDate = String(dateString || '').replace(' ', 'T');
+			var date = new Date(normalizedDate);
+
+			if (isNaN(date.getTime())) {
+				return dateString || '';
+			}
+
 			return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 		},
 
@@ -612,6 +618,7 @@
 				type: 'POST',
 				data: {
 					action: 'lp_sticky_notes_get_all',
+					course_id: lpStickyNotes.courseId,
 					nonce: lpStickyNotes.nonce
 				},
 				success: function (response) {
